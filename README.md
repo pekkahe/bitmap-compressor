@@ -1,5 +1,5 @@
 # Bitmap Compressor
-**Bitmap Compressor** is a C# console application for compressing BMP image files into DXT1 (BC1) compressed DDS files and vice versa.
+**Bitmap Compressor** is a C# console application for compressing BMP image files into [DXT1 (BC1)](http://msdn.microsoft.com/en-us/library/bb694531(v=VS.85).aspx) compressed [DDS](http://msdn.microsoft.com/en-us/library/bb943990(v=VS.85).aspx) files and vice versa.
 
 The application is developed with Visual Studio 2015 using .NET Framework 4.6.
 
@@ -24,9 +24,3 @@ Compress a BMP file named *file1.bmp* into a DDS file named *file2.dds*:
 Decompress a DDS file named *file2.dds* into a BMP file named *file1.bmp* overwriting the file if it exists:
 
     bitmapcompressor.console -d -w file1.bmp file2.dds
-
-## Additional resources
-
-[DXT1 (BC1) block compression](http://msdn.microsoft.com/en-us/library/bb694531(v=VS.85).aspx)
-
-[DDS file format](http://msdn.microsoft.com/en-us/library/bb943990(v=VS.85).aspx)
