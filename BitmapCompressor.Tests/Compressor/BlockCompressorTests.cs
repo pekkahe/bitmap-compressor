@@ -6,7 +6,7 @@ using BitmapCompressor.DataTypes;
 using Moq;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests
+namespace BitmapCompressor.Tests.Compressor
 {
     [TestFixture]
     public class BlockCompressorTests
