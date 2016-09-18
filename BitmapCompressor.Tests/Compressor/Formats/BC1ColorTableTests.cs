@@ -29,7 +29,6 @@ namespace BitmapCompressor.Tests.Compression.Formats
                 "Expected color0 integer value to be higher than color1 when input colors have no alpha.");
             Assert.AreEqual(expectedColor0, colorTable[0]);
             Assert.AreEqual(expectedColor1, colorTable[1]);
-            Assert.IsFalse(colorTable.Is1BitAlpha);
         }
 
         [Test]
@@ -52,7 +51,6 @@ namespace BitmapCompressor.Tests.Compression.Formats
                 "Expected color1 integer value to be higher than color0 when input colors have alpha.");
             Assert.AreEqual(expectedColor0, colorTable[0]);
             Assert.AreEqual(expectedColor1, colorTable[1]);
-            Assert.IsTrue(colorTable.Is1BitAlpha);
         }
 
         [Test]
@@ -66,7 +64,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
 
             Assert.AreEqual(color0, colorTable[0]);
             Assert.AreEqual(color1, colorTable[1]);
-            Assert.IsFalse(colorTable.Is1BitAlpha);
+            Assert.Greater(colorTable[0].Value, colorTable[1].Value);
             Assert.AreNotEqual(Color565.Black, colorTable[3]);
         }
 
@@ -81,7 +79,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
 
             Assert.AreEqual(color0, colorTable[0]);
             Assert.AreEqual(color1, colorTable[1]);
-            Assert.IsTrue(colorTable.Is1BitAlpha);
+            Assert.LessOrEqual(colorTable[0].Value, colorTable[1].Value);
             Assert.AreEqual(Color565.Black, colorTable[3],
                 "Expected 1-bit alpha to be triggered and color3 to be black.");
         }

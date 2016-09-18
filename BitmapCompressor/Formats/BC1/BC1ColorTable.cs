@@ -45,17 +45,21 @@ namespace BitmapCompressor.Formats
         private readonly Color565[] _colors = new Color565[4];
 
         /// <summary>
+        /// Whether the order of the two reference colors has triggered 1-bit alpha or not.
+        /// </summary>
+        private readonly bool _set1BitAlpha;
+
+        /// <summary>
         /// Instantiates a new <see cref="BC1ColorTable"/> from the two specified 16-bit 
         /// reference colors and two automatically calculated intermediate colors.
         /// </summary>
         public BC1ColorTable(Color565 color0, Color565 color1)
         {
-            Is1BitAlpha = color0.Value <= color1.Value;
-
             _colors[0] = color0;
             _colors[1] = color1;
 
-            if (Is1BitAlpha)
+            _set1BitAlpha = color0.Value <= color1.Value;
+            if (_set1BitAlpha)
             {
                 _colors[2] = ColorUtility.Blend(_colors[0], _colors[1]);
                 _colors[3] = Color565.Black;
@@ -76,20 +80,14 @@ namespace BitmapCompressor.Formats
                 $"BC1 color table should contain {4} colors instead of {colors.Length}.");
 
             _colors = colors;
-
-            Is1BitAlpha = _colors[0].Value <= _colors[1].Value;
+            _set1BitAlpha = _colors[0].Value <= _colors[1].Value;
         }
 
         /// <summary>
         /// Returns the color for the given BC1 color index.
         /// </summary>
         public Color565 this[int colorIndex] => _colors[colorIndex];
-
-        /// <summary>
-        /// Whether the order of the two reference colors has triggered 1-bit alpha or not.
-        /// </summary>
-        public bool Is1BitAlpha { get; }
-
+        
         /// <summary>
         /// Returns the appropriate BC1 color index for the given 32-bit ARGB color.
         /// </summary>
@@ -112,7 +110,7 @@ namespace BitmapCompressor.Formats
         {
             var color = _colors[index];
 
-            if (Is1BitAlpha && index == AlphaColorIndex)
+            if (_set1BitAlpha && index == AlphaColorIndex)
             {
                 return Color.FromArgb(0, ColorUtility.To32Bit(color));
             }

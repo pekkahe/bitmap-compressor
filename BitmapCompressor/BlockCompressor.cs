@@ -71,7 +71,7 @@ namespace BitmapCompressor
         {
             Logger.Default.Log("Decompressing DDS to BMP.");
 
-            var bmpImage = new BMPImage(new Bitmap(image.Width, image.Height));
+            var bmpImage = new BMPImage(image.Width, image.Height);
 
             int numberOfVerticalBlocks = image.Height / BlockFormat.Dimension;
             int numberOfHorizontalBlocks = image.Width / BlockFormat.Dimension;
