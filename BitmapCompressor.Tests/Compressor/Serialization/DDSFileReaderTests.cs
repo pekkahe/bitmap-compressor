@@ -7,11 +7,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.Serialization
 {
-    [TestFixture]
+    [TestFixture(Category = "Serialization")]
     public class DDSFileReaderTests
     {
         [Test]
-        public void DDSFileReader_ReadData_ReturnsDDSImage()
+        public void ReadingDataReturnsDDSImage()
         {
             int imageWidth = 4;
             int imageHeight = 4;
@@ -51,7 +51,7 @@ namespace BitmapCompressor.Tests.Compression.Serialization
         }
 
         [Test]
-        public void DDSFileReader_ReadDataWithInvalidMagicNumber_ThrowsException()
+        public void ReadingDataThrowsExceptionWhenMagicNumberIsInvalid()
         {
             var stream = new MemoryStream();
 

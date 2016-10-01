@@ -6,11 +6,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.Utilities
 {
-    [TestFixture]
+    [TestFixture(Category = "Utilities")]
     public class ColorUtilityTests
     {
         [Test]
-        public void ColorUtility_Blend32BitColors_ReturnsBlended32BitColor()
+        public void Blend32BitColors()
         {
             var a = Color.FromArgb(250, 100, 150);
             var b = Color.FromArgb(150, 100, 200);
@@ -22,7 +22,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_Blend16BitColors_ReturnsBlended16BitColor()
+        public void Blend16BitColors()
         {
             var a = Color565.FromRgb(30, 60, 20);
             var b = Color565.FromRgb(20, 60, 25);
@@ -34,7 +34,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_Lerp32BitColors_ReturnsInterpolated32BitColors()
+        public void Lerp32BitColors()
         {
             var a = Color.FromArgb( 50, 100, 200);
             var b = Color.FromArgb(250, 100, 150);
@@ -46,7 +46,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_Lerp16BitColors_ReturnsInterpolated16BitColors()
+        public void Lerp16BitColors()
         {
             var a = Color565.FromRgb(10, 60, 20);
             var b = Color565.FromRgb(30, 60, 15);
@@ -58,7 +58,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_Convert16BitColorTo32Bit_Returns32BitColor()
+        public void Convert16BitColorTo32Bit()
         {
             var color1 = Color565.FromRgb(  9,  51,  28);
             var expected1 = Color.FromArgb(74, 207, 231);
@@ -74,7 +74,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_Convert32BitColorTo16Bit_Returns16BitColor()
+        public void Convert32BitColorTo16Bit()
         {
             var color1 = Color.FromArgb(     74, 207, 231);
             var expected1 = Color565.FromRgb( 9,  51,  28);
@@ -90,7 +90,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_GetDistanceFor32BitColors_ReturnsDistanceBetweenColors()
+        public void CalculateDistanceBetween32BitColors()
         {
             var a = Color.FromArgb(100, 130, 60);
             var b = Color.FromArgb(150, 255, 200);
@@ -105,7 +105,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_GetDistanceFor16BitColors_ReturnsDistanceBetweenColors()
+        public void CalculateDistanceBetween16BitColors()
         {
             var a = Color565.FromRgb(10, 16, 9);
             var b = Color565.FromRgb(20, 63, 31);
@@ -120,7 +120,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_GetClosestColor_ReturnsClosestColor()
+        public void CalculateClosestColor()
         {
             var target =   Color565.FromRgb(15, 31, 15);
             var expected = Color565.FromRgb(13, 29, 14);
@@ -139,7 +139,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_TryDifferentiateWhenMaxCanBeIncreased_IncreasesMaxColorByOne()
+        public void DifferentiationIncreasesMaxColorByOneWhenMaxCanBeIncreased()
         {
             var minOriginal = Color565.FromRgb(15, 43, 9);
             var maxOriginal = Color565.FromRgb(15, 43, 9);
@@ -153,7 +153,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_TryDifferentiateWhenMaxCannotBeIncreased_DecreasesMinColorByOne()
+        public void DifferentiationDecreasesMinColorByOneWhenMaxCannotBeIncreased()
         {
             var minOriginal = Color565.FromRgb(31, 63, 31);
             var maxOriginal = Color565.FromRgb(31, 63, 31);
@@ -167,7 +167,7 @@ namespace BitmapCompressor.Tests.Compression.Utilities
         }
 
         [Test]
-        public void ColorUtility_TryDifferentiateWhenColorsAreDifferent_DoesNothing()
+        public void DifferentiationDoesNothingWhenColorsAreDifferent()
         {
             var minOriginal = Color565.FromRgb(15, 31, 21);
             var maxOriginal = Color565.FromRgb(13, 24, 14);

@@ -4,11 +4,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.Formats
 {
-    [TestFixture]
+    [TestFixture(Category = "Formats")]
     public class BC1CompressionFormatTests
     {
         [Test]
-        public void BC1CompressionFormat_Compress_ReturnsByteArrayOfCorrectSize()
+        public void CompressionReturnsByteArrayOfCorrectSize()
         {
             var format = new BC1CompressionFormat();
             var colors = TestHelpers.CreateRandomColors();
@@ -19,7 +19,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1CompressionFormat_Decompress_Returns16ArgbColors()
+        public void DecompressionReturns16ArgbColors()
         {
             var format = new BC1CompressionFormat();
 

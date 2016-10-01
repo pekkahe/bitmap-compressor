@@ -8,11 +8,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.Serialization
 {
-    [TestFixture]
+    [TestFixture(Category = "Serialization")]
     public class DDSFileWriterTests
     {
         [Test]
-        public void DDSFileWriter_WriteDDSImage_WritesDataToMemory()
+        public void WritingDDSImageWritesDataToMemory()
         {
             var imageData = new byte[8] { 1, 2, 3, 4, 5, 6, 7, 8 };
             int imageWidth = 4;

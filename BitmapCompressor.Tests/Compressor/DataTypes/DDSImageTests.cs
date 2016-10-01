@@ -8,14 +8,14 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.DataTypes
 {
-    [TestFixture]
+    [TestFixture(Category = "DataTypes")]
     public class DDSImageTests
     {
         private const int BlockSize = 8;
         private const int BlockDimension = 4;
 
         [Test]
-        public void DDSImage_ReadDataForSoleBlock_ReturnsBlockData()
+        public void ReadDataForSoleBlock()
         {
             var buffer = Enumerable.Repeat((byte) 255, BlockSize).ToArray();
             var ddsImage = new DDSImage(BlockDimension, BlockDimension, buffer);
@@ -26,7 +26,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void DDSImage_ReadDataForLastBlock_ReturnsBlockData()
+        public void ReadDataForLastBlock()
         {
             const int numberOfBlocks = 4;
 
@@ -42,7 +42,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void DDSImage_WriteDataForSoleBlock_SetsMainImageBuffer()
+        public void WriteDataForSoleBlock()
         {
             var buffer = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
             var data = new BC1BlockLayout(buffer).GetBuffer();
@@ -55,7 +55,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void DDSImage_WriteDataForMultipleBlocks_SetsMainImageBuffer()
+        public void WriteDataForMultipleBlocks()
         {
             const int numberOfBlocks = 4;
             

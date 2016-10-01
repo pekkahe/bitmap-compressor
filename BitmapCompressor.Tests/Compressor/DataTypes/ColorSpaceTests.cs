@@ -5,11 +5,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.DataTypes
 {
-    [TestFixture]
+    [TestFixture(Category = "DataTypes")]
     public class ColorSpaceTests
     {
         [Test]
-        public void ColorSpace_Create_SetsEndpointColors()
+        public void CalculatesEndpointColorsWhenConstructed()
         {
             var low =  Color.FromArgb(50,  50,  50);
             var col =  Color.FromArgb(100, 100, 100);
@@ -22,7 +22,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void ColorSpace_Create_SetsMinAndMaxColors()
+        public void CalculatesMinAndMaxColorsWhenConstructed()
         {
             var low =  Color.FromArgb(50,  50,  50);
             var col =  Color.FromArgb(100, 100, 100);
@@ -35,7 +35,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void ColorSpace_CreateWhenMinAndMaxColorsChangeOrderWhenConverted_Uses16BitOrder()
+        public void Recognizes16BitColorOrderWhen32BitOrderIsInverted()
         {
             var min =     Color.FromArgb(50, 255, 255);
             var max =     Color.FromArgb(55, 0,   0);
@@ -50,9 +50,9 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
             Assert.AreEqual(minAs16ShouldBeMax, colorSpace.MaxColor);
         }
 
-        [TestCase(255, false, TestName = "ColorSpace_CreateWithoutAlpha_SetsAlphaFalse")]
-        [TestCase(150, true,  TestName = "ColorSpace_CreateWithAlpha_SetsAlphaTrue")]
-        public void ColorSpace_Create_SetsAlphaPresence(int alpha, bool expected)
+        [TestCase(255, false, TestName = "HasAlphaIsFalseWhenCreatedWithoutAlphaChannel")]
+        [TestCase(150, true,  TestName = "HasAlphaIsTrueWhenCreatedWithAlphaChannel")]
+        public void HasAlpha(int alpha, bool expected)
         {
             var color = Color.FromArgb(alpha, 150, 150, 150);
 

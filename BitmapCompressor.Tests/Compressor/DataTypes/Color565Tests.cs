@@ -4,13 +4,13 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.DataTypes
 {
-    [TestFixture]
+    [TestFixture(Category = "DataTypes")]
     public class Color565Tests
     {
         private const int MaxValue16Bit = 65535;
 
         [Test]
-        public void Color565_CreateFromRgbOfIntegers_Returns16BitColor()
+        public void ConstructionFromIntegerComponents()
         {
             var color = Color565.FromRgb(10, 51, 23);
 
@@ -20,7 +20,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void Color565_CreateFromRgbOfIntegersOverLimit_ReturnsLimited16BitColor()
+        public void ConstructionFromIntegerComponentsClampsValuesWhenOverLimit()
         {
             var expected = Color565.FromRgb(31, 63, 31);
 
@@ -37,7 +37,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void Color565_CreateFromRgbOfBytes_Returns16BitColor()
+        public void ConstructionFromByteComponents()
         {
             var color = Color565.FromRgb((byte) 10, (byte) 51, (byte) 23);
 
@@ -47,7 +47,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void Color565_CreateFromRgbOfBytesOverLimit_ReturnsLimited16BitColor()
+        public void ConstructionFromByteComponentsClampsValuesWhenOverLimit()
         {
             var expected = Color565.FromRgb((byte) 31, (byte) 63, (byte) 31);
 
@@ -61,7 +61,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void Color565_CreateFromValueOfUnsignedInteger_Returns16BitColor()
+        public void ConstructionFromUnsignedInteger()
         {
             var color = Color565.FromValue(22135);
 
@@ -72,7 +72,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void Color565_ValueFormat_IsR5G6B5()
+        public void ValueFormatIsR5G6B5()
         {
             var color = Color565.FromRgb(10, 51, 23);
 

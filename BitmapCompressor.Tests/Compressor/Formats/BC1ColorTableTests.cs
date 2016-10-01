@@ -8,11 +8,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.Formats
 {
-    [TestFixture]
+    [TestFixture(Category = "Formats")]
     public class BC1ColorTableTests
     {
         [Test]
-        public void BC1ColorTable_CreateFromArgbWithoutAlpha_ReturnsTableWithReferenceColors()
+        public void ConstructionFromArgbSetsReferenceColorsWhenNoAlpha()
         {
             var expectedMin = Color.FromArgb(10, 10, 10);
             var expectedMax = Color.FromArgb(250, 250, 250);
@@ -32,7 +32,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1ColorTable_CreateFromArgbWithAlpha_ReturnsTableWithSwitchedReferenceColors()
+        public void ConstructionFromArgbSwitchesReferenceColorsWhenAlpha()
         {
             var expectedMin = Color.FromArgb(10, 10, 10);
             var expectedMax = Color.FromArgb(250, 250, 250);
@@ -54,7 +54,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1ColorTable_CreateFromReferenceColors_ReturnsTableWithout1BitAlpha()
+        public void ConstructionFromReferenceColorsWithout1BitAlpha()
         {
             // color0 > color1
             var color0 = Color565.FromRgb(20, 20, 20);
@@ -69,7 +69,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1ColorTable_CreateFromSwitchedReferenceColors_ReturnsTableWith1BitAlpha()
+        public void ConstructionFromSwitchedReferenceColorsWith1BitAlpha()
         {
             // color0 <= color1
             var color0 = Color565.FromRgb(10, 10, 10);
@@ -85,7 +85,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1ColorTable_GetIndexForColorWithoutAlpha_ReturnsIndexOfClosestColor()
+        public void GettingIndexForColorReturnsIndexOfClosestColorWhenNoAlpha()
         {
             var colors = TestHelpers.CreateRandomColors();
             var expectedIndex = new int[BlockFormat.PixelCount];
@@ -114,7 +114,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1ColorTable_GetIndexForColorWithAlpha_ReturnsIndexOfColor3()
+        public void GettingIndexForColorReturnsIndexOfColor3WhenAlpha()
         {
             const int expectedIndex = 3;
 
@@ -127,7 +127,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1ColorTable_GetColorForIndexWhenNoAlpha_ReturnsColorFromTable()
+        public void GettingColorForIndexReturnsColorFromTableWhenNoAlpha()
         {
             var expectedColors = new Color565[4];
             expectedColors[0] = Color565.FromRgb(100, 100, 100);
@@ -158,7 +158,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1ColorTable_GetColorForIndexWhenAlpha_ReturnsTransparentColor()
+        public void GettingColorForIndexReturnsTransparentColorWhenAlpha()
         {
             var expectedColors = new Color565[4];
             expectedColors[0] = Color565.FromRgb(50, 50, 50);

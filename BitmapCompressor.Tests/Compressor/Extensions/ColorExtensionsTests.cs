@@ -5,13 +5,13 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.Extensions
 {
-    [TestFixture]
+    [TestFixture(Category = "Extensions")]
     public class ColorExtensionsTests
     {
-        [TestCase(255,  false,  TestName = "ColorExtensions_HasAlphaWhenFullyOpaque_ReturnsFalse")]
-        [TestCase(200,  true,   TestName = "ColorExtensions_HasAlphaWhenPartiallyTransparent_ReturnsTrue")]
-        [TestCase(0,    true,   TestName = "ColorExtensions_HasAlphaWhenFullyTransparent_ReturnsTrue")]
-        public void ColorExtensions_HasAlpha(int alpha, bool expected)
+        [TestCase(255,  false,  TestName = "HasAlphaIsFalseWhenFullyOpaque")]
+        [TestCase(200,  true,   TestName = "HasAlphaIsTrueWhenPartiallyTransparent")]
+        [TestCase(0,    true,   TestName = "HasAlphaIsTrueWhenFullyTransparent")]
+        public void HasAlpha(int alpha, bool expected)
         {
             var color = Color.FromArgb(alpha, Color.Green);
 

@@ -6,11 +6,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.DataTypes
 {
-    [TestFixture]
+    [TestFixture(Category = "DataTypes")]
     public class BMPImageTests
     {
         [Test]
-        public void BMPImage_GetColorsInFirstBlock_ReturnsColorForEachPixel()
+        public void GettingColorsReturnsEachPixelInBlockWhenColorsAreSame()
         {
             var color = Color.FromArgb(50, 50, 50);
 
@@ -39,9 +39,9 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
             Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
             Assert.IsTrue(colors.All(c => c.Equals(color)));
         }
-
+                    
         [Test]
-        public void BMPImage_GetColorsInOffsetBlock_ReturnsColorForEachPixel()
+        public void GettingColorsReturnsEachPixelInBlockWhenOffset()
         {
             var color = Color.FromArgb(50, 50, 50);
 
@@ -72,7 +72,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void BMPImage_GetColorsInMulticoloredBlock_ReturnsColorForEachPixel()
+        public void GettingColorsReturnsEachPixelInBlockWhenColorsAreDifferent()
         {
             var color1 = Color.FromArgb(50, 50, 50);
             var color2 = Color.FromArgb(100, 100, 100);
@@ -109,7 +109,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void BMPImage_SetColorsInFirstBlock_SetsColorForEachPixel()
+        public void SettingColorsSetsEachPixelInBlockWhenColorsAreSame()
         {
             var color = Color.FromArgb(50, 50, 50);
             var colors = Enumerable.Repeat(color, BlockFormat.PixelCount).ToArray();
@@ -138,7 +138,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void BMPImage_SetColorsInOffsetBlock_SetsColorForEachPixel()
+        public void SettingColorsSetsEachPixelInBlockWhenOffset()
         {
             var color = Color.FromArgb(50, 50, 50);
             var colors = Enumerable.Repeat(color, BlockFormat.PixelCount).ToArray();
@@ -167,7 +167,7 @@ namespace BitmapCompressor.Tests.Compression.DataTypes
         }
 
         [Test]
-        public void BMPImage_SetColorsOfDifferentType_SetsColorForEachPixel()
+        public void SettingColorsSetsEachPixelInBlockWhenColorsAreDifferent()
         {
             var color1 = Color.FromArgb(50, 50, 50);
             var color2 = Color.FromArgb(100, 100, 100);

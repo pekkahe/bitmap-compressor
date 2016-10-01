@@ -5,11 +5,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.Serialization
 {
-    [TestFixture]
+    [TestFixture(Category = "Serialization")]
     public class DDSFileHeaderFactoryTests
     {
         [Test]
-        public void DDSFileHeaderFactory_CreateDXT1Header_CreatesDDSFileHeaderStructure()
+        public void CreatingDXT1HeaderCreatesDDSFileHeaderStructure()
         {
             var expectedFlags = DDSFileHeaderFlags.DDSD_CAPS | DDSFileHeaderFlags.DDSD_HEIGHT |
                                 DDSFileHeaderFlags.DDSD_WIDTH | DDSFileHeaderFlags.DDSD_PIXELFORMAT;

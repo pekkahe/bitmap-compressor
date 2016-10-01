@@ -5,11 +5,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compression.Formats
 {
-    [TestFixture]
+    [TestFixture(Category = "Formats")]
     public class BC1BlockLayoutTests
     {
         [Test]
-        public void BC1BlockLayout_Create_PreservesByteOrder()
+        public void ConstructionPreservesByteOrder()
         {
             var data = new byte[8] { 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8 };
             var dataCopy = (byte[]) data.Clone();
@@ -23,7 +23,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1BlockLayout_GetBuffer_ReturnsByteArrayOfCorrectSize()
+        public void GettingBufferReturnsByteArrayOfCorrectSize()
         {
             var block = new BC1BlockLayout();
 
@@ -33,7 +33,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1BlockLayout_SetColor0_WritesToBuffer()
+        public void SettingColor0WritesToBuffer()
         {
             const byte color16Low = 200;
             const byte color16High = 150;
@@ -51,7 +51,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1BlockLayout_GetColor0_Returns16BitColor()
+        public void GettingColor0Returns16BitColor()
         {
             var color16 = Color565.FromRgb(30, 50, 30);
             var block = new BC1BlockLayout();
@@ -63,7 +63,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1BlockLayout_SetColor1_WritesToBuffer()
+        public void SettingColor1WritesToBuffer()
         {
             const byte color16Low = 200;
             const byte color16High = 150;
@@ -81,7 +81,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1BlockLayout_GetColor1_Returns16BitColor()
+        public void GettingColor1Returns16BitColor()
         {
             var color16 = Color565.FromRgb(30, 50, 30);
             var block = new BC1BlockLayout();
@@ -93,7 +93,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1BlockLayout_SetColorIndexes_WritesToBuffer()
+        public void SettingColorIndexesWritesToBuffer()
         {
             var block = new BC1BlockLayout();
 
@@ -136,7 +136,7 @@ namespace BitmapCompressor.Tests.Compression.Formats
         }
 
         [Test]
-        public void BC1BlockLayout_GetColorIndexes_ReturnsIndexes()
+        public void GettingColorIndexesReturnsIndexes()
         {
             var block = new BC1BlockLayout();
             var expectedIndexes = new int[16]

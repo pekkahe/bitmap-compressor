@@ -8,12 +8,12 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Compressor
 {
-    [TestFixture]
+    [TestFixture(Category = "Compressor")]
     public class BlockCompressorTests
     {
         #region Test colors
 
-        // We're using custom colors instead of the static properties provided
+        // Let's use custom colors instead of the static properties provided
         // by Color because comparing against the statics fails when the color
         // is read from a bitmap.
 
@@ -27,7 +27,7 @@ namespace BitmapCompressor.Tests.Compressor
         #endregion
 
         [Test]
-        public void BlockCompressor_CompressImageWithInvalidDimensions_ThrowsException()
+        public void CompressionThrowsExceptionWhenImageHasInvalidDimensions()
         {
             var compressor = new BlockCompressor(new Mock<IBlockCompressionFormat>().Object);
             var bmpImage = new BMPImage(new Bitmap(10, 16));
@@ -36,7 +36,7 @@ namespace BitmapCompressor.Tests.Compressor
         }
 
         [Test]
-        public void BlockCompressor_CompressImage_CalculatesImageDimensionsAndBufferSize()
+        public void CompressionCalculatesImageDimensionsAndBufferSize()
         {
             const int byteCount = 8;
             const int blockCount = 4;
@@ -59,7 +59,7 @@ namespace BitmapCompressor.Tests.Compressor
         }
 
         [Test]
-        public void BlockCompressor_CompressImage_RunsBlockCompressionForEachBlock()
+        public void CompressionRunsBlockCompressionForEachBlock()
         {
             const int byteCount = 8;
 
@@ -154,7 +154,7 @@ namespace BitmapCompressor.Tests.Compressor
         }
 
         [Test]
-        public void BlockCompressor_DecompressImage_RunsBlockDecompressionForEachBlock()
+        public void DecompressionRunsBlockDecompressionForEachBlock()
         {
             const int byteCount = 8;
 

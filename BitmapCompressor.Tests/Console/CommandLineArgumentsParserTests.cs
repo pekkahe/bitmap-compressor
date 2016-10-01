@@ -4,11 +4,11 @@ using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Console
 {
-    [TestFixture]
+    [TestFixture(Category = "Console")]
     public class CommandLineArgumentsParserTests
     {
         [Test]
-        public void CommandLineArgumentsParser_ParseStringsWithCompressOption_ReturnsArguments()
+        public void ParseStringsWithCompressOption()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
@@ -28,7 +28,7 @@ namespace BitmapCompressor.Tests.Console
         }
 
         [Test]
-        public void CommandLineArgumentsParser_ParseStringsWithDecompressOption_ReturnsArguments()
+        public void ParseStringsWithDecompressOption()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
@@ -48,7 +48,7 @@ namespace BitmapCompressor.Tests.Console
         }
 
         [Test]
-        public void CommandLineArgumentsParser_ParseStringsWithOverwriteOption_ReturnsArguments()
+        public void ParseStringsWithOverwriteOption()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
@@ -69,22 +69,19 @@ namespace BitmapCompressor.Tests.Console
         }
 
         [Test]
-        public void CommandLineArgumentsParser_ParseStringsWithConflictingOptions_ThrowsException()
+        public void ParsingThrowsExceptionWhenOnlyOneArgument()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
             {
                 CommandLineArgumentsParser.CompressOption,
-                CommandLineArgumentsParser.DecompressOption,
-                "file.bmp",
-                "file.dds"
             };
 
             Assert.Throws<ArgumentException>(() => parser.Parse(args));
         }
 
         [Test]
-        public void CommandLineArgumentsParser_ParseStringsWithTooManyArguments_ThrowsException()
+        public void ParsingThrowsExceptionWhenTooManyArguments()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
@@ -100,7 +97,22 @@ namespace BitmapCompressor.Tests.Console
         }
 
         [Test]
-        public void CommandLineArgumentsParser_ParseStringsWithInvalidBMPFileExtension_ThrowsException()
+        public void ParsingThrowsExceptionWhenOptionsConflict()
+        {
+            var parser = new CommandLineArgumentsParser();
+            var args = new string[]
+            {
+                CommandLineArgumentsParser.CompressOption,
+                CommandLineArgumentsParser.DecompressOption,
+                "file.bmp",
+                "file.dds"
+            };
+
+            Assert.Throws<ArgumentException>(() => parser.Parse(args));
+        }
+
+        [Test]
+        public void ParsingThrowsExceptionWhenBMPFileHasInvalidExtension()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
@@ -114,7 +126,7 @@ namespace BitmapCompressor.Tests.Console
         }
 
         [Test]
-        public void CommandLineArgumentsParser_ParseStringsWithInvalidDDSFileExtension_ThrowsException()
+        public void ParsingThrowsExceptionWhenDDSFileHasInvalidExtension()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
@@ -122,18 +134,6 @@ namespace BitmapCompressor.Tests.Console
                 CommandLineArgumentsParser.CompressOption,
                 "file.bmp",
                 "file.txt"
-            };
-
-            Assert.Throws<ArgumentException>(() => parser.Parse(args));
-        }
-
-        [Test]
-        public void CommandLineArgumentsParser_ParseStringsWithSingleArgument_ThrowsException()
-        {
-            var parser = new CommandLineArgumentsParser();
-            var args = new string[]
-            {
-                CommandLineArgumentsParser.CompressOption,
             };
 
             Assert.Throws<ArgumentException>(() => parser.Parse(args));
