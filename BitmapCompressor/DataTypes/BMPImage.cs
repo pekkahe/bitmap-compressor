@@ -26,6 +26,11 @@ namespace BitmapCompressor.DataTypes
 
         public int Width => _bitmap.Width;
 
+        public Bitmap GetBitmap()
+        {
+            return _bitmap;
+        }
+
         /// <summary>
         /// Reads the 16 ARGB (32-bit) colors from the specified 4x4 pixel block of the source image.
         /// </summary>
@@ -56,7 +61,7 @@ namespace BitmapCompressor.DataTypes
 
             return colors;
         }
-
+        
         /// <summary>
         /// Sets the 16 ARGB (32-bit) colors at the specified 4x4 pixel block to the source image.
         /// </summary>

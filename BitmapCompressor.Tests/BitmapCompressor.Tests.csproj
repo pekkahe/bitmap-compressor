@@ -56,27 +56,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compressor\Extensions\ArrayExtensionsTests.cs" />
-    <Compile Include="Compressor\Extensions\ColorExtensionsTests.cs" />
-    <Compile Include="Compressor\Extensions\PointExtensionsTests.cs" />
-    <Compile Include="Compressor\Extensions\StringExtensionsTests.cs" />
-    <Compile Include="Compressor\Formats\BC1BlockLayoutTests.cs" />
-    <Compile Include="Compressor\Formats\BC1ColorTableTests.cs" />
-    <Compile Include="Compressor\Formats\BC1CompressionFormatTests.cs" />
-    <Compile Include="Compressor\DataTypes\ColorSpaceTests.cs" />
-    <Compile Include="Compressor\Serialization\DDSFileHeaderFactoryTests.cs" />
-    <Compile Include="Compressor\Serialization\DDSFileReaderTests.cs" />
-    <Compile Include="Compressor\Serialization\DDSFileWriterTests.cs" />
-    <Compile Include="Compressor\Utilities\ColorUtilityTests.cs" />
-    <Compile Include="Compressor\BlockCompressorTests.cs" />
-    <Compile Include="Compressor\DataTypes\Color565Tests.cs" />
-    <Compile Include="Compressor\DataTypes\DDSImageTests.cs" />
-    <Compile Include="Compressor\DataTypes\BMPImageTests.cs" />
-    <Compile Include="Compressor\Utilities\PointUtilityTests.cs" />
-    <Compile Include="Console\ProgramTests.cs" />
-    <Compile Include="Console\CommandLineArgumentsParserTests.cs" />
+    <Compile Include="Helpers\Profiler.cs" />
+    <Compile Include="UnitTests\Compressor\Extensions\ArrayExtensionsTests.cs" />
+    <Compile Include="UnitTests\Compressor\Extensions\ColorExtensionsTests.cs" />
+    <Compile Include="UnitTests\Compressor\Extensions\PointExtensionsTests.cs" />
+    <Compile Include="UnitTests\Compressor\Extensions\StringExtensionsTests.cs" />
+    <Compile Include="UnitTests\Compressor\Formats\BC1BlockLayoutTests.cs" />
+    <Compile Include="UnitTests\Compressor\Formats\BC1ColorTableTests.cs" />
+    <Compile Include="UnitTests\Compressor\Formats\BC1CompressionFormatTests.cs" />
+    <Compile Include="UnitTests\Compressor\DataTypes\ColorSpaceTests.cs" />
+    <Compile Include="UnitTests\Compressor\Serialization\DDSFileHeaderFactoryTests.cs" />
+    <Compile Include="UnitTests\Compressor\Serialization\DDSFileReaderTests.cs" />
+    <Compile Include="UnitTests\Compressor\Serialization\DDSFileWriterTests.cs" />
+    <Compile Include="UnitTests\Compressor\Utilities\ColorUtilityTests.cs" />
+    <Compile Include="UnitTests\Compressor\BlockCompressorTests.cs" />
+    <Compile Include="UnitTests\Compressor\DataTypes\Color565Tests.cs" />
+    <Compile Include="UnitTests\Compressor\DataTypes\DDSImageTests.cs" />
+    <Compile Include="UnitTests\Compressor\DataTypes\BMPImageTests.cs" />
+    <Compile Include="UnitTests\Compressor\Utilities\PointUtilityTests.cs" />
+    <Compile Include="UnitTests\Console\ProgramTests.cs" />
+    <Compile Include="UnitTests\Console\CommandLineArgumentsParserTests.cs" />
+    <Compile Include="Helpers\Disposable.cs" />
+    <Compile Include="IntegrationTests\BlockCompressorTests.cs" />
+    <Compile Include="Helpers\TestResourceDirectory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Compressor\Formats\TestHelpers.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
