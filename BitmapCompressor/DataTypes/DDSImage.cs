@@ -7,74 +7,69 @@ using BitmapCompressor.Serialization;
 
 namespace BitmapCompressor.DataTypes
 {
-    /// <summary>
-    /// Represents a compressed DDS image.
-    /// </summary>
-    public class DDSImage : IProcessedImage
+    public sealed class DDSImage : ICompressedImage
     {
+        private readonly byte[] _data;
+
         /// <summary>
-        /// Instantiates a compressed DDS image with an empty main surface data
-        /// buffer reserved for the given size.
+        /// Instantiates a DDS image with an empty main surface data buffer.
         /// </summary>
-        public DDSImage(int width, int height, int bufferSize)
+        public DDSImage(int width, int height, int blockSize)
         {
             Width = width;
             Height = height;
-            Buffer = new byte[bufferSize];
+
+            _data = new byte[CalculateBufferSize(blockSize)];
+        }
+
+        private int CalculateBufferSize(int blockSize)
+        {
+            int numberOfPixels = Width * Height;
+            int numberOfRequiredBlocks = numberOfPixels / BlockFormat.PixelCount;
+
+            return numberOfRequiredBlocks * blockSize;
         }
 
         /// <summary>
-        /// Instantiates a compressed DDS image with the specified main surface data buffer.
+        /// Instantiates a DDS image with the specified main surface data buffer.
         /// </summary>
         public DDSImage(int width, int height, byte[] buffer)
         {
             Width = width;
             Height = height;
-            Buffer = buffer;
+            _data = buffer;
         }
 
         public int Width { get; }
 
         public int Height { get; }
 
-        /// <summary>
-        /// The main surface data of the image.
-        /// </summary>
-        public byte[] Buffer { get; }
-
-        /// <summary>
-        /// Reads the block-compressed data from the image's main surface buffer 
-        /// for the specified 4x4 block coordinates.
-        /// </summary>
-        /// <param name="blockPosition">The coordinates for the 4x4 block to read the layout data for.</param>
-        /// <param name="blockSize">The number of bytes the block consumes.</param>
-        public byte[] ReadBlockData(Point blockPosition, int blockSize)
+        public byte[] GetBuffer()
+        {
+            return _data;
+        }
+        
+        public byte[] GetBlockData(Point block, int blockSize)
         {
             int numberOfHorizontalBlocks = Width / BlockFormat.Dimension;
 
-            int blockIndex = PointUtility.ToRowMajor(blockPosition, numberOfHorizontalBlocks);
+            int blockIndex = PointUtility.ToRowMajor(block, numberOfHorizontalBlocks);
             int bufferIndex = blockIndex * blockSize;
 
-            var blockData = Buffer.SubArray(bufferIndex, blockSize);
+            var blockData = _data.SubArray(bufferIndex, blockSize);
 
             return blockData;
         }
-
-        /// <summary>
-        /// Writes the block-compressed data to the image's main surface buffer 
-        /// to the specified 4x4 block coordinates.
-        /// </summary>
-        /// <param name="blockData">The block-compressed data to write to the image buffer.</param>
-        /// <param name="blockPosition">The coordinates for the 4x4 block the layout data represents.</param>
-        public void WriteBlockData(byte[] blockData, Point blockPosition)
+        
+        public void SetBlockData(Point block, byte[] data)
         {
-            int blockSize = blockData.Length;
+            int blockSize = data.Length;
             int numberOfHorizontalBlocks = Width / BlockFormat.Dimension;
 
-            int blockIndex = PointUtility.ToRowMajor(blockPosition, numberOfHorizontalBlocks);
+            int blockIndex = PointUtility.ToRowMajor(block, numberOfHorizontalBlocks);
             int bufferIndex = blockIndex * blockSize;
 
-            Array.Copy(blockData, 0, Buffer, bufferIndex, blockSize);
+            Array.Copy(data, 0, _data, bufferIndex, blockSize);
         }
 
         public void Save(string fileName)
@@ -85,7 +80,7 @@ namespace BitmapCompressor.DataTypes
             }
         }
 
-        public static DDSImage Load(string fileName)
+        public static DDSImage FromFile(string fileName)
         {
             using (var reader = new DDSFileReader(fileName))
             {

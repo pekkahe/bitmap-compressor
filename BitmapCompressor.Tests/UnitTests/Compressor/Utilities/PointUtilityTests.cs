@@ -2,7 +2,7 @@
 using BitmapCompressor.Utilities;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests.UnitTests.Compression.Utilities
+namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 {
     [TestFixture(Category = "Utilities")]
     public class PointUtilityTests

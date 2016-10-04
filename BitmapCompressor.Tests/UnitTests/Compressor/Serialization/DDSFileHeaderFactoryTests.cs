@@ -3,7 +3,7 @@ using BitmapCompressor.Serialization;
 using BitmapCompressor.Serialization.FileFormat;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests.UnitTests.Compression.Serialization
+namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
 {
     [TestFixture(Category = "Serialization")]
     public class DDSFileHeaderFactoryTests

@@ -2,7 +2,7 @@
 using BitmapCompressor.Extensions;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests.UnitTests.Compression.Extensions
+namespace BitmapCompressor.Tests.UnitTests.Compressor.Extensions
 {
     [TestFixture(Category = "Extensions")]
     public class ArrayExtensionsTests

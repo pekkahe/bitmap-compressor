@@ -15,11 +15,11 @@ namespace BitmapCompressor.Console.Utilities
         /// <summary>
         /// Loads the specified bitmap file.
         /// </summary>
-        BMPImage LoadBitmap(string filePath);
+        IUncompressedImage LoadBitmap(string filePath);
 
         /// <summary>
         /// Loads the specified Direct Draw Surface file.
         /// </summary>
-        DDSImage LoadDDS(string filePath);
+        ICompressedImage LoadDDS(string filePath);
     }
 }

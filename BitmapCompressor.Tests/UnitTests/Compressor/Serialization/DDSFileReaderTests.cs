@@ -5,7 +5,7 @@ using BitmapCompressor.Serialization;
 using BitmapCompressor.Serialization.FileFormat;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests.UnitTests.Compression.Serialization
+namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
 {
     [TestFixture(Category = "Serialization")]
     public class DDSFileReaderTests
@@ -44,7 +44,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compression.Serialization
 
             Assert.AreEqual(imageWidth, ddsImage.Width);
             Assert.AreEqual(imageHeight, ddsImage.Height);
-            CollectionAssert.AreEqual(mainImage, ddsImage.Buffer);
+            CollectionAssert.AreEqual(mainImage, ddsImage.GetBuffer());
 
             reader.Dispose();
             writer.Dispose();

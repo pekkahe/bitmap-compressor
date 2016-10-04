@@ -3,6 +3,7 @@ using System.IO;
 using System.Diagnostics;
 using BitmapCompressor.Formats;
 using BitmapCompressor.Console.Utilities;
+using BitmapCompressor.DataTypes;
 
 namespace BitmapCompressor.Console
 {
@@ -85,9 +86,15 @@ namespace BitmapCompressor.Console
             if (!PromptForOverwrite(outputFile, args.Overwrite))
                 throw new OperationCanceledException("Operation cancelled.");
 
-            var image = args.Compress ?
-                _blockCompressor.Compress(_fileSystem.LoadBitmap(inputFile)) :
-                _blockCompressor.Decompress(_fileSystem.LoadDDS(inputFile));
+            IImage image;
+            if (args.Compress)
+            {
+                image = _blockCompressor.Compress(_fileSystem.LoadBitmap(inputFile));
+            }
+            else
+            {
+                image = _blockCompressor.Decompress(_fileSystem.LoadDDS(inputFile));
+            }
 
             image.Save(outputFile);
         }

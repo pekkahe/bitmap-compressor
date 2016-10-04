@@ -1,10 +1,8 @@
-﻿
+﻿using System;
+
 namespace BitmapCompressor.DataTypes
 {
-    /// <summary>
-    /// Represents a processed image in memory which can be saved to disk.
-    /// </summary>
-    public interface IProcessedImage
+    public interface IImage
     {
         /// <summary>
         /// The width of the image in pixels.
@@ -15,6 +13,11 @@ namespace BitmapCompressor.DataTypes
         /// The height of the image in pixels.
         /// </summary>
         int Height { get; }
+
+        /// <summary>
+        /// Returns the main surface data of the image.
+        /// </summary>
+        byte[] GetBuffer();
 
         /// <summary>
         /// Saves the image to disk with the specified file name.

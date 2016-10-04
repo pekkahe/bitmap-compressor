@@ -7,7 +7,7 @@ using BitmapCompressor.Utilities;
 using BitmapCompressor.Tests.Helpers;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests.UnitTests.Compression.Formats
+namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 {
     [TestFixture(Category = "Formats")]
     public class BC1ColorTableTests

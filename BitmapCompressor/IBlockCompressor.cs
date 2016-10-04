@@ -8,15 +8,15 @@ namespace BitmapCompressor
     public interface IBlockCompressor
     {
         /// <summary>
-        /// Compresses an uncompressed bitmap image into a block compressed DDS file.
+        /// Compresses an uncompressed bitmap image into a block compressed DDS file stored in memory.
         /// </summary>
-        /// <param name="image">The bitmap image to compress.</param>
-        IProcessedImage Compress(BMPImage image);
+        /// <param name="image">The image to compress.</param>
+        ICompressedImage Compress(IUncompressedImage image);
 
         /// <summary>
-        /// Decompresses a block compressed DDS file into an uncompressed bitmap.
+        /// Decompresses a block compressed DDS file into an uncompressed bitmap stored in memory.
         /// </summary>
-        /// <param name="image">The DDS image to decompress</param>
-        IProcessedImage Decompress(DDSImage image);
+        /// <param name="image">The image to decompress</param>
+        IUncompressedImage Decompress(ICompressedImage image);
     }
 }

@@ -2,7 +2,7 @@
 using BitmapCompressor.DataTypes;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests.UnitTests.Compression.DataTypes
+namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 {
     [TestFixture(Category = "DataTypes")]
     public class Color565Tests

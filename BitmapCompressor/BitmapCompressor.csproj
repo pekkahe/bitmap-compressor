@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\DirectBitmap.cs" />
+    <Compile Include="DataTypes\ICompressedImage.cs" />
+    <Compile Include="DataTypes\IImage.cs" />
+    <Compile Include="DataTypes\IUncompressedImage.cs" />
     <Compile Include="Formats\BC1\BC1ColorTable.cs" />
     <Compile Include="Formats\BC1\BC1CompressionFormat.cs" />
     <Compile Include="Formats\IBlockCompressionFormat.cs" />
@@ -69,10 +73,8 @@
     <Compile Include="Serialization\FileFormat\DDSPixelFormat.cs" />
     <Compile Include="Serialization\FileFormat\DDSPixelFormatFlags.cs" />
     <Compile Include="Serialization\FileFormat\DDSPixelFormatFourCC.cs" />
-    <Compile Include="DataTypes\BMPImage.cs" />
     <Compile Include="DataTypes\DDSImage.cs" />
     <Compile Include="IBlockCompressor.cs" />
-    <Compile Include="DataTypes\IProcessedImage.cs" />
     <Compile Include="DataTypes\Color565.cs" />
     <Compile Include="Utilities\ColorUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

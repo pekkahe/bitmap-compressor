@@ -6,7 +6,7 @@ using BitmapCompressor.DataTypes;
 using BitmapCompressor.Formats;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests.UnitTests.Compression.DataTypes
+namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 {
     [TestFixture(Category = "DataTypes")]
     public class DDSImageTests
@@ -15,12 +15,27 @@ namespace BitmapCompressor.Tests.UnitTests.Compression.DataTypes
         private const int BlockDimension = 4;
 
         [Test]
+        public void ConstructionCalculatesBufferSizeWhenBC1()
+        {
+            const int byteCount = 8;
+            const int blockCount = 4;
+            const int width = 2 * BlockFormat.Dimension;  // Two horizontal and
+            const int height = 2 * BlockFormat.Dimension; // vertical blocks
+
+            var dds = new DDSImage(width, height, BC1BlockLayout.ByteSize);
+
+            Assert.AreEqual(width, dds.Width);
+            Assert.AreEqual(height, dds.Height);
+            Assert.AreEqual(blockCount * byteCount, dds.GetBuffer().Length);
+        }
+
+        [Test]
         public void ReadDataForSoleBlock()
         {
             var buffer = Enumerable.Repeat((byte) 255, BlockSize).ToArray();
             var ddsImage = new DDSImage(BlockDimension, BlockDimension, buffer);
 
-            var data = ddsImage.ReadBlockData(new Point(0, 0), BlockSize);
+            var data = ddsImage.GetBlockData(new Point(0, 0), BlockSize);
 
             CollectionAssert.AreEqual(buffer, data);
         }
@@ -30,28 +45,28 @@ namespace BitmapCompressor.Tests.UnitTests.Compression.DataTypes
         {
             const int numberOfBlocks = 4;
 
-            var blockData = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
+            var bytes = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
             var buffer = new byte[numberOfBlocks * BlockSize];
-            buffer.CopyFrom(blockData, buffer.Length - BlockSize);
+            buffer.CopyFrom(bytes, buffer.Length - BlockSize);
 
-            var ddsImage = new DDSImage(numberOfBlocks * BlockDimension, BlockDimension, buffer);
+            var dds = new DDSImage(numberOfBlocks * BlockDimension, BlockDimension, buffer);
 
-            var data = ddsImage.ReadBlockData(new Point(3, 0), BlockSize);
+            var blockData = dds.GetBlockData(new Point(3, 0), BlockSize);
 
-            CollectionAssert.AreEqual(blockData, data);
+            CollectionAssert.AreEqual(bytes, blockData);
         }
 
         [Test]
         public void WriteDataForSoleBlock()
         {
-            var buffer = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
-            var data = new BC1BlockLayout(buffer).GetBuffer();
+            var bytes = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
+            var blockData = new BC1BlockLayout(bytes).GetBuffer();
 
-            var ddsImage = new DDSImage(BlockDimension, BlockDimension, buffer.Length);
+            var dds = new DDSImage(BlockDimension, BlockDimension, BC1BlockLayout.ByteSize);
 
-            ddsImage.WriteBlockData(data, new Point(0, 0));
+            dds.SetBlockData(new Point(0, 0), blockData);
 
-            CollectionAssert.AreEqual(ddsImage.Buffer, buffer);
+            CollectionAssert.AreEqual(dds.GetBuffer(), bytes);
         }
 
         [Test]
@@ -75,17 +90,17 @@ namespace BitmapCompressor.Tests.UnitTests.Compression.DataTypes
             var data3 = new BC1BlockLayout(block3).GetBuffer();
             var data4 = new BC1BlockLayout(block4).GetBuffer();
 
-            int bufferSize = data1.Length + data2.Length + data3.Length + data4.Length;
-            int dimension = 2 * BlockDimension;
+            //int bufferSize = data1.Length + data2.Length + data3.Length + data4.Length;
+            int widthAndHeight = 2 * BlockDimension;
 
-            var ddsImage = new DDSImage(dimension, dimension, bufferSize);
+            var ddsImage = new DDSImage(widthAndHeight, widthAndHeight, BC1BlockLayout.ByteSize);
 
-            ddsImage.WriteBlockData(data1, new Point(0, 0));
-            ddsImage.WriteBlockData(data2, new Point(1, 0));
-            ddsImage.WriteBlockData(data3, new Point(0, 1));
-            ddsImage.WriteBlockData(data4, new Point(1, 1));
+            ddsImage.SetBlockData(new Point(0, 0), data1);
+            ddsImage.SetBlockData(new Point(1, 0), data2);
+            ddsImage.SetBlockData(new Point(0, 1), data3);
+            ddsImage.SetBlockData(new Point(1, 1), data4);
 
-            CollectionAssert.AreEqual(ddsImage.Buffer, buffer);
+            CollectionAssert.AreEqual(ddsImage.GetBuffer(), buffer);
         }
     }
 }

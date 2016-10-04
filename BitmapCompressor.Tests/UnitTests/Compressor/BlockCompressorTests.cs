@@ -30,32 +30,11 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         public void CompressionThrowsExceptionWhenImageHasInvalidDimensions()
         {
             var compressor = new BlockCompressor(new Mock<IBlockCompressionFormat>().Object);
-            var bmpImage = new BMPImage(new Bitmap(10, 16));
+            var bitmap = new Mock<IUncompressedImage>();
+            bitmap.Setup(b => b.Width).Returns(10);
+            bitmap.Setup(b => b.Height).Returns(16);
 
-            Assert.Throws<InvalidOperationException>(() => compressor.Compress(bmpImage));
-        }
-
-        [Test]
-        public void CompressionCalculatesImageDimensionsAndBufferSize()
-        {
-            const int byteCount = 8;
-            const int blockCount = 4;
-            const int imageWidth = 2 * BlockFormat.Dimension;  // Two horizontal and
-            const int imageHeight = 2 * BlockFormat.Dimension; // vertical blocks
-
-            var format = new Mock<IBlockCompressionFormat>();
-            format.Setup(f => f.BlockSize).Returns(byteCount);
-            format.Setup(f => f.Compress(It.IsAny<Color[]>())).Returns(new byte[byteCount]);
-
-            var compressor = new BlockCompressor(format.Object);
-            var bmpImage = new BMPImage(new Bitmap(imageWidth, imageHeight));
-
-            var ddsImage = compressor.Compress(bmpImage) as DDSImage;
-
-            Assert.IsNotNull(ddsImage);
-            Assert.AreEqual(imageWidth, ddsImage.Width);
-            Assert.AreEqual(imageHeight, ddsImage.Height);
-            Assert.AreEqual(blockCount * byteCount, ddsImage.Buffer.Length);
+            Assert.Throws<InvalidOperationException>(() => compressor.Compress(bitmap.Object));
         }
 
         [Test]
@@ -68,9 +47,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
             format.Setup(f => f.Compress(It.IsAny<Color[]>())).Returns(new byte[byteCount]);
 
             var compressor = new BlockCompressor(format.Object);
-            var bmpImage = new BMPImage(CreateTestBitmap());
 
-            compressor.Compress(bmpImage);
+            compressor.Compress(CreateBitmapMock());
 
             format.Verify(f => f.Compress(It.IsAny<Color[]>()), Times.Exactly(6));
             format.Verify(f => f.Compress(It.Is<Color[]>(colors => colors.All(c => c == Red))));
@@ -82,8 +60,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         }
 
         /// <summary>
-        /// Creates a test <see cref="Bitmap"/> of 3x2 blocks (48 pixels) with 
-        /// a different color in each block.
+        /// Creates a <see cref="IUncompressedImage"/> mock of 3x2 blocks (48 pixels)
+        /// which returns a different color for each block.
         /// </summary>
         /// <remarks>
         /// Block colors:
@@ -95,7 +73,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         /// |white||black||gray |
         /// |_____||_____||_____|
         /// </remarks>
-        private static Bitmap CreateTestBitmap()
+        private static IUncompressedImage CreateBitmapMock()
         {
             var blockColors = new[]
             {
@@ -106,51 +84,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
             const int numberOfHorizontalBlocks = 3;
             const int numberOfVerticalBlocks = 2;
 
-            var bitmap = new Bitmap(
-                numberOfHorizontalBlocks * BlockFormat.Dimension,
-                numberOfVerticalBlocks * BlockFormat.Dimension);
+            var mock = new Mock<IUncompressedImage>();
+            mock.Setup(m => m.Width).Returns(numberOfHorizontalBlocks * BlockFormat.Dimension);
+            mock.Setup(m => m.Height).Returns(numberOfVerticalBlocks * BlockFormat.Dimension);
 
             for (int y = 0; y < numberOfVerticalBlocks; ++y)
             {
                 for (int x = 0; x < numberOfHorizontalBlocks; ++x)
                 {
                     var color = blockColors[y][x];
+                    var colors = Enumerable.Repeat(color, BlockFormat.PixelCount).ToArray();
 
-                    var firstPixel = new Point(
-                        x * BlockFormat.Dimension,
-                        y * BlockFormat.Dimension);
-
-                    var lastPixel = new Point(
-                        firstPixel.X + BlockFormat.Dimension,
-                        firstPixel.Y + BlockFormat.Dimension);
-
-                    for (int py = firstPixel.Y; py < lastPixel.Y; ++py)
-                    {
-                        for (int px = firstPixel.X; px < lastPixel.X; ++px)
-                        {
-                            bitmap.SetPixel(px, py, color);
-                        }
-                    }
+                    mock.Setup(m => m.GetBlockPixels(It.Is<Point>(p => p == new Point(x, y)))).Returns(colors);
                 }
             }
 
-            // Assert colors have been set correctly
-            // (for top-left and bottom-right color of each block only)
-            Assert.AreEqual(Red, bitmap.GetPixel(0, 0));
-            Assert.AreEqual(Red, bitmap.GetPixel(3, 3));
-            Assert.AreEqual(Green, bitmap.GetPixel(4, 0));
-            Assert.AreEqual(Green, bitmap.GetPixel(7, 3));
-            Assert.AreEqual(Blue, bitmap.GetPixel(8, 0));
-            Assert.AreEqual(Blue, bitmap.GetPixel(11, 3));
-
-            Assert.AreEqual(White, bitmap.GetPixel(0, 4));
-            Assert.AreEqual(White, bitmap.GetPixel(3, 7));
-            Assert.AreEqual(Black, bitmap.GetPixel(4, 4));
-            Assert.AreEqual(Black, bitmap.GetPixel(7, 7));
-            Assert.AreEqual(Gray, bitmap.GetPixel(8, 4));
-            Assert.AreEqual(Gray, bitmap.GetPixel(11, 7));
-
-            return bitmap;
+            return mock.Object;
         }
 
         [Test]
@@ -164,7 +113,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
 
             var compressor = new BlockCompressor(format.Object);
 
-            compressor.Decompress(CreateTestDDSImage());
+            compressor.Decompress(CreateDDSImageMock());
 
             format.Verify(f => f.Decompress(It.IsAny<byte[]>()), Times.Exactly(6));
             format.Verify(f => f.Decompress(It.Is<byte[]>(bytes => bytes.All(b => b == 1))));
@@ -176,8 +125,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         }
 
         /// <summary>
-        /// Creates a test <see cref="DDSImage"/> of 3x2 blocks (48 pixels) with
-        /// a different set of arbitrary byte values in each block.
+        /// Creates a <see cref="ICompressedImage"/> mock of 3x2 blocks (48 pixels)
+        /// with a different set of arbitrary byte values in each block.
         /// </summary>
         /// <remarks>
         /// Block bytes:
@@ -189,7 +138,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         /// | 0x4 || 0x5 || 0x6 |
         /// |_____||_____||_____|
         /// </remarks>
-        private static DDSImage CreateTestDDSImage()
+        private static ICompressedImage CreateDDSImageMock()
         {
             var blockBytes = new byte[]
             {

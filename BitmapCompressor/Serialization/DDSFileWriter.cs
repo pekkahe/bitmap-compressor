@@ -9,7 +9,7 @@ namespace BitmapCompressor.Serialization
     public class DDSFileWriter : IDisposable
     {
         private readonly BinaryWriter _binaryWriter;
-        private DDSImage _image;
+        private ICompressedImage _image;
 
         public DDSFileWriter(Stream stream)
         {
@@ -20,9 +20,9 @@ namespace BitmapCompressor.Serialization
         { }
 
         /// <summary>
-        /// Writes the main image data stored in the file handle into a DDS file.
+        /// Writes the main image data stored in the specified image into a DDS file.
         /// </summary>
-        public unsafe void Write(DDSImage image)
+        public unsafe void Write(ICompressedImage image)
         {
             _image = image;
 
@@ -55,7 +55,7 @@ namespace BitmapCompressor.Serialization
 
         private void WriteMainImage()
         {
-            _binaryWriter.Write(_image.Buffer);
+            _binaryWriter.Write(_image.GetBuffer());
         }
 
         public void Dispose()

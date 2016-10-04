@@ -14,7 +14,6 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         private Mock<IFileSystem> _fileSystem;
         private Mock<IInputSystem> _inputSystem;
         private Mock<IBlockCompressor> _compressor;
-        private Mock<IProcessedImage> _image;
         private CommandLineArguments _args;
         private Program _program;
 
@@ -26,16 +25,14 @@ namespace BitmapCompressor.Tests.UnitTests.Console
             _args.DDSFileName = "file.dds";
 
             _fileSystem = new Mock<IFileSystem>();
-            _fileSystem.Setup(f => f.LoadBitmap(It.IsAny<string>())).Returns(It.IsAny<BMPImage>());
-            _fileSystem.Setup(f => f.LoadDDS(It.IsAny<string>())).Returns(It.IsAny<DDSImage>());
+            _fileSystem.Setup(f => f.LoadBitmap(It.IsAny<string>())).Returns(It.IsAny<IUncompressedImage>());
+            _fileSystem.Setup(f => f.LoadDDS(It.IsAny<string>())).Returns(It.IsAny<ICompressedImage>());
 
             _inputSystem = new Mock<IInputSystem>();
-            _image = new Mock<IProcessedImage>();
 
             _compressor = new Mock<IBlockCompressor>();
-
-            _compressor.Setup(p => p.Compress(It.IsAny<BMPImage>())).Returns(_image.Object);
-            _compressor.Setup(p => p.Decompress(It.IsAny<DDSImage>())).Returns(_image.Object);
+            _compressor.Setup(p => p.Compress(It.IsAny<IUncompressedImage>())).Returns(new Mock<ICompressedImage>().Object);
+            _compressor.Setup(p => p.Decompress(It.IsAny<ICompressedImage>())).Returns(new Mock<IUncompressedImage>().Object);
 
             _program = new Program(_fileSystem.Object, _inputSystem.Object, _compressor.Object);
         }
@@ -50,8 +47,8 @@ namespace BitmapCompressor.Tests.UnitTests.Console
 
             _program.Run(_args);
 
-            _compressor.Verify(f => f.Compress(It.IsAny<BMPImage>()),     Times.Once);
-            _compressor.Verify(f => f.Decompress(It.IsAny<DDSImage>()),   Times.Never);
+            _compressor.Verify(f => f.Compress(It.IsAny<IUncompressedImage>()), Times.Once);
+            _compressor.Verify(f => f.Decompress(It.IsAny<ICompressedImage>()), Times.Never);
         }
 
         [Test]
@@ -64,8 +61,8 @@ namespace BitmapCompressor.Tests.UnitTests.Console
 
             _program.Run(_args);
 
-            _compressor.Verify(f => f.Compress(It.IsAny<BMPImage>()),     Times.Never);
-            _compressor.Verify(f => f.Decompress(It.IsAny<DDSImage>()),   Times.Once);
+            _compressor.Verify(f => f.Compress(It.IsAny<IUncompressedImage>()), Times.Never);
+            _compressor.Verify(f => f.Decompress(It.IsAny<ICompressedImage>()), Times.Once);
         }
 
         [Test]

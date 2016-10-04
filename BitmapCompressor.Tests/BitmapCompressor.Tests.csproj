@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\Profiler.cs" />
+    <Compile Include="UnitTests\Compressor\DataTypes\DirectBitmapTests.cs" />
     <Compile Include="UnitTests\Compressor\Extensions\ArrayExtensionsTests.cs" />
     <Compile Include="UnitTests\Compressor\Extensions\ColorExtensionsTests.cs" />
     <Compile Include="UnitTests\Compressor\Extensions\PointExtensionsTests.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="UnitTests\Compressor\BlockCompressorTests.cs" />
     <Compile Include="UnitTests\Compressor\DataTypes\Color565Tests.cs" />
     <Compile Include="UnitTests\Compressor\DataTypes\DDSImageTests.cs" />
-    <Compile Include="UnitTests\Compressor\DataTypes\BMPImageTests.cs" />
     <Compile Include="UnitTests\Compressor\Utilities\PointUtilityTests.cs" />
     <Compile Include="UnitTests\Console\ProgramTests.cs" />
     <Compile Include="UnitTests\Console\CommandLineArgumentsParserTests.cs" />

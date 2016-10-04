@@ -11,14 +11,14 @@ namespace BitmapCompressor.Console.Utilities
             return File.Exists(fileName);
         }
 
-        public BMPImage LoadBitmap(string filePath)
+        public IUncompressedImage LoadBitmap(string filePath)
         {
-            return BMPImage.Load(filePath);
+            return DirectBitmap.FromFile(filePath);
         }
 
-        public DDSImage LoadDDS(string filePath)
+        public ICompressedImage LoadDDS(string filePath)
         {
-            return DDSImage.Load(filePath);
+            return DDSImage.FromFile(filePath);
         }
     }
 }
