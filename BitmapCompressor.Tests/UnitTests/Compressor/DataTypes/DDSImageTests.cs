@@ -90,7 +90,6 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             var data3 = new BC1BlockLayout(block3).GetBuffer();
             var data4 = new BC1BlockLayout(block4).GetBuffer();
 
-            //int bufferSize = data1.Length + data2.Length + data3.Length + data4.Length;
             int widthAndHeight = 2 * BlockDimension;
 
             var ddsImage = new DDSImage(widthAndHeight, widthAndHeight, BC1BlockLayout.ByteSize);
