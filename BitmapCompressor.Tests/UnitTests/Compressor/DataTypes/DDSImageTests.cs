@@ -22,7 +22,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             const int width = 2 * BlockFormat.Dimension;  // Two horizontal and
             const int height = 2 * BlockFormat.Dimension; // vertical blocks
 
-            var dds = new DDSImage(width, height, BC1BlockLayout.ByteSize);
+            var dds = new DDSImage(width, height, BlockFormat.BC1ByteSize);
 
             Assert.AreEqual(width, dds.Width);
             Assert.AreEqual(height, dds.Height);
@@ -60,11 +60,11 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         public void WriteDataForSoleBlock()
         {
             var bytes = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
-            var blockData = new BC1BlockLayout(bytes).GetBuffer();
+            var block = BC1Block.FromBytes(bytes);
 
-            var dds = new DDSImage(BlockDimension, BlockDimension, BC1BlockLayout.ByteSize);
+            var dds = new DDSImage(BlockDimension, BlockDimension, BlockFormat.BC1ByteSize);
 
-            dds.SetBlockData(new Point(0, 0), blockData);
+            dds.SetBlockData(new Point(0, 0), block.ToBytes());
 
             CollectionAssert.AreEqual(dds.GetBuffer(), bytes);
         }
@@ -85,14 +85,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             Array.Copy(block3, 0, buffer, 16, BlockSize);
             Array.Copy(block4, 0, buffer, 24, BlockSize);
 
-            var data1 = new BC1BlockLayout(block1).GetBuffer();
-            var data2 = new BC1BlockLayout(block2).GetBuffer();
-            var data3 = new BC1BlockLayout(block3).GetBuffer();
-            var data4 = new BC1BlockLayout(block4).GetBuffer();
+            var data1 = BC1Block.FromBytes(block1).ToBytes();
+            var data2 = BC1Block.FromBytes(block2).ToBytes();
+            var data3 = BC1Block.FromBytes(block3).ToBytes();
+            var data4 = BC1Block.FromBytes(block4).ToBytes();
 
             int widthAndHeight = 2 * BlockDimension;
 
-            var ddsImage = new DDSImage(widthAndHeight, widthAndHeight, BC1BlockLayout.ByteSize);
+            var ddsImage = new DDSImage(widthAndHeight, widthAndHeight, BlockFormat.BC1ByteSize);
 
             ddsImage.SetBlockData(new Point(0, 0), data1);
             ddsImage.SetBlockData(new Point(1, 0), data2);

@@ -187,7 +187,7 @@ namespace BitmapCompressor.Utilities
         public static int GetIndexOfClosest(Color565[] colors, Color565 targetColor)
         {
             var closest = GetClosest(colors, targetColor);
-
+            
             return Array.IndexOf(colors, closest);
         }
 

@@ -62,10 +62,12 @@
     <Compile Include="UnitTests\Compressor\Extensions\ColorExtensionsTests.cs" />
     <Compile Include="UnitTests\Compressor\Extensions\PointExtensionsTests.cs" />
     <Compile Include="UnitTests\Compressor\Extensions\StringExtensionsTests.cs" />
-    <Compile Include="UnitTests\Compressor\Formats\BC1BlockLayoutTests.cs" />
+    <Compile Include="UnitTests\Compressor\Formats\BC1BlockTests.cs" />
     <Compile Include="UnitTests\Compressor\Formats\BC1ColorTableTests.cs" />
     <Compile Include="UnitTests\Compressor\Formats\BC1FormatTests.cs" />
     <Compile Include="UnitTests\Compressor\DataTypes\ColorSpaceTests.cs" />
+    <Compile Include="UnitTests\Compressor\Formats\BC2BlockTests.cs" />
+    <Compile Include="UnitTests\Compressor\Formats\BC2FormatTests.cs" />
     <Compile Include="UnitTests\Compressor\Serialization\DDSFileHeaderFactoryTests.cs" />
     <Compile Include="UnitTests\Compressor\Serialization\DDSFileReaderTests.cs" />
     <Compile Include="UnitTests\Compressor\Serialization\DDSFileWriterTests.cs" />

@@ -6,43 +6,30 @@ using NUnit.Framework;
 namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 {
     [TestFixture(Category = "Formats")]
-    public class BC1BlockLayoutTests
+    public class BC1BlockTests
     {
         [Test]
-        public void ConstructionPreservesByteOrder()
+        public void ReturnsByteArrayOfCorrectSize()
         {
-            var data = new byte[8] { 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8 };
-            var dataCopy = (byte[]) data.Clone();
+            var block = new BC1Block();
 
-            var block = new BC1BlockLayout(dataCopy);
+            var buffer = block.ToBytes();
 
-            var buffer = block.GetBuffer();
-
-            CollectionAssert.AreEqual(data, buffer, "Expected the order of the data buffer received " +
-                                                    "in constructor to be preserved when retrieved.");
-        }
-
-        [Test]
-        public void GettingBufferReturnsByteArrayOfCorrectSize()
-        {
-            var block = new BC1BlockLayout();
-
-            var buffer = block.GetBuffer();
-
+            Assert.AreEqual(BlockFormat.BC1ByteSize, buffer.Length);
             CollectionAssert.AreEqual(buffer, new byte[8] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 });
         }
 
         [Test]
-        public void SettingColor0WritesToBuffer()
+        public void SettingColor0()
         {
             const byte color16Low = 200;
             const byte color16High = 150;
             const ushort color16 = (color16High << 8) + color16Low;
-            var block = new BC1BlockLayout();
+            var block = new BC1Block();
 
             block.Color0 = Color565.FromValue(color16);
 
-            var buffer = block.GetBuffer();
+            var buffer = block.ToBytes();
             byte color0Low = buffer[0];
             byte color0High = buffer[1];
 
@@ -51,10 +38,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void GettingColor0Returns16BitColor()
+        public void GettingColor0()
         {
             var color16 = Color565.FromRgb(30, 50, 30);
-            var block = new BC1BlockLayout();
+            var block = new BC1Block();
             block.Color0 = color16;
 
             var color0 = block.Color0;
@@ -63,16 +50,16 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void SettingColor1WritesToBuffer()
+        public void SettingColor1()
         {
             const byte color16Low = 200;
             const byte color16High = 150;
             const ushort color16 = (color16High << 8) + color16Low;
-            var block = new BC1BlockLayout();
+            var block = new BC1Block();
 
             block.Color1 = Color565.FromValue(color16);
 
-            var buffer = block.GetBuffer();
+            var buffer = block.ToBytes();
             byte color1Low = buffer[2];
             byte color1High = buffer[3];
             
@@ -81,10 +68,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void GettingColor1Returns16BitColor()
+        public void GettingColor1()
         {
             var color16 = Color565.FromRgb(30, 50, 30);
-            var block = new BC1BlockLayout();
+            var block = new BC1Block();
             block.Color1 = color16;
 
             var color1 = block.Color1;
@@ -93,9 +80,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void SettingColorIndexesWritesToBuffer()
+        public void SettingColorIndexes()
         {
-            var block = new BC1BlockLayout();
+            var block = new BC1Block();
 
             // Setup the following color index 32-bit test layout:
             //    codes0        codes1       codes2        codes3
@@ -123,7 +110,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             block.ColorIndexes[14] = 0x1;
             block.ColorIndexes[15] = 0x2; // p(3,3)   codes3 MSB
 
-            var buffer = block.GetBuffer();
+            var buffer = block.ToBytes();
             byte codes0 = buffer[4];
             byte codes1 = buffer[5];
             byte codes2 = buffer[6];
@@ -136,9 +123,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void GettingColorIndexesReturnsIndexes()
+        public void GettingColorIndexes()
         {
-            var block = new BC1BlockLayout();
+            var block = new BC1Block();
             var expectedIndexes = new int[16]
             {
                 0x0, 0x1, 0x2, 0x3, 0x1, 0x2, 0x3, 0x0,
