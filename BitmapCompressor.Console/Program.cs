@@ -23,7 +23,7 @@ namespace BitmapCompressor.Console
         private readonly IBlockCompressor _blockCompressor;
 
         public Program() :
-            this(new SimpleFileSystem(), new SimpleConsoleInput(), new BlockCompressor(new BC1CompressionFormat()))
+            this(new SimpleFileSystem(), new SimpleConsoleInput(), new BlockCompressor(new BC1Format()))
         { }
 
         public Program(IFileSystem fileSystem, IInputSystem inputSystem, IBlockCompressor blockCompressor)

@@ -79,12 +79,6 @@ namespace BitmapCompressor.Formats
         }
 
         /// <summary>
-        /// The 2-bit index values of the four colors in a BC1 color palette
-        /// assigned to each pixel in the block.
-        /// </summary>
-        public BC1ColorIndexIndexer ColorIndexes { get; }
-
-        /// <summary>
         /// The first reference color of the 4x4 BC1 block's color palette.
         /// </summary>
         public Color565 Color0
@@ -129,7 +123,13 @@ namespace BitmapCompressor.Formats
                 _data |= mask;
             }
         }
-        
+
+        /// <summary>
+        /// The 2-bit index values of the four colors in a BC1 color palette
+        /// assigned to each pixel in the block.
+        /// </summary>
+        public BC1ColorIndexIndexer ColorIndexes { get; }
+
         /// <summary>
         /// Reverses the byte order of the given 16-bit unsigned integer.
         /// </summary>

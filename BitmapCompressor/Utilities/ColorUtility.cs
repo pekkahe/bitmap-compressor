@@ -151,13 +151,13 @@ namespace BitmapCompressor.Utilities
         }
 
         /// <summary>
-        /// Returns the color with the closest Euclidean distance to the target color
+        /// Returns the color with the closest Euclidean distance to <paramref name="targetColor"/> 
         /// from the given set of colors.
         /// </summary>
-        /// <param name="colors">The source colors whose distances to the target color 
+        /// <param name="colors">The source colors whose distances to <paramref name="targetColor"/>
         ///                      are compared between each other.</param>
-        /// <param name="target">The target color of the distance comparison.</param>
-        public static Color565 GetClosest(IEnumerable<Color565> colors, Color565 target)
+        /// <param name="targetColor">The target color of the distance comparison.</param>
+        public static Color565 GetClosest(IEnumerable<Color565> colors, Color565 targetColor)
         {
             Debug.Assert(colors.Any(), "No source colors specified for comparison.");
 
@@ -166,7 +166,7 @@ namespace BitmapCompressor.Utilities
 
             foreach (var color in colors)
             {
-                var distance = Distance(color, target);
+                var distance = Distance(color, targetColor);
                 if (distance < closestDistance)
                 {
                     closest = color;
@@ -175,6 +175,20 @@ namespace BitmapCompressor.Utilities
             }
 
             return closest;
+        }
+
+        /// <summary>
+        /// Returns the array index of the color with the closest Euclidean distance to 
+        /// <paramref name="targetColor"/> from the given array of colors.
+        /// </summary>
+        /// <param name="colors">The source colors whose distances to <paramref name="targetColor"/>
+        ///                      are compared between each other.</param>
+        /// <param name="targetColor">The target color of the distance comparison.</param>
+        public static int GetIndexOfClosest(Color565[] colors, Color565 targetColor)
+        {
+            var closest = GetClosest(colors, targetColor);
+
+            return Array.IndexOf(colors, closest);
         }
 
         /// <summary>

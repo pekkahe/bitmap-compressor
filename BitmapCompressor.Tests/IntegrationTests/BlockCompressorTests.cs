@@ -21,7 +21,7 @@ namespace BitmapCompressor.IntegrationTests.Integration
         [SetUp]
         public void Setup()
         {
-            _compressor = new BlockCompressor(new BC1CompressionFormat());
+            _compressor = new BlockCompressor(new BC1Format());
         }
 
         [Test]
