@@ -2,6 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 using BitmapCompressor.Formats;
+using BitmapCompressor.Console.CommandLine;
 using BitmapCompressor.Console.Utilities;
 using BitmapCompressor.DataTypes;
 
@@ -23,7 +24,7 @@ namespace BitmapCompressor.Console
         private readonly IBlockCompressor _blockCompressor;
 
         public Program() :
-            this(new SimpleFileSystem(), new SimpleConsoleInput(), new BlockCompressor(new BC1Format()))
+            this(new SimpleFileSystem(), new SimpleConsoleInput(), new BlockCompressor())
         { }
 
         public Program(IFileSystem fileSystem, IInputSystem inputSystem, IBlockCompressor blockCompressor)
@@ -72,38 +73,50 @@ namespace BitmapCompressor.Console
 
         public void Run(CommandLineArguments args)
         {
-            if (!args.Compress && !args.Decompress)
-                throw new ArgumentException("No image processing operation selected.");
+            switch (args.Action)
+            {
+                case CommandLineAction.CompressBC1:
+                {
+                    CheckIfFilesExist(args.BMPFileName, args.DDSFileName, args.Overwrite);
 
-            var fileNames = ReadInputAndOutputFiles(args);
+                    var inputImage  = _fileSystem.LoadBitmap(args.BMPFileName);
+                    var outputImage = _blockCompressor.Compress(inputImage, new BC1Format());
 
-            string inputFile = fileNames.Item1;
-            string outputFile = fileNames.Item2;
+                    outputImage.Save(args.DDSFileName);
+                    break;
+                }
+                case CommandLineAction.CompressBC2:
+                {
+                    CheckIfFilesExist(args.BMPFileName, args.DDSFileName, args.Overwrite);
 
+                    var inputImage  = _fileSystem.LoadBitmap(args.BMPFileName);
+                    var outputImage = _blockCompressor.Compress(inputImage, new BC2Format());
+
+                    outputImage.Save(args.DDSFileName);
+                    break;
+                }
+                case CommandLineAction.Decompress:
+                {
+                    CheckIfFilesExist(args.DDSFileName, args.BMPFileName, args.Overwrite);
+
+                    var inputImage  = _fileSystem.LoadDDS(args.DDSFileName);
+                    var outputImage = _blockCompressor.Decompress(inputImage);
+
+                    outputImage.Save(args.BMPFileName);
+                    break;
+                }
+                default:
+                    throw new ArgumentException("Unknown command line action.");
+            }
+        }
+
+        private void CheckIfFilesExist(string inputFile, string outputFile, bool overwriteOutputFileIfExists = false)
+        {
             if (!_fileSystem.Exists(inputFile))
                 throw new FileNotFoundException($"Source file '{inputFile}' not found.");
 
-            if (!PromptForOverwrite(outputFile, args.Overwrite))
+            if (!PromptForOverwrite(outputFile, overwriteOutputFileIfExists))
                 throw new OperationCanceledException("Operation cancelled.");
-
-            IImage image;
-            if (args.Compress)
-            {
-                image = _blockCompressor.Compress(_fileSystem.LoadBitmap(inputFile));
-            }
-            else
-            {
-                image = _blockCompressor.Decompress(_fileSystem.LoadDDS(inputFile));
-            }
-
-            image.Save(outputFile);
-        }
-
-        private Tuple<string, string> ReadInputAndOutputFiles(CommandLineArguments args)
-        {
-            return args.Compress ? 
-                new Tuple<string, string>(args.BMPFileName, args.DDSFileName):
-                new Tuple<string, string>(args.DDSFileName, args.BMPFileName);
         }
 
         private bool PromptForOverwrite(string fileName, bool shouldOverwrite)

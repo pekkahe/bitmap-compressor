@@ -44,14 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Formats\CompressionFormat.cs" />
     <Compile Include="DataTypes\DirectBitmap.cs" />
     <Compile Include="DataTypes\ICompressedImage.cs" />
     <Compile Include="DataTypes\IImage.cs" />
     <Compile Include="DataTypes\IUncompressedImage.cs" />
     <Compile Include="Formats\BC1\BC1ColorTableFactory.cs" />
-    <Compile Include="Formats\BC1\BC1Block.cs" />
+    <Compile Include="Formats\BC1\BC1BlockData.cs" />
     <Compile Include="Formats\BC1\BC1Format.cs" />
-    <Compile Include="Formats\BC2\BC2Block.cs" />
+    <Compile Include="Formats\BC2\BC2BlockData.cs" />
     <Compile Include="Formats\BC2\BC2Format.cs" />
     <Compile Include="Formats\IBlockCompressionFormat.cs" />
     <Compile Include="Diagnostics\ConsoleLogger.cs" />

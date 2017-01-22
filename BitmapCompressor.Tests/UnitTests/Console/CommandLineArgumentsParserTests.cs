@@ -1,5 +1,5 @@
 ﻿using System;
-using BitmapCompressor.Console.Utilities;
+using BitmapCompressor.Console.CommandLine;
 using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.UnitTests.Console
@@ -8,64 +8,87 @@ namespace BitmapCompressor.Tests.UnitTests.Console
     public class CommandLineArgumentsParserTests
     {
         [Test]
-        public void ParseStringsWithCompressOption()
+        public void ParsingWithBC1CompressOption()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
             {
-                CommandLineArgumentsParser.CompressOption,
+                $"{CommandLineArguments.Keys.Compress}{CommandLineArguments.Keys.BC1Format}",
                 "file.bmp",
                 "file.dds"
             };
 
             var result = parser.Parse(args);
 
-            Assert.AreEqual(true, result.Compress);
-            Assert.AreEqual(false, result.Decompress);
+            Assert.AreEqual(CommandLineAction.CompressBC1, result.Action);
+            Assert.AreEqual("file.bmp", result.BMPFileName);
+            Assert.AreEqual("file.dds", result.DDSFileName);
+        }
+
+        [Test]
+        public void ParsingWithBC2CompressOption()
+        {
+            var parser = new CommandLineArgumentsParser();
+            var args = new string[]
+            {
+                $"{CommandLineArguments.Keys.Compress}{CommandLineArguments.Keys.BC2Format}",
+                "file.bmp",
+                "file.dds"
+            };
+
+            var result = parser.Parse(args);
+
+            Assert.AreEqual(CommandLineAction.CompressBC2, result.Action);
+            Assert.AreEqual("file.bmp", result.BMPFileName);
+            Assert.AreEqual("file.dds", result.DDSFileName);
+        }
+
+        [Test]
+        public void ParsingWithDecompressOption()
+        {
+            var parser = new CommandLineArgumentsParser();
+            var args = new string[]
+            {
+                CommandLineArguments.Keys.Decompress,
+                "file.bmp",
+                "file.dds"
+            };
+
+            var result = parser.Parse(args);
+
+            Assert.AreEqual(CommandLineAction.Decompress, result.Action);
             Assert.AreEqual(false, result.Overwrite);
             Assert.AreEqual("file.bmp", result.BMPFileName);
             Assert.AreEqual("file.dds", result.DDSFileName);
         }
 
         [Test]
-        public void ParseStringsWithDecompressOption()
+        public void ParsingWithOverwriteOption()
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
             {
-                CommandLineArgumentsParser.DecompressOption,
+                $"{CommandLineArguments.Keys.Compress}{CommandLineArguments.Keys.BC1Format}",
+                CommandLineArguments.Keys.Overwrite,
                 "file.bmp",
                 "file.dds"
             };
 
             var result = parser.Parse(args);
 
-            Assert.AreEqual(false, result.Compress);
-            Assert.AreEqual(true, result.Decompress);
-            Assert.AreEqual(false, result.Overwrite);
-            Assert.AreEqual("file.bmp", result.BMPFileName);
-            Assert.AreEqual("file.dds", result.DDSFileName);
-        }
-
-        [Test]
-        public void ParseStringsWithOverwriteOption()
-        {
-            var parser = new CommandLineArgumentsParser();
-            var args = new string[]
-            {
-                CommandLineArgumentsParser.CompressOption,
-                CommandLineArgumentsParser.OverwriteOption,
-                "file.bmp",
-                "file.dds"
-            };
-
-            var result = parser.Parse(args);
-
-            Assert.AreEqual(true, result.Compress);
-            Assert.AreEqual(false, result.Decompress);
+            Assert.AreEqual(CommandLineAction.CompressBC1, result.Action);
             Assert.AreEqual(true, result.Overwrite);
             Assert.AreEqual("file.bmp", result.BMPFileName);
             Assert.AreEqual("file.dds", result.DDSFileName);
+        }
+
+        [Test]
+        public void ParsingThrowsExceptionWhenNoArguments()
+        {
+            var parser = new CommandLineArgumentsParser();
+            var args = new string[] { };
+
+            Assert.Throws<ArgumentException>(() => parser.Parse(args));
         }
 
         [Test]
@@ -74,7 +97,21 @@ namespace BitmapCompressor.Tests.UnitTests.Console
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
             {
-                CommandLineArgumentsParser.CompressOption,
+                CommandLineArguments.Keys.Compress,
+            };
+
+            Assert.Throws<ArgumentException>(() => parser.Parse(args));
+        }
+
+        [Test]
+        public void ParsingThrowsExceptionWhenFormatMissing()
+        {
+            var parser = new CommandLineArgumentsParser();
+            var args = new string[]
+            {
+                CommandLineArguments.Keys.Compress,
+                "file.bmp",
+                "file.dds"
             };
 
             Assert.Throws<ArgumentException>(() => parser.Parse(args));
@@ -86,9 +123,9 @@ namespace BitmapCompressor.Tests.UnitTests.Console
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
             {
-                CommandLineArgumentsParser.CompressOption,
-                CommandLineArgumentsParser.DecompressOption,
-                CommandLineArgumentsParser.OverwriteOption,
+                CommandLineArguments.Keys.Compress,
+                CommandLineArguments.Keys.Decompress,
+                CommandLineArguments.Keys.Overwrite,
                 "file.bmp",
                 "file.dds"
             };
@@ -102,8 +139,8 @@ namespace BitmapCompressor.Tests.UnitTests.Console
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
             {
-                CommandLineArgumentsParser.CompressOption,
-                CommandLineArgumentsParser.DecompressOption,
+                CommandLineArguments.Keys.Compress,
+                CommandLineArguments.Keys.Decompress,
                 "file.bmp",
                 "file.dds"
             };
@@ -117,7 +154,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
             {
-                CommandLineArgumentsParser.CompressOption,
+                CommandLineArguments.Keys.Compress,
                 "file.txt",
                 "file.dds"
             };
@@ -131,7 +168,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
             {
-                CommandLineArgumentsParser.CompressOption,
+                CommandLineArguments.Keys.Compress,
                 "file.bmp",
                 "file.txt"
             };

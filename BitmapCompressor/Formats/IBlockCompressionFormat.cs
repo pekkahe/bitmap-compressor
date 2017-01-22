@@ -16,6 +16,11 @@ namespace BitmapCompressor.Formats
     public interface IBlockCompressionFormat
     {
         /// <summary>
+        /// The name of this compression format.
+        /// </summary>
+        CompressionFormat Name { get; }
+
+        /// <summary>
         /// The number of bytes a single BCn block of this format consumes.
         /// </summary>
         int BlockSize { get; }

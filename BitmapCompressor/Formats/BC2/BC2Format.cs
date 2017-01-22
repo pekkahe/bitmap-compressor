@@ -15,13 +15,11 @@ namespace BitmapCompressor.Formats
     /// The BC2 format stores colors with the same number of bits and data layout as the
     /// <see cref="BC1Format"/>. However, BC2 stores 4-bit alpha for each color and requires
     /// an additional 64-bits of memory to store the alpha data.
-    /// </para><para>
-    /// References: 
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb694531(v=vs.85).aspx
-    /// https://www.opengl.org/wiki/S3_Texture_Compression
     /// </para></remarks>
     public class BC2Format : IBlockCompressionFormat
     {
+        public CompressionFormat Name => CompressionFormat.BC2;
+
         public int BlockSize => BlockFormat.BC2ByteSize;
 
         public byte[] Compress(Color[] colors)
@@ -32,7 +30,7 @@ namespace BitmapCompressor.Formats
             var colorSpace = new ColorSpace(colors);
             var colorTable = BC1ColorTableFactory.Create(colorSpace.MinColor, colorSpace.MaxColor);
 
-            var block = new BC2Block();
+            var block = new BC2BlockData();
 
             for (int i = 0; i < colors.Length; ++i)
             {
@@ -48,7 +46,7 @@ namespace BitmapCompressor.Formats
 
         public Color[] Decompress(byte[] blockData)
         {
-            var block = BC2Block.FromBytes(blockData);
+            var block = BC2BlockData.FromBytes(blockData);
 
             var colorTable = BC1ColorTableFactory.Create(block.Color0, block.Color1);
 

@@ -12,7 +12,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
     public class BC1FormatTests
     {
         [Test]
-        public void ColorTableSetsColorsWhenNoAlpha()
+        public void ColorTableFrom32BitColorsWithoutAlpha()
         {
             var expectedMin = Color.FromArgb(10, 10, 10);
             var expectedMax = Color.FromArgb(250, 250, 250);
@@ -33,7 +33,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void ColorTableSwitchesColorsWhenAlpha()
+        public void ColorTableFrom32BitColorsWithAlpha()
         {
             var expectedMin = Color.FromArgb(10, 10, 10);
             var expectedMax = Color.FromArgb(250, 250, 250);
@@ -56,7 +56,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void ColorTableFromColorsWithout1BitAlpha()
+        public void ColorTableFrom16BitColorsWithoutAlpha()
         {
             // color0 > color1
             var color0 = Color565.FromRgb(20, 20, 20);
@@ -71,7 +71,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void ColorTableFromSwitchedColorsWith1BitAlpha()
+        public void ColorTableFrom16BitColorsWithAlpha()
         {
             // color0 <= color1
             var color0 = Color565.FromRgb(10, 10, 10);

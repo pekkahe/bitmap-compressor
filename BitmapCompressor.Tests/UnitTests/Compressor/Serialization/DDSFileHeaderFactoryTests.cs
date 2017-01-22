@@ -1,4 +1,5 @@
 ﻿using System;
+using BitmapCompressor.Formats;
 using BitmapCompressor.Serialization;
 using BitmapCompressor.Serialization.FileFormat;
 using NUnit.Framework;
@@ -19,8 +20,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
                 Flags = DDSPixelFormatFlags.DDPF_FOURCC,
                 FourCC = DDSPixelFormatFourCC.FOURCC_DXT1
             };
-
-            var header = DDSFileHeaderFactory.CreateDXT1Header(1024, 512);
+            var header = DDSFileHeaderFactory.CreateHeader(1024, 512, CompressionFormat.BC1);
 
             Assert.AreEqual(124, header.Size);
             Assert.AreEqual(expectedFlags, header.Flags);

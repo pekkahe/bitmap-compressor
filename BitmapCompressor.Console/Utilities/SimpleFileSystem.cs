@@ -18,7 +18,7 @@ namespace BitmapCompressor.Console.Utilities
 
         public ICompressedImage LoadDDS(string filePath)
         {
-            return DDSImage.FromFile(filePath);
+            return DDSImage.CreateFromFile(filePath);
         }
     }
 }

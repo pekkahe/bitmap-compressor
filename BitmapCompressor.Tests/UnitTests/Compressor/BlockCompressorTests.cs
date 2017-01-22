@@ -29,12 +29,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         [Test]
         public void CompressionThrowsExceptionWhenImageHasInvalidDimensions()
         {
-            var compressor = new BlockCompressor(new Mock<IBlockCompressionFormat>().Object);
+            var compressor = new BlockCompressor();
+            var format = new Mock<IBlockCompressionFormat>();
+            
             var bitmap = new Mock<IUncompressedImage>();
             bitmap.Setup(b => b.Width).Returns(10);
             bitmap.Setup(b => b.Height).Returns(16);
 
-            Assert.Throws<InvalidOperationException>(() => compressor.Compress(bitmap.Object));
+            Assert.Throws<InvalidOperationException>(() => compressor.Compress(bitmap.Object, format.Object));
         }
 
         [Test]
@@ -46,9 +48,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
             format.Setup(f => f.BlockSize).Returns(byteCount);
             format.Setup(f => f.Compress(It.IsAny<Color[]>())).Returns(new byte[byteCount]);
 
-            var compressor = new BlockCompressor(format.Object);
+            var compressor = new BlockCompressor();
 
-            compressor.Compress(CreateBitmapMock());
+            compressor.Compress(CreateBitmapMock(), format.Object);
 
             format.Verify(f => f.Compress(It.IsAny<Color[]>()), Times.Exactly(6));
             format.Verify(f => f.Compress(It.Is<Color[]>(colors => colors.All(c => c == Red))));
@@ -111,9 +113,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
             format.Setup(f => f.BlockSize).Returns(byteCount);
             format.Setup(f => f.Decompress(It.IsAny<byte[]>())).Returns(new Color[BlockFormat.PixelCount]);
 
-            var compressor = new BlockCompressor(format.Object);
+            var compressor = new BlockCompressor();
 
-            compressor.Decompress(CreateDDSImageMock());
+            compressor.Decompress(CreateDDSImageMock(format.Object));
 
             format.Verify(f => f.Decompress(It.IsAny<byte[]>()), Times.Exactly(6));
             format.Verify(f => f.Decompress(It.Is<byte[]>(bytes => bytes.All(b => b == 1))));
@@ -138,7 +140,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         /// | 0x4 || 0x5 || 0x6 |
         /// |_____||_____||_____|
         /// </remarks>
-        private static ICompressedImage CreateDDSImageMock()
+        private static ICompressedImage CreateDDSImageMock(IBlockCompressionFormat format)
         {
             var blockBytes = new byte[]
             {
@@ -178,7 +180,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
             const int width = 12;
             const int height = 8;
 
-            return new DDSImage(width, height, buffer);
+            return DDSImage.CreateFromData(width, height, buffer, format);
         }
     }
 }

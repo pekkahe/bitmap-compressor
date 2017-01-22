@@ -3,6 +3,7 @@ using BitmapCompressor.Formats;
 using BitmapCompressor.DataTypes;
 using BitmapCompressor.Tests.Helpers;
 using NUnit.Framework;
+using Moq;
 
 namespace BitmapCompressor.IntegrationTests.Integration
 {
@@ -21,7 +22,7 @@ namespace BitmapCompressor.IntegrationTests.Integration
         [SetUp]
         public void Setup()
         {
-            _compressor = new BlockCompressor(new BC1Format());
+            _compressor = new BlockCompressor();
         }
 
         [Test]
@@ -32,7 +33,7 @@ namespace BitmapCompressor.IntegrationTests.Integration
 
             using (Profiler.MeasureTime())
             {
-                actual = _compressor.Compress(bitmap);
+                actual = _compressor.Compress(bitmap, new BC1Format());
             }
 
             var expected = LoadResourceDDS(CityscapeDDSFile);
@@ -48,7 +49,7 @@ namespace BitmapCompressor.IntegrationTests.Integration
 
             using (Profiler.MeasureTime())
             {
-                actual = _compressor.Compress(bitmap);
+                actual = _compressor.Compress(bitmap, new BC1Format());
             }
 
             var expected = LoadResourceDDS(MarsDDSFile);
@@ -95,7 +96,7 @@ namespace BitmapCompressor.IntegrationTests.Integration
 
         private static ICompressedImage LoadResourceDDS(string fileName)
         {
-            return DDSImage.FromFile(TestResourceDirectory.GetFilePath(fileName));
+            return DDSImage.CreateFromFile(TestResourceDirectory.GetFilePath(fileName));
         }
 
         private static void AssertEqual(IImage expected, IImage actual)

@@ -5,22 +5,22 @@ using BitmapCompressor.DataTypes;
 namespace BitmapCompressor.Formats
 {
     /// <summary>
-    /// Represents the data specification for a BC1 compressed block.
+    /// Represents the data layout for a BC1 compressed block.
     /// </summary>
     /// <remarks>
     /// Bit layout for block:
     /// 63       55       47       39       31       23       15       7        0
     /// | c0-low | c0-hi  | c1-low | c1-hi  | index0 | index1 | index2 | index3 |
     /// -------------------------------------------------------------------------
-    ///                  Pixels a-p (0-16): | d c b a| h g f e| l k j i| p o n m| 
+    ///                  Pixels a-p (0-15): | d c b a| h g f e| l k j i| p o n m| 
     /// </remarks>
-    public class BC1Block
+    public class BC1BlockData
     {
         /// <summary>
-        /// Instantiates an empty <see cref="BC1Block"/> representing
+        /// Instantiates an empty <see cref="BC1BlockData"/> representing
         /// the data specification of a BC1 compressed block. 
         /// </summary>
-        public BC1Block()
+        public BC1BlockData()
         { }
 
         /// <summary>
@@ -37,6 +37,10 @@ namespace BitmapCompressor.Formats
         /// An array of 16 2-bit color index values, ordered by pixel index p0-15, 
         /// following row-major order within the 4x4 block.
         /// </summary>
+        /// <remarks>
+        /// Values higher than 2-bits are automatically stripped to 2-bits when
+        /// the block instance is converted to bytes.
+        /// </remarks>
         public int[] ColorIndexes { get; } = new int[BlockFormat.PixelCount];
 
         /// <summary>
@@ -58,10 +62,10 @@ namespace BitmapCompressor.Formats
                 int c = p + 2;
                 int d = p + 3;
 
-                indexes[row] = (byte) (ColorIndexes[a] |
-                                      (ColorIndexes[b] << 2) |
-                                      (ColorIndexes[c] << 4) |
-                                      (ColorIndexes[d] << 6));
+                indexes[row] = (byte) ((ColorIndexes[a] & 0x03) |
+                                      ((ColorIndexes[b] & 0x03) << 2) |
+                                      ((ColorIndexes[c] & 0x03) << 4) |
+                                      ((ColorIndexes[d] & 0x03) << 6));
             }
             
             var bytes = new byte[8];
@@ -79,10 +83,10 @@ namespace BitmapCompressor.Formats
         }
 
         /// <summary>
-        /// Instantiates a <see cref="BC1Block"/> from compressed BC1 block data.
+        /// Instantiates a <see cref="BC1BlockData"/> from compressed BC1 block data.
         /// </summary>
         /// <param name="bytes">The data of a BC1 compressed block.</param>
-        public static BC1Block FromBytes(byte[] bytes)
+        public static BC1BlockData FromBytes(byte[] bytes)
         {
             Debug.Assert(bytes.Length == BlockFormat.BC1ByteSize,
                 "Mismatching number of bytes for BC1 format.");
@@ -97,7 +101,7 @@ namespace BitmapCompressor.Formats
             indexes[2]      = bytes[6];
             indexes[3]      = bytes[7];
 
-            var block = new BC1Block();
+            var block = new BC1BlockData();
             block.Color0 = Color565.FromValue((ushort) ((c0Hi << 8) | c0Low));
             block.Color1 = Color565.FromValue((ushort) ((c1Hi << 8) | c1Low));
 

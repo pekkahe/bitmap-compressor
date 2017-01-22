@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Drawing;
+using BitmapCompressor.Formats;
 
 namespace BitmapCompressor.DataTypes
 {
     public interface ICompressedImage : IImage
     {
+        /// <summary>
+        /// Returns the <see cref="IBlockCompressionFormat"/> which operates on this image.
+        /// </summary>
+        IBlockCompressionFormat GetFormat();
+
         /// <summary>
         /// Reads the block-compressed data from the image's main surface buffer 
         /// for the specified 4x4 block coordinates.

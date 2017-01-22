@@ -14,18 +14,7 @@ namespace BitmapCompressor
     /// </summary>
     public class BlockCompressor : IBlockCompressor
     {
-        private readonly IBlockCompressionFormat _compressionFormat;
-
-        /// <summary>
-        /// Instantiates a new block compressor for a specific compression format.
-        /// </summary>
-        /// <param name="format">The block compression format this compressor uses.</param>
-        public BlockCompressor(IBlockCompressionFormat format)
-        {
-            _compressionFormat = format;
-        }
-
-        public ICompressedImage Compress(IUncompressedImage image)
+        public ICompressedImage Compress(IUncompressedImage image, IBlockCompressionFormat format)
         {
             if (!AreDimensionsMultipleOfFour(image))
                 throw new InvalidOperationException("Only textures with dimensions that are multiples of " +
@@ -33,7 +22,7 @@ namespace BitmapCompressor
 
             Logger.Default.Log("Compressing BMP to DDS.");
 
-            var dds = new DDSImage(image.Width, image.Height, _compressionFormat.BlockSize);
+            var dds = DDSImage.CreateEmpty(image.Width, image.Height, format);
 
             int numberOfVerticalBlocks = image.Height / BlockFormat.Dimension;
             int numberOfHorizontalBlocks = image.Width / BlockFormat.Dimension;
@@ -45,7 +34,7 @@ namespace BitmapCompressor
 
                 var colors = image.GetBlockPixels(block);
 
-                var data = _compressionFormat.Compress(colors);
+                var data = format.Compress(colors);
 
                 dds.SetBlockData(block, data);
             });
@@ -55,7 +44,7 @@ namespace BitmapCompressor
             return dds;
         }
 
-        private bool AreDimensionsMultipleOfFour(IImage image)
+        private static bool AreDimensionsMultipleOfFour(IImage image)
         {
             return image.Width != 0 && (image.Width % BlockFormat.Dimension) == 0 &&
                    image.Height != 0 && (image.Height % BlockFormat.Dimension) == 0;
@@ -66,6 +55,7 @@ namespace BitmapCompressor
             Logger.Default.Log("Decompressing DDS to BMP.");
 
             var bmp = new DirectBitmap(image.Width, image.Height);
+            var format = image.GetFormat();
 
             int numberOfVerticalBlocks = image.Height / BlockFormat.Dimension;
             int numberOfHorizontalBlocks = image.Width / BlockFormat.Dimension;
@@ -75,9 +65,9 @@ namespace BitmapCompressor
             {
                 var block = PointUtility.FromRowMajor(i, numberOfHorizontalBlocks);
 
-                var data = image.GetBlockData(block, _compressionFormat.BlockSize);
+                var data = image.GetBlockData(block, format.BlockSize);
 
-                var colors = _compressionFormat.Decompress(data);
+                var colors = format.Decompress(data);
 
                 bmp.SetBlockPixels(block, colors);
             });

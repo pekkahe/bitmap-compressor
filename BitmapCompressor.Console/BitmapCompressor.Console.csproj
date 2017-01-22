@@ -45,13 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLine\CommandLineAction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Utilities\SimpleFileSystem.cs" />
     <Compile Include="Utilities\IFileSystem.cs" />
     <Compile Include="Utilities\SimpleConsoleInput.cs" />
     <Compile Include="Utilities\IInputSystem.cs" />
-    <Compile Include="CommandLineArguments.cs" />
-    <Compile Include="Utilities\CommandLineArgumentsParser.cs" />
+    <Compile Include="CommandLine\CommandLineArguments.cs" />
+    <Compile Include="CommandLine\CommandLineArgumentsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,9 +2,11 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using BitmapCompressor.DataTypes;
+using BitmapCompressor.Formats;
 using BitmapCompressor.Serialization;
 using BitmapCompressor.Serialization.FileFormat;
 using NUnit.Framework;
+using Moq;
 
 namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
 {
@@ -14,11 +16,12 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
         [Test]
         public void WritingDDSImageWritesDataToMemory()
         {
+            var format = new Mock<IBlockCompressionFormat>();
             var imageData = new byte[8] { 1, 2, 3, 4, 5, 6, 7, 8 };
             int imageWidth = 4;
             int imageHeight = 4;
 
-            var ddsImage = new DDSImage(imageWidth, imageHeight, imageData);
+            var ddsImage = DDSImage.CreateFromData(imageWidth, imageHeight, imageData, format.Object);
             var stream = new MemoryStream();
             var writer = new DDSFileWriter(stream);
 

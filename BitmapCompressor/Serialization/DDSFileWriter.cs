@@ -9,7 +9,6 @@ namespace BitmapCompressor.Serialization
     public class DDSFileWriter : IDisposable
     {
         private readonly BinaryWriter _binaryWriter;
-        private ICompressedImage _image;
 
         public DDSFileWriter(Stream stream)
         {
@@ -24,13 +23,13 @@ namespace BitmapCompressor.Serialization
         /// </summary>
         public unsafe void Write(ICompressedImage image)
         {
-            _image = image;
-
             WriteMagicNumber();
 
-            WriteHeader();
+            var header = DDSFileHeaderFactory.CreateHeader(image.Width, image.Height, image.GetFormat().Name);
 
-            WriteMainImage();
+            WriteHeader(header);
+
+            WriteSurfaceData(image.GetBuffer());
         }
 
         private void WriteMagicNumber()
@@ -38,9 +37,8 @@ namespace BitmapCompressor.Serialization
             _binaryWriter.Write(DDSFile.MagicNumber);
         }
 
-        private void WriteHeader()
+        private void WriteHeader(DDSFileHeader header)
         {
-            var header = DDSFileHeaderFactory.CreateDXT1Header(_image.Width, _image.Height);
             var headerSize = Marshal.SizeOf(typeof(DDSFileHeader));
             var headerBuffer = new byte[headerSize];
 
@@ -53,9 +51,9 @@ namespace BitmapCompressor.Serialization
             handle.Free();
         }
 
-        private void WriteMainImage()
+        private void WriteSurfaceData(byte[] surfaceData)
         {
-            _binaryWriter.Write(_image.GetBuffer());
+            _binaryWriter.Write(surfaceData);
         }
 
         public void Dispose()

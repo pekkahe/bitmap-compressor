@@ -9,45 +9,24 @@ namespace BitmapCompressor.DataTypes
 {
     public sealed class DDSImage : ICompressedImage
     {
-        private readonly byte[] _data;
+        private readonly byte[] _surfaceData;
+        private readonly IBlockCompressionFormat _format;
 
-        /// <summary>
-        /// Instantiates a DDS image with an empty main surface data buffer.
-        /// </summary>
-        public DDSImage(int width, int height, int blockSize)
+        private DDSImage(int width, int height, byte[] surfaceData, IBlockCompressionFormat format)
         {
             Width = width;
             Height = height;
-
-            _data = new byte[CalculateBufferSize(blockSize)];
+            _surfaceData = surfaceData;
+            _format = format;
         }
-
-        private int CalculateBufferSize(int blockSize)
-        {
-            int numberOfPixels = Width * Height;
-            int numberOfRequiredBlocks = numberOfPixels / BlockFormat.PixelCount;
-
-            return numberOfRequiredBlocks * blockSize;
-        }
-
-        /// <summary>
-        /// Instantiates a DDS image with the specified main surface data buffer.
-        /// </summary>
-        public DDSImage(int width, int height, byte[] buffer)
-        {
-            Width = width;
-            Height = height;
-            _data = buffer;
-        }
-
+        
         public int Width { get; }
 
         public int Height { get; }
 
-        public byte[] GetBuffer()
-        {
-            return _data;
-        }
+        public byte[] GetBuffer() => _surfaceData;
+
+        public IBlockCompressionFormat GetFormat() => _format;
         
         public byte[] GetBlockData(Point block, int blockSize)
         {
@@ -56,7 +35,7 @@ namespace BitmapCompressor.DataTypes
             int blockIndex = PointUtility.ToRowMajor(block, numberOfHorizontalBlocks);
             int bufferIndex = blockIndex * blockSize;
 
-            var blockData = _data.SubArray(bufferIndex, blockSize);
+            var blockData = _surfaceData.SubArray(bufferIndex, blockSize);
 
             return blockData;
         }
@@ -69,7 +48,7 @@ namespace BitmapCompressor.DataTypes
             int blockIndex = PointUtility.ToRowMajor(block, numberOfHorizontalBlocks);
             int bufferIndex = blockIndex * blockSize;
 
-            Array.Copy(data, 0, _data, bufferIndex, blockSize);
+            Array.Copy(data, 0, _surfaceData, bufferIndex, blockSize);
         }
 
         public void Save(string fileName)
@@ -80,9 +59,42 @@ namespace BitmapCompressor.DataTypes
             }
         }
 
-        public static DDSImage FromFile(string fileName)
+        /// <summary>
+        /// Instantiates a <see cref="DDSImage"/> with an empty main surface data
+        /// buffer reserved for the size of the specified dimensions.
+        /// </summary>
+        /// <param name="width">The pixel width of the image.</param>
+        /// <param name="height">The pixel height of the image.</param>
+        /// <param name="format">The block compression algorithm for the DDS image.</param>
+        public static DDSImage CreateEmpty(int width, int height, IBlockCompressionFormat format)
         {
-            using (var reader = new DDSFileReader(fileName))
+            int numberOfPixels = width * height;
+            int numberOfRequiredBlocks = numberOfPixels / BlockFormat.PixelCount;
+            int bufferSize = numberOfRequiredBlocks * format.BlockSize;
+
+            return new DDSImage(width, height, new byte[bufferSize], format);
+        }
+
+        /// <summary>
+        /// Instantiates a <see cref="DDSImage"/> with the specified dimensions
+        /// and raw main surface data. 
+        /// </summary>
+        /// <param name="width">The pixel width of the image.</param>
+        /// <param name="height">The pixel height of the image.</param>
+        /// <param name="data">The main surface data of the DDS image.</param>
+        /// <param name="format">The block compression algorithm for the DDS image.</param>
+        public static DDSImage CreateFromData(int width, int height, byte[] data, IBlockCompressionFormat format)
+        {
+            return new DDSImage(width, height, data, format);
+        }
+
+        /// <summary>
+        /// Instantiates a <see cref="DDSImage"/> from the data of the specified DDS file.
+        /// </summary>
+        /// <param name="filePath">The file path of the DDS file to read.</param>
+        public static DDSImage CreateFromFile(string filePath)
+        {
+            using (var reader = new DDSFileReader(filePath))
             {
                 return reader.Read();
             }

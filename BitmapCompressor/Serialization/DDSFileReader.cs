@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using BitmapCompressor.DataTypes;
 using BitmapCompressor.Serialization.FileFormat;
+using BitmapCompressor.Formats;
 
 namespace BitmapCompressor.Serialization
 {
@@ -26,11 +27,24 @@ namespace BitmapCompressor.Serialization
         {
             ReadMagicNumber();
 
-            var size = ReadHeader();
+            var header = ReadHeader();
+            var size = new Size((int) header.Width, (int) header.Height);
 
-            var buffer = ReadMainImage(size);
+            var surfaceData = ReadSurfaceData(size);
+            var format = DetermineCompressionFormat(header.PixelFormat);
 
-            return new DDSImage(size.Width, size.Height, buffer);
+            return DDSImage.CreateFromData(size.Width, size.Height, surfaceData, format);
+        }
+
+        private IBlockCompressionFormat DetermineCompressionFormat(DDSPixelFormat pixelFormat)
+        {
+            if (pixelFormat.FourCC == DDSPixelFormatFourCC.FOURCC_DXT1)
+                return new BC1Format();
+
+            if (pixelFormat.FourCC == DDSPixelFormatFourCC.FOURCC_DXT2)
+                return new BC2Format();
+
+            throw new ArgumentOutOfRangeException(nameof(pixelFormat.FourCC));
         }
 
         private void ReadMagicNumber()
@@ -43,7 +57,7 @@ namespace BitmapCompressor.Serialization
                 throw new InvalidOperationException("Unrecognizable DDS file format.");
         }
 
-        private Size ReadHeader()
+        private DDSFileHeader ReadHeader()
         {
             int size = Marshal.SizeOf(typeof(DDSFileHeader));
             var buffer = _binaryReader.ReadBytes(size);
@@ -53,10 +67,10 @@ namespace BitmapCompressor.Serialization
             var header = (DDSFileHeader) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(DDSFileHeader));
             handle.Free();
 
-            return new Size((int) header.Width, (int) header.Height);
+            return header;
         }
 
-        private byte[] ReadMainImage(Size size)
+        private byte[] ReadSurfaceData(Size size)
         {
             const int pixelsInBlock = 16;
             const int sizePerBlock = 8;

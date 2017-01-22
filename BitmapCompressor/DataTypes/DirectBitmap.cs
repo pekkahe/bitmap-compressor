@@ -18,7 +18,7 @@ namespace BitmapCompressor.DataTypes
         private bool _disposed;
 
         /// <summary>
-        /// Instantiates an empty bitmap image with the specified dimension.
+        /// Instantiates an empty bitmap image with the specified dimensions.
         /// </summary>
         public DirectBitmap(int width, int height)
         {
