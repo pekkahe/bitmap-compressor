@@ -28,27 +28,18 @@ namespace BitmapCompressor.Serialization
             ReadMagicNumber();
 
             var header = ReadHeader();
-            var size = new Size((int) header.Width, (int) header.Height);
 
-            var surfaceData = ReadSurfaceData(size);
+            int imageWidth = (int) header.Width;
+            int imageHeight = (int) header.Height;
+
             var format = DetermineCompressionFormat(header.PixelFormat);
+            var surfaceData = ReadSurfaceData(imageWidth, imageHeight, format);
 
-            return DDSImage.CreateFromData(size.Width, size.Height, surfaceData, format);
-        }
-
-        private IBlockCompressionFormat DetermineCompressionFormat(DDSPixelFormat pixelFormat)
-        {
-            if (pixelFormat.FourCC == DDSPixelFormatFourCC.FOURCC_DXT1)
-                return new BC1Format();
-
-            if (pixelFormat.FourCC == DDSPixelFormatFourCC.FOURCC_DXT2)
-                return new BC2Format();
-
-            throw new ArgumentOutOfRangeException(nameof(pixelFormat.FourCC));
+            return DDSImage.CreateFromData(imageWidth, imageHeight, surfaceData, format);
         }
 
         private void ReadMagicNumber()
-        { 
+        {
             int size = Marshal.SizeOf(DDSFile.MagicNumber);
             var buffer = _binaryReader.ReadBytes(size);
 
@@ -70,14 +61,22 @@ namespace BitmapCompressor.Serialization
             return header;
         }
 
-        private byte[] ReadSurfaceData(Size size)
+        private IBlockCompressionFormat DetermineCompressionFormat(DDSPixelFormat pixelFormat)
         {
-            const int pixelsInBlock = 16;
-            const int sizePerBlock = 8;
+            if (pixelFormat.FourCC == DDSPixelFormatFourCC.FOURCC_DXT1)
+                return new BC1Format();
 
-            int pixelsInImage = size.Width * size.Height;
-            int blocksInImage = pixelsInImage / pixelsInBlock;
-            int mainImageSize = blocksInImage * sizePerBlock;
+            if (pixelFormat.FourCC == DDSPixelFormatFourCC.FOURCC_DXT2)
+                return new BC2Format();
+
+            throw new ArgumentOutOfRangeException(nameof(pixelFormat.FourCC));
+        }
+
+        private byte[] ReadSurfaceData(int width, int height, IBlockCompressionFormat format)
+        {
+            int pixelsInImage = width * height;
+            int blocksInImage = pixelsInImage / BlockFormat.PixelCount;
+            int mainImageSize = blocksInImage * format.BlockSize;
 
             return _binaryReader.ReadBytes(mainImageSize);
         }

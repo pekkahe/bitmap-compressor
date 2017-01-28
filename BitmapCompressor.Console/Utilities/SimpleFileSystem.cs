@@ -13,7 +13,7 @@ namespace BitmapCompressor.Console.Utilities
 
         public IUncompressedImage LoadBitmap(string filePath)
         {
-            return DirectBitmap.FromFile(filePath);
+            return DirectBitmap.CreateFromFile(filePath);
         }
 
         public ICompressedImage LoadDDS(string filePath)

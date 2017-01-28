@@ -28,7 +28,11 @@ namespace BitmapCompressor
             int numberOfHorizontalBlocks = image.Width / BlockFormat.Dimension;
             int numberOfBlocks = numberOfVerticalBlocks * numberOfHorizontalBlocks;
 
-            Parallel.For(0, numberOfBlocks, (i) =>
+            Parallel.For(0, numberOfBlocks,
+#if DEBUG
+                RunInSingleThreadOption(),
+#endif       
+                (i) =>
             {
                 var block = PointUtility.FromRowMajor(i, numberOfHorizontalBlocks);
 
@@ -61,7 +65,11 @@ namespace BitmapCompressor
             int numberOfHorizontalBlocks = image.Width / BlockFormat.Dimension;
             int numberOfBlocks = numberOfVerticalBlocks * numberOfHorizontalBlocks;
 
-            Parallel.For(0, numberOfBlocks, (i) =>
+            Parallel.For(0, numberOfBlocks,
+#if DEBUG
+                RunInSingleThreadOption(),
+#endif
+                (i) =>
             {
                 var block = PointUtility.FromRowMajor(i, numberOfHorizontalBlocks);
 
@@ -75,6 +83,11 @@ namespace BitmapCompressor
             Logger.Default.Log("Decompression successful.");
 
             return bmp;
+        }
+
+        private static ParallelOptions RunInSingleThreadOption()
+        {
+            return new ParallelOptions { MaxDegreeOfParallelism = 1 };
         }
     }
 }

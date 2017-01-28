@@ -16,9 +16,7 @@ namespace BitmapCompressor.Tests.Helpers
             ResourceDirectory = Path.Combine(ProjectDirectory, "Resources");
 
             if (!Directory.Exists(ResourceDirectory))
-            {
                 throw new DirectoryNotFoundException($"Test resource directory not found: {ResourceDirectory}");
-            }
         }
 
         public static string GetFilePath(string resourceFile)
@@ -26,9 +24,7 @@ namespace BitmapCompressor.Tests.Helpers
             var path = Path.Combine(ResourceDirectory, resourceFile);
 
             if (!File.Exists(path))
-            {
                 throw new FileNotFoundException($"Test resource file not found: {path}");
-            }
 
             return path;
         }

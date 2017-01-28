@@ -12,84 +12,77 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
     public class BC1FormatTests
     {
         [Test]
-        public void ColorTableFrom32BitColorsWithoutAlpha()
+        public void CompressionReturnsByteArrayOfCorrectSize()
         {
-            var expectedMin = Color.FromArgb(10, 10, 10);
-            var expectedMax = Color.FromArgb(250, 250, 250);
-            var expectedColor0 = ColorUtility.To16Bit(expectedMax);
-            var expectedColor1 = ColorUtility.To16Bit(expectedMin);
+            var colors = new Color[BlockFormat.PixelCount];
 
-            var colors = ColorHelper.CreateRandomColorsBetween(expectedMin, expectedMax);
-            colors[4] = expectedMin;   // Place min and max color
-            colors[10] = expectedMax;  // somewhere in input set
-            var colorSpace = new ColorSpace(colors);
+            var data = new BC1Format().Compress(colors);
 
-            var colorTable = BC1Format.ToColorTable(colorSpace);
-
-            Assert.Greater(colorTable[0].Value, colorTable[1].Value,
-                "Expected color0 integer value to be higher than color1 when input colors have no alpha.");
-            Assert.AreEqual(expectedColor0, colorTable[0]);
-            Assert.AreEqual(expectedColor1, colorTable[1]);
+            Assert.AreEqual(BlockFormat.BC1ByteSize, data.Length);
         }
 
         [Test]
-        public void ColorTableFrom32BitColorsWithAlpha()
+        public void DecompressionReturnsColorArrayOfCorrectSize()
         {
-            var expectedMin = Color.FromArgb(10, 10, 10);
-            var expectedMax = Color.FromArgb(250, 250, 250);
-            var expectedColor0 = ColorUtility.To16Bit(expectedMin);
-            var expectedColor1 = ColorUtility.To16Bit(expectedMax);
+            var bytes = new byte[BlockFormat.BC1ByteSize];
 
-            var colors = ColorHelper.CreateRandomColorsBetween(expectedMin, expectedMax);
-            colors[4] = expectedMin;   // Place min and max color
-            colors[10] = expectedMax;  // somewhere in input set
+            var colors = new BC1Format().Decompress(bytes);
 
+            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
+        }
+
+        [Test]
+        public void CompressionSetsReferenceColorsWhenNoAlpha()
+        {
+            var expectedMin     = Color.FromArgb(10, 10, 10);
+            var expectedMax     = Color.FromArgb(250, 250, 250);
+            var expectedColor0  = ColorUtility.To16Bit(expectedMax);
+            var expectedColor1  = ColorUtility.To16Bit(expectedMin);
+            var colors          = ColorHelper.CreateRandomColorsBetween(expectedMin, expectedMax);
+
+            // Place expected min and max color in test input
+            colors[4]   = expectedMin;   
+            colors[10]  = expectedMax;
+
+            var data = new BC1Format().Compress(colors);
+
+            var color0 = Color565.FromValue((ushort) ((data[1] << 8) | data[0]));
+            var color1 = Color565.FromValue((ushort) ((data[3] << 8) | data[2]));
+
+            Assert.Greater(color0.Value, color1.Value);
+            Assert.AreEqual(expectedColor0.Value, color0.Value);
+            Assert.AreEqual(expectedColor1.Value, color1.Value);
+        }
+
+        [Test]
+        public void CompressionSwitchesOrderOfReferenceColorsWhenAlpha()
+        {
+            var expectedMin     = Color.FromArgb(10, 10, 10);
+            var expectedMax     = Color.FromArgb(250, 250, 250);
+            var expectedColor0  = ColorUtility.To16Bit(expectedMin);
+            var expectedColor1  = ColorUtility.To16Bit(expectedMax);
+            var colors          = ColorHelper.CreateRandomColorsBetween(expectedMin, expectedMax);
+
+            // Place expected min and max color in test input
+            colors[4]   = expectedMin;
+            colors[10]  = expectedMax;
+
+            // Add an arbitrary alpha value to some color
             ColorHelper.AddAlpha(ref colors[5]);
-            var colorSpace = new ColorSpace(colors);
 
-            var colorTable = BC1Format.ToColorTable(colorSpace);
+            var data = new BC1Format().Compress(colors);
 
-            Assert.Greater(colorTable[1].Value, colorTable[0].Value,
-                "Expected color1 integer value to be higher than color0 when input colors have alpha.");
-            Assert.AreEqual(expectedColor0, colorTable[0]);
-            Assert.AreEqual(expectedColor1, colorTable[1]);
-        }
+            var color0 = Color565.FromValue((ushort) ((data[1] << 8) | data[0]));
+            var color1 = Color565.FromValue((ushort) ((data[3] << 8) | data[2]));
 
-        [Test]
-        public void ColorTableFrom16BitColorsWithoutAlpha()
-        {
-            // color0 > color1
-            var color0 = Color565.FromRgb(20, 20, 20);
-            var color1 = Color565.FromRgb(10, 10, 10);
-
-            var colorTable = BC1Format.ToColorTable(color0, color1);
-
-            Assert.AreEqual(color0, colorTable[0]);
-            Assert.AreEqual(color1, colorTable[1]);
-            Assert.Greater(colorTable[0].Value, colorTable[1].Value);
-            Assert.AreNotEqual(Color565.Black, colorTable[3]);
-        }
-
-        [Test]
-        public void ColorTableFrom16BitColorsWithAlpha()
-        {
-            // color0 <= color1
-            var color0 = Color565.FromRgb(10, 10, 10);
-            var color1 = Color565.FromRgb(20, 20, 20);
-
-            var colorTable = BC1Format.ToColorTable(color0, color1);
-
-            Assert.AreEqual(color0, colorTable[0]);
-            Assert.AreEqual(color1, colorTable[1]);
-            Assert.LessOrEqual(colorTable[0].Value, colorTable[1].Value);
-            Assert.AreEqual(Color565.Black, colorTable[3],
-                "Expected 1-bit alpha to be triggered and color3 to be black.");
+            Assert.LessOrEqual(color0.Value, color1.Value);
+            Assert.AreEqual(expectedColor0.Value, color0.Value);
+            Assert.AreEqual(expectedColor1.Value, color1.Value);
         }
 
         [Test]
         public void CompressionOfColorsWithoutAlpha()
         {
-            var format = new BC1Format();
             var colors = new Color[16];
             colors[0]   = Color.FromArgb(3, 59, 101);
             colors[1]   = Color.FromArgb(131, 154, 20);
@@ -108,23 +101,21 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             colors[14]  = Color.FromArgb(205, 237, 57);
             colors[15]  = Color.FromArgb(190, 158, 111);
 
-            var data = format.Compress(colors);
-
-            Assert.AreEqual(BlockFormat.BC1ByteSize, data.Length);
-            Assert.AreEqual(0x7B, data[0]);
-            Assert.AreEqual(0xB7, data[1]);
-            Assert.AreEqual(0xCC, data[2]);
-            Assert.AreEqual(0x01, data[3]);
-            Assert.AreEqual(0xAD, data[4]);
-            Assert.AreEqual(0xEB, data[5]);
-            Assert.AreEqual(0x22, data[6]);
-            Assert.AreEqual(0x83, data[7]);
+            var data = new BC1Format().Compress(colors);
+            
+            Assert.AreEqual(0x7B, data[0]); // c0Low
+            Assert.AreEqual(0xB7, data[1]); // c0Hi
+            Assert.AreEqual(0xCC, data[2]); // c1Low
+            Assert.AreEqual(0x01, data[3]); // c1Hi
+            Assert.AreEqual(0xAD, data[4]); // indexes0
+            Assert.AreEqual(0xEB, data[5]); // indexes1
+            Assert.AreEqual(0x22, data[6]); // indexes2
+            Assert.AreEqual(0x83, data[7]); // indexes3
         }
 
         [Test]
         public void CompressionOfColorsWithAlpha()
         {
-            var format = new BC1Format();
             var colors = new Color[16];
             colors[0]   = Color.FromArgb(200, 3, 59, 101);
             colors[1]   = Color.FromArgb(200, 131, 154, 20);
@@ -143,37 +134,33 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             colors[14]  = Color.FromArgb(255, 205, 237, 57);
             colors[15]  = Color.FromArgb(255, 190, 158, 111);
 
-            var data = format.Compress(colors);
+            var data = new BC1Format().Compress(colors);
 
-            Assert.AreEqual(BlockFormat.BC1ByteSize, data.Length);
-            Assert.AreEqual(0xCC, data[0]);
-            Assert.AreEqual(0x01, data[1]);
-            Assert.AreEqual(0x7B, data[2]);
-            Assert.AreEqual(0xB7, data[3]);
-            Assert.AreEqual(0xAF, data[4]);
-            Assert.AreEqual(0xAF, data[5]);
-            Assert.AreEqual(0x6F, data[6]);
-            Assert.AreEqual(0x9F, data[7]);
+            Assert.AreEqual(0xCC, data[0]); // c0Low
+            Assert.AreEqual(0x01, data[1]); // c0Hi
+            Assert.AreEqual(0x7B, data[2]); // c1Low
+            Assert.AreEqual(0xB7, data[3]); // c1Hi
+            Assert.AreEqual(0xAF, data[4]); // indexes0
+            Assert.AreEqual(0xAF, data[5]); // indexes1
+            Assert.AreEqual(0x6F, data[6]); // indexes2
+            Assert.AreEqual(0x9F, data[7]); // indexes3
         }
 
         [Test]
         public void DecompressionOfBytesWithoutAlpha()
         {
-            var format = new BC1Format();
-
             var bytes = new byte[BlockFormat.BC1ByteSize];
-            bytes[0] = 0x7B;
-            bytes[1] = 0xB7;
-            bytes[2] = 0xCC;
-            bytes[3] = 0x01;
-            bytes[4] = 0xAD;
-            bytes[5] = 0xEB;
-            bytes[6] = 0x22;
-            bytes[7] = 0x83;
+            bytes[0] = 0x7B; // c0Low
+            bytes[1] = 0xB7; // c0Hi
+            bytes[2] = 0xCC; // c1Low
+            bytes[3] = 0x01; // c1Hi
+            bytes[4] = 0xAD; // indexes0
+            bytes[5] = 0xEB; // indexes1
+            bytes[6] = 0x22; // indexes2
+            bytes[7] = 0x83; // indexes3
 
-            var colors = format.Decompress(bytes);
-
-            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
+            var colors = new BC1Format().Decompress(bytes);
+            
             Assert.AreEqual(Color.FromArgb(0, 56, 99),      colors[0]);
             Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[1]);
             Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[2]);
@@ -195,21 +182,18 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void DecompressionOfBytesWithAlpha()
         {
-            var format = new BC1Format();
-
             var bytes = new byte[BlockFormat.BC1ByteSize];
-            bytes[0] = 0xCC;
-            bytes[1] = 0x01;
-            bytes[2] = 0x7B;
-            bytes[3] = 0xB7;
-            bytes[4] = 0xAF;
-            bytes[5] = 0xAF;
-            bytes[6] = 0x6F;
-            bytes[7] = 0x9F;
+            bytes[0] = 0xCC; // c0Low
+            bytes[1] = 0x01; // c0Hi
+            bytes[2] = 0x7B; // c1Low
+            bytes[3] = 0xB7; // c1Hi
+            bytes[4] = 0xAF; // indexes0
+            bytes[5] = 0xAF; // indexes1
+            bytes[6] = 0x6F; // indexes2
+            bytes[7] = 0x9F; // indexes3
 
-            var colors = format.Decompress(bytes);
+            var colors = new BC1Format().Decompress(bytes);
 
-            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
             Assert.AreEqual(Color.FromArgb(0, 0, 0, 0),         colors[0]);
             Assert.AreEqual(Color.FromArgb(0, 0, 0, 0),         colors[1]);
             Assert.AreEqual(Color.FromArgb(255, 90, 150, 165),  colors[2]);

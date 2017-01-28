@@ -141,15 +141,15 @@ namespace BitmapCompressor.DataTypes
             }
         }
 
-        public static DirectBitmap FromFile(string fileName)
+        public static DirectBitmap CreateFromFile(string fileName)
         {
             using (var bitmap = (Bitmap) Image.FromFile(fileName))
             {
-                return FromBitmap(bitmap);
+                return CreateFromBitmap(bitmap);
             }
         }
 
-        public static DirectBitmap FromBitmap(Bitmap sourceBitmap)
+        public static DirectBitmap CreateFromBitmap(Bitmap sourceBitmap)
         {
             var direct = new DirectBitmap(sourceBitmap.Width, sourceBitmap.Height);
 

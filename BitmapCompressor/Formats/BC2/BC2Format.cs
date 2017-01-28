@@ -24,13 +24,14 @@ namespace BitmapCompressor.Formats
 
         public byte[] Compress(Color[] colors)
         {
-            Debug.Assert(colors.Length == BlockFormat.PixelCount,
-                "Mismatching number of colors for block compression.");
+            Debug.Assert(colors.Length == BlockFormat.PixelCount);
 
             var colorSpace = new ColorSpace(colors);
-            var colorTable = BC1ColorTableFactory.Create(colorSpace.MinColor, colorSpace.MaxColor);
+            var colorTable = BC1ColorTableFactory.Create(colorSpace.MaxColor, colorSpace.MinColor);
 
             var block = new BC2BlockData();
+            block.Color0 = colorTable[0];
+            block.Color1 = colorTable[1];
 
             for (int i = 0; i < colors.Length; ++i)
             {
@@ -46,6 +47,8 @@ namespace BitmapCompressor.Formats
 
         public Color[] Decompress(byte[] blockData)
         {
+            Debug.Assert(blockData.Length == BlockFormat.BC2ByteSize);
+
             var block = BC2BlockData.FromBytes(blockData);
 
             var colorTable = BC1ColorTableFactory.Create(block.Color0, block.Color1);

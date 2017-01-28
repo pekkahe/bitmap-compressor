@@ -34,7 +34,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             bitmap.SetPixel(3, 2, color);
             bitmap.SetPixel(3, 3, color);
 
-            var bmp = DirectBitmap.FromBitmap(bitmap);
+            var bmp = DirectBitmap.CreateFromBitmap(bitmap);
 
             var colors = bmp.GetBlockPixels(new Point(0, 0));
 
@@ -66,7 +66,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             bitmap.SetPixel(3, 2, color);
             bitmap.SetPixel(3, 3, color);
 
-            var bmp = DirectBitmap.FromBitmap(bitmap);
+            var bmp = DirectBitmap.CreateFromBitmap(bitmap);
 
             var colors = bmp.GetBlockPixels(new Point(0, 0));
 
@@ -97,7 +97,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             bitmap.SetPixel(7, 6, color);
             bitmap.SetPixel(7, 7, color);
 
-            var bmp = DirectBitmap.FromBitmap(bitmap);
+            var bmp = DirectBitmap.CreateFromBitmap(bitmap);
 
             var colors = bmp.GetBlockPixels(new Point(1, 1));
 
@@ -131,7 +131,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             bitmap.SetPixel(3, 2, color4);
             bitmap.SetPixel(3, 3, color4);
 
-            var bmp = DirectBitmap.FromBitmap(bitmap);
+            var bmp = DirectBitmap.CreateFromBitmap(bitmap);
 
             var colors = bmp.GetBlockPixels(new Point(0, 0));
 

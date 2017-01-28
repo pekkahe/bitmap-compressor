@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using BitmapCompressor.Formats;
+using BitmapCompressor.DataTypes;
+using BitmapCompressor.Utilities;
 
 namespace BitmapCompressor.Tests.Helpers
 {
@@ -34,6 +36,18 @@ namespace BitmapCompressor.Tests.Helpers
         public static void AddAlpha(ref Color color)
         {
             color = Color.FromArgb(50, color.R, color.G, color.B);
+        }
+
+        public static Color565[] To16Bit(Color[] colors)
+        {
+            var colors16 = new Color565[colors.Length];
+
+            for (int i = 0; i < colors.Length; ++i)
+            {
+                colors16[i] = ColorUtility.To16Bit(colors[i]);
+            }
+
+            return colors16;
         }
     }
 }

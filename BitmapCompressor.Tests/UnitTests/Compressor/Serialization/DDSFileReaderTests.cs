@@ -21,7 +21,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
             var stream = new MemoryStream();
             var writer = new BinaryWriter(stream);
 
-            // Write the "magic number"
+            // Write the DDS "magic number"
             writer.Write(DDSFile.MagicNumber);
 
             // Write the header data structure directly to the buffer
