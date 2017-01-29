@@ -27,9 +27,9 @@ namespace BitmapCompressor.Formats
         /// </summary>
         private const int AlphaColorIndex = 0x3;
 
-        public CompressionFormat Name => CompressionFormat.BC1;
-
         public int BlockSize => BlockFormat.BC1ByteSize;
+
+        public FourCC FourCC => FourCC.BC1Unorm;
 
         public byte[] Compress(Color[] colors)
         {

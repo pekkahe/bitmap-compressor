@@ -2,8 +2,8 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using BitmapCompressor.DataTypes;
-using BitmapCompressor.Serialization.FileFormat;
 using BitmapCompressor.Formats;
+using BitmapCompressor.Serialization.FileFormat;
 
 namespace BitmapCompressor.Serialization
 {
@@ -31,7 +31,7 @@ namespace BitmapCompressor.Serialization
             int imageWidth = (int) header.Width;
             int imageHeight = (int) header.Height;
 
-            var format = DDSPixelFormatFourCC.ToCompressionFormat(header.PixelFormat.FourCC);
+            var format = ToCompressionFormat(header.PixelFormat.FourCC);
             var surfaceData = ReadSurfaceData(imageWidth, imageHeight, format);
 
             return DDSImage.CreateFromData(imageWidth, imageHeight, surfaceData, format);
@@ -58,6 +58,21 @@ namespace BitmapCompressor.Serialization
             handle.Free();
 
             return header;
+        }
+
+        /// <summary>
+        /// Instantiates the appropriate <see cref="IBlockCompressionFormat"/> for
+        /// the specified DirectX FourCC (four-character code) value.
+        /// </summary>
+        public static IBlockCompressionFormat ToCompressionFormat(uint fourCC)
+        {
+            if (fourCC == FourCC.BC1Unorm.Value)
+                return new BC1Format();
+            if (fourCC == FourCC.BC2Unorm.Value)
+                return new BC2Format();
+
+            throw new ArgumentOutOfRangeException("Unable to determine compression " +
+                                                 $"format for unknown FourCC code: {fourCC}.");
         }
 
         private byte[] ReadSurfaceData(int width, int height, IBlockCompressionFormat format)

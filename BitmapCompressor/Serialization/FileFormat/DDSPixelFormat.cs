@@ -17,12 +17,9 @@ namespace BitmapCompressor.Serialization.FileFormat
         /// </summary>
         public uint Flags;
 
-        /// <summary><para>
+        /// <summary>
         /// Four-character codes for specifying compressed or custom formats. 
-        /// Possible values include: DXT1, DXT2, DXT3, DXT4, or DXT5.
-        /// </para><para>
-        /// Use one of the values provided by <see cref="DDSPixelFormatFourCC"/>.
-        /// </para></summary>
+        /// </summary>
         /// <remarks>
         /// When using a four-character code, <see cref="Flags"/> must include
         /// <see cref="DDSPixelFormatFlags.DDPF_FOURCC"/>.

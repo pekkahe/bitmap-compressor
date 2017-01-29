@@ -18,9 +18,9 @@ namespace BitmapCompressor.Formats
     /// </para></remarks>
     public class BC2Format : IBlockCompressionFormat
     {
-        public CompressionFormat Name => CompressionFormat.BC2;
-
         public int BlockSize => BlockFormat.BC2ByteSize;
+
+        public FourCC FourCC => FourCC.BC2Unorm;
 
         public byte[] Compress(Color[] colors)
         {

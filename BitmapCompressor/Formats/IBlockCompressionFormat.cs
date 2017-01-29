@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using BitmapCompressor.DataTypes;
 
 namespace BitmapCompressor.Formats
 {
@@ -16,14 +17,14 @@ namespace BitmapCompressor.Formats
     public interface IBlockCompressionFormat
     {
         /// <summary>
-        /// The name of this compression format.
-        /// </summary>
-        CompressionFormat Name { get; }
-
-        /// <summary>
         /// The number of bytes a single block of this format consumes.
         /// </summary>
         int BlockSize { get; }
+
+        /// <summary>
+        /// The DirectX four-character code of this compression format.
+        /// </summary>
+        FourCC FourCC { get; }
 
         /// <summary>
         /// Compresses the 32-bit RGB colors of a 4x4 pixel block into

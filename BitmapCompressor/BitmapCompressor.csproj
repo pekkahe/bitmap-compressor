@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Formats\CompressionFormat.cs" />
     <Compile Include="DataTypes\DirectBitmap.cs" />
     <Compile Include="DataTypes\ICompressedImage.cs" />
     <Compile Include="DataTypes\IImage.cs" />
@@ -65,7 +64,6 @@
     <Compile Include="BlockCompressor.cs" />
     <Compile Include="Formats\BlockFormat.cs" />
     <Compile Include="DataTypes\ColorSpace.cs" />
-    <Compile Include="Serialization\DDSFileHeaderFactory.cs" />
     <Compile Include="Serialization\DDSFileReader.cs" />
     <Compile Include="Serialization\DDSFileWriter.cs" />
     <Compile Include="Serialization\FileFormat\DDSCapsAdditionalFlags.cs" />
@@ -75,12 +73,12 @@
     <Compile Include="Serialization\FileFormat\DDSFileHeaderFlags.cs" />
     <Compile Include="Serialization\FileFormat\DDSPixelFormat.cs" />
     <Compile Include="Serialization\FileFormat\DDSPixelFormatFlags.cs" />
-    <Compile Include="Serialization\FileFormat\DDSPixelFormatFourCC.cs" />
     <Compile Include="DataTypes\DDSImage.cs" />
     <Compile Include="IBlockCompressor.cs" />
     <Compile Include="DataTypes\Color565.cs" />
     <Compile Include="Utilities\ColorUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DataTypes\FourCC.cs" />
     <Compile Include="Utilities\PointUtility.cs" />
   </ItemGroup>
   <ItemGroup />

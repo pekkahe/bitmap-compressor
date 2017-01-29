@@ -70,7 +70,6 @@
     <Compile Include="UnitTests\Compressor\DataTypes\ColorSpaceTests.cs" />
     <Compile Include="UnitTests\Compressor\Formats\BC2BlockDataTests.cs" />
     <Compile Include="UnitTests\Compressor\Formats\BC2FormatTests.cs" />
-    <Compile Include="UnitTests\Compressor\Serialization\DDSFileHeaderFactoryTests.cs" />
     <Compile Include="UnitTests\Compressor\Serialization\DDSFileReaderTests.cs" />
     <Compile Include="UnitTests\Compressor\Serialization\DDSFileWriterTests.cs" />
     <Compile Include="UnitTests\Compressor\Utilities\ColorUtilityTests.cs" />

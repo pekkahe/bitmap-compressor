@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using BitmapCompressor.Formats;
+using BitmapCompressor.DataTypes;
 using BitmapCompressor.Serialization;
 using BitmapCompressor.Serialization.FileFormat;
 using NUnit.Framework;
@@ -25,7 +25,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
             writer.Write(DDSFile.MagicNumber);
 
             // Write the header data structure directly to the buffer
-            var header = DDSFileHeaderFactory.CreateHeader(imageWidth, imageHeight, CompressionFormat.BC1);
+            var header = DDSFileWriter.CreateHeader(imageWidth, imageHeight, FourCC.BC1Unorm.Value);
             var headerData = new byte[Marshal.SizeOf(typeof(DDSFileHeader))];
             var handle = GCHandle.Alloc(headerData, GCHandleType.Pinned);
             Marshal.StructureToPtr(header, handle.AddrOfPinnedObject(), true);
