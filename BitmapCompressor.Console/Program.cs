@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Diagnostics;
-using BitmapCompressor.Formats;
 using BitmapCompressor.Console.CommandLine;
 using BitmapCompressor.Console.Utilities;
-using BitmapCompressor.DataTypes;
+using BitmapCompressor.Formats;
 
 namespace BitmapCompressor.Console
 {
@@ -76,21 +75,14 @@ namespace BitmapCompressor.Console
             switch (args.Action)
             {
                 case CommandLineAction.CompressBC1:
-                {
-                    CheckIfFilesExist(args.BMPFileName, args.DDSFileName, args.Overwrite);
-
-                    var inputImage  = _fileSystem.LoadBitmap(args.BMPFileName);
-                    var outputImage = _blockCompressor.Compress(inputImage, new BC1Format());
-
-                    outputImage.Save(args.DDSFileName);
-                    break;
-                }
                 case CommandLineAction.CompressBC2:
                 {
                     CheckIfFilesExist(args.BMPFileName, args.DDSFileName, args.Overwrite);
 
+                    var format = ToCompressionFormat(args.Action);
+
                     var inputImage  = _fileSystem.LoadBitmap(args.BMPFileName);
-                    var outputImage = _blockCompressor.Compress(inputImage, new BC2Format());
+                    var outputImage = _blockCompressor.Compress(inputImage, format);
 
                     outputImage.Save(args.DDSFileName);
                     break;
@@ -128,6 +120,21 @@ namespace BitmapCompressor.Console
             System.Console.WriteLine($"File '{fileName}' already exists. Do you wish to overwrite it?");
 
             return _inputSystem.PromptYesOrNo();
+        }
+
+        private static IBlockCompressionFormat ToCompressionFormat(CommandLineAction action)
+        {
+            switch (action)
+            {
+                case CommandLineAction.CompressBC1:
+                    return new BC1Format();
+
+                case CommandLineAction.CompressBC2:
+                    return new BC2Format();
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action));
+            }
         }
     }
 }
