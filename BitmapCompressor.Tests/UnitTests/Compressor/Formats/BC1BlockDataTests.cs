@@ -1,6 +1,7 @@
 ﻿using System;
 using BitmapCompressor.Formats;
 using BitmapCompressor.DataTypes;
+using BitmapCompressor.Tests.Helpers;
 using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
@@ -9,7 +10,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
     public class BC1BlockDataTests
     {
         [Test]
-        public void ByteDataIsOfCorrectSize()
+        public void ConversionToBytesReturnsArrayOfCorrectSize()
         {
             var block = new BC1BlockData();
 
@@ -20,49 +21,46 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void ByteDataContainsColor0()
+        public void ConversionToBytesSetsColor0()
         {
-            const byte color16Low = 200;
-            const byte color16High = 150;
-            const ushort color16 = (color16High << 8) + color16Low;
+            var color = new Color565Helper(40500);
 
             var block = new BC1BlockData();
-            block.Color0 = Color565.FromValue(color16);
-            var buffer = block.ToBytes();
-
-            byte color0Low = buffer[0];
-            byte color0High = buffer[1];
-
-            Assert.AreEqual(color16Low, color0Low, "Expected 16-bit Color0 low 8-bits to be {0}", color16Low);
-            Assert.AreEqual(color16High, color0High, "Expected 16-bit Color0 high 8-bits to be {0}", color16High);
-        }
-
-        [Test]
-        public void ByteDataContainsColor1()
-        {
-            const byte color16Low = 200;
-            const byte color16High = 150;
-            const ushort color16 = (color16High << 8) + color16Low;
-
-            var block = new BC1BlockData();
-            block.Color1 = Color565.FromValue(color16);
+            block.Color0 = color.Color;
 
             var buffer = block.ToBytes();
 
-            byte color1Low = buffer[2];
-            byte color1High = buffer[3];
+            byte c0Low = buffer[0];
+            byte c0Hi = buffer[1];
 
-            Assert.AreEqual(color16Low, color1Low, "Expected 16-bit Color1 low 8-bits to be {0}", color16Low);
-            Assert.AreEqual(color16High, color1High, "Expected 16-bit Color1 high 8-bits to be {0}", color16High);
+            Assert.AreEqual(color.LowByte, c0Low);
+            Assert.AreEqual(color.HighByte, c0Hi);
         }
 
         [Test]
-        public void ByteDataContainsColorIndexes()
+        public void ConversionToBytesSetsColor1()
         {
-            byte expectedIndexes0 = Convert.ToByte("11100100", 2); // d_c_b_a_
-            byte expectedIndexes1 = Convert.ToByte("00111001", 2); // h_g_f_e_
-            byte expectedIndexes2 = Convert.ToByte("01001110", 2); // l_k_j_i_
-            byte expectedIndexes3 = Convert.ToByte("10010011", 2); // p_o_n_m_
+            var color = new Color565Helper(40500);
+
+            var block = new BC1BlockData();
+            block.Color1 = color.Color;
+
+            var buffer = block.ToBytes();
+
+            byte c1Low = buffer[2];
+            byte c1Hi = buffer[3];
+
+            Assert.AreEqual(color.LowByte, c1Low);
+            Assert.AreEqual(color.HighByte, c1Hi);
+        }
+
+        [Test]
+        public void ConversionToBytesSetsColorIndexes()
+        {
+            byte expectedIndexes0 = Convert.ToByte("11100100", 2); // d c b a
+            byte expectedIndexes1 = Convert.ToByte("00111001", 2); // h g f e
+            byte expectedIndexes2 = Convert.ToByte("01001110", 2); // l k j i
+            byte expectedIndexes3 = Convert.ToByte("10010011", 2); // p o n m  
 
             var block = new BC1BlockData();
                                             // pixel    value    byte
@@ -94,6 +92,66 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             Assert.AreEqual(expectedIndexes1, indexes1);
             Assert.AreEqual(expectedIndexes2, indexes2);
             Assert.AreEqual(expectedIndexes3, indexes3);
+        }
+
+        [Test]
+        public void ConstructionFromBytesSetsColor0()
+        {
+            var color = new Color565Helper(40500);
+            var bytes = new byte[BlockFormat.BC1ByteSize];
+            bytes[0] = color.LowByte;
+            bytes[1] = color.HighByte;
+
+            var block = BC1BlockData.FromBytes(bytes);
+
+            Assert.AreEqual(color.Color.Value, block.Color0.Value);
+        }
+
+        [Test]
+        public void ConstructionFromBytesSetsColor1()
+        {
+            var color = new Color565Helper(40500);
+            var bytes = new byte[BlockFormat.BC1ByteSize];
+            bytes[2] = color.LowByte;
+            bytes[3] = color.HighByte;
+
+            var block = BC1BlockData.FromBytes(bytes);
+
+            Assert.AreEqual(color.Color.Value, block.Color1.Value);
+        }
+
+        [Test]
+        public void ConstructionFromBytesSetsColorIndexes()
+        {
+            byte indexes0 = Convert.ToByte("11100100", 2); // d c b a 
+            byte indexes1 = Convert.ToByte("00111001", 2); // h g f e 
+            byte indexes2 = Convert.ToByte("01001110", 2); // l k j i 
+            byte indexes3 = Convert.ToByte("10010011", 2); // p o n m 
+
+            var bytes = new byte[BlockFormat.BC1ByteSize];
+            bytes[4] = indexes0;
+            bytes[5] = indexes1;
+            bytes[6] = indexes2;
+            bytes[7] = indexes3;
+
+            var block = BC1BlockData.FromBytes(bytes);
+
+            Assert.AreEqual(0, block.ColorIndexes[0]);  // a    00
+            Assert.AreEqual(1, block.ColorIndexes[1]);  // b    01
+            Assert.AreEqual(2, block.ColorIndexes[2]);  // c    10
+            Assert.AreEqual(3, block.ColorIndexes[3]);  // d    11
+            Assert.AreEqual(1, block.ColorIndexes[4]);  // e    01
+            Assert.AreEqual(2, block.ColorIndexes[5]);  // f    10
+            Assert.AreEqual(3, block.ColorIndexes[6]);  // g    11
+            Assert.AreEqual(0, block.ColorIndexes[7]);  // h    00
+            Assert.AreEqual(2, block.ColorIndexes[8]);  // i    10
+            Assert.AreEqual(3, block.ColorIndexes[9]);  // j    11
+            Assert.AreEqual(0, block.ColorIndexes[10]); // k    00
+            Assert.AreEqual(1, block.ColorIndexes[11]); // l    01
+            Assert.AreEqual(3, block.ColorIndexes[12]); // m    11
+            Assert.AreEqual(0, block.ColorIndexes[13]); // n    00
+            Assert.AreEqual(1, block.ColorIndexes[14]); // o    01
+            Assert.AreEqual(2, block.ColorIndexes[15]); // p    10                    
         }
     }
 }

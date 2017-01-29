@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Color565Helper.cs" />
     <Compile Include="Helpers\Profiler.cs" />
     <Compile Include="IntegrationTests\BaseIntegrationTests.cs" />
     <Compile Include="IntegrationTests\BC2CompressionTests.cs" />

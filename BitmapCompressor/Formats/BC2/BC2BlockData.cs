@@ -153,10 +153,10 @@ namespace BitmapCompressor.Formats
                 block.ColorIndexes[c] = (indexes[row] >> 4) & 0x03;
                 block.ColorIndexes[d] = (indexes[row] >> 6) & 0x03;
 
-                block.ColorAlphas[a] = (byte)  (alphas[row, 1] & 0x00FF);
-                block.ColorAlphas[b] = (byte) ((alphas[row, 1] & 0xFF00) >> 4);
-                block.ColorAlphas[c] = (byte)  (alphas[row, 0] & 0x00FF);
-                block.ColorAlphas[d] = (byte) ((alphas[row, 0] & 0xFF00) >> 4);
+                block.ColorAlphas[a] = (byte)  (alphas[row, 1] & 0x0F);
+                block.ColorAlphas[b] = (byte) ((alphas[row, 1] & 0xF0) >> 4);
+                block.ColorAlphas[c] = (byte)  (alphas[row, 0] & 0x0F);
+                block.ColorAlphas[d] = (byte) ((alphas[row, 0] & 0xF0) >> 4);
             }
 
             return block;

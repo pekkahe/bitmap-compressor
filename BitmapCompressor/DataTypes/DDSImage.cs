@@ -28,14 +28,14 @@ namespace BitmapCompressor.DataTypes
 
         public IBlockCompressionFormat GetFormat() => _format;
         
-        public byte[] GetBlockData(Point block, int blockSize)
+        public byte[] GetBlockData(Point block)
         {
             int numberOfHorizontalBlocks = Width / BlockFormat.Dimension;
 
             int blockIndex = PointUtility.ToRowMajor(block, numberOfHorizontalBlocks);
-            int bufferIndex = blockIndex * blockSize;
+            int bufferIndex = blockIndex * _format.BlockSize;
 
-            var blockData = _surfaceData.SubArray(bufferIndex, blockSize);
+            var blockData = _surfaceData.SubArray(bufferIndex, _format.BlockSize);
 
             return blockData;
         }

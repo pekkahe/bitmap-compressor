@@ -12,9 +12,6 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
     [TestFixture(Category = "DataTypes")]
     public class DDSImageTests
     {
-        private const int BlockSize = 8;
-        private const int BlockDimension = 4;
-
         [Test]
         public void ConstructionCalculatesBufferSizeWhenBC1()
         {
@@ -37,11 +34,13 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         public void ReadDataForSoleBlock()
         {
             var format = new Mock<IBlockCompressionFormat>();
+            format.Setup(f => f.BlockSize).Returns(BlockFormat.BC1ByteSize);
 
-            var buffer = Enumerable.Repeat((byte) 255, BlockSize).ToArray();
-            var ddsImage = DDSImage.CreateFromData(BlockDimension, BlockDimension, buffer, format.Object);
+            var buffer = Enumerable.Repeat((byte) 255, BlockFormat.BC1ByteSize).ToArray();
+            var ddsImage = DDSImage.CreateFromData(BlockFormat.Dimension, BlockFormat.Dimension, 
+                buffer, format.Object);
 
-            var data = ddsImage.GetBlockData(new Point(0, 0), BlockSize);
+            var data = ddsImage.GetBlockData(new Point(0, 0));
 
             CollectionAssert.AreEqual(buffer, data);
         }
@@ -52,14 +51,16 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             const int numberOfBlocks = 4;
 
             var format = new Mock<IBlockCompressionFormat>();
+            format.Setup(f => f.BlockSize).Returns(BlockFormat.BC1ByteSize);
 
-            var bytes = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
-            var buffer = new byte[numberOfBlocks * BlockSize];
-            buffer.CopyFrom(bytes, buffer.Length - BlockSize);
+            var bytes = Enumerable.Repeat((byte) 200, BlockFormat.BC1ByteSize).ToArray();
+            var buffer = new byte[numberOfBlocks * BlockFormat.BC1ByteSize];
+            buffer.CopyFrom(bytes, buffer.Length - BlockFormat.BC1ByteSize);
 
-            var dds = DDSImage.CreateFromData(numberOfBlocks * BlockDimension, BlockDimension, buffer, format.Object);
+            var dds = DDSImage.CreateFromData(numberOfBlocks * BlockFormat.Dimension, 
+                BlockFormat.Dimension, buffer, format.Object);
 
-            var blockData = dds.GetBlockData(new Point(3, 0), BlockSize);
+            var blockData = dds.GetBlockData(new Point(3, 0));
 
             CollectionAssert.AreEqual(bytes, blockData);
         }
@@ -70,10 +71,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             var format = new Mock<IBlockCompressionFormat>();
             format.Setup(f => f.BlockSize).Returns(BlockFormat.BC1ByteSize);
 
-            var bytes = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
+            var bytes = Enumerable.Repeat((byte) 200, BlockFormat.BC1ByteSize).ToArray();
             var block = BC1BlockData.FromBytes(bytes);
 
-            var dds = DDSImage.CreateEmpty(BlockDimension, BlockDimension, format.Object);
+            var dds = DDSImage.CreateEmpty(BlockFormat.Dimension, BlockFormat.Dimension, format.Object);
 
             dds.SetBlockData(new Point(0, 0), block.ToBytes());
 
@@ -88,23 +89,23 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             var format = new Mock<IBlockCompressionFormat>();
             format.Setup(f => f.BlockSize).Returns(BlockFormat.BC1ByteSize);
 
-            var block1 = Enumerable.Repeat((byte) 50, BlockSize).ToArray();
-            var block2 = Enumerable.Repeat((byte) 100, BlockSize).ToArray();
-            var block3 = Enumerable.Repeat((byte) 150, BlockSize).ToArray();
-            var block4 = Enumerable.Repeat((byte) 200, BlockSize).ToArray();
+            var block1 = Enumerable.Repeat((byte) 50, BlockFormat.BC1ByteSize).ToArray();
+            var block2 = Enumerable.Repeat((byte) 100, BlockFormat.BC1ByteSize).ToArray();
+            var block3 = Enumerable.Repeat((byte) 150, BlockFormat.BC1ByteSize).ToArray();
+            var block4 = Enumerable.Repeat((byte) 200, BlockFormat.BC1ByteSize).ToArray();
 
-            var buffer = new byte[numberOfBlocks * BlockSize];
-            Array.Copy(block1, 0, buffer, 0, BlockSize);
-            Array.Copy(block2, 0, buffer, 8, BlockSize);
-            Array.Copy(block3, 0, buffer, 16, BlockSize);
-            Array.Copy(block4, 0, buffer, 24, BlockSize);
+            var buffer = new byte[numberOfBlocks * BlockFormat.BC1ByteSize];
+            Array.Copy(block1, 0, buffer, 0, BlockFormat.BC1ByteSize);
+            Array.Copy(block2, 0, buffer, 8, BlockFormat.BC1ByteSize);
+            Array.Copy(block3, 0, buffer, 16, BlockFormat.BC1ByteSize);
+            Array.Copy(block4, 0, buffer, 24, BlockFormat.BC1ByteSize);
 
             var data1 = BC1BlockData.FromBytes(block1).ToBytes();
             var data2 = BC1BlockData.FromBytes(block2).ToBytes();
             var data3 = BC1BlockData.FromBytes(block3).ToBytes();
             var data4 = BC1BlockData.FromBytes(block4).ToBytes();
 
-            int widthAndHeight = 2 * BlockDimension;
+            int widthAndHeight = 2 * BlockFormat.Dimension;
 
             var ddsImage = DDSImage.CreateEmpty(widthAndHeight, widthAndHeight, format.Object);
 

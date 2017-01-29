@@ -16,8 +16,7 @@ namespace BitmapCompressor.DataTypes
         /// for the specified 4x4 block coordinates.
         /// </summary>
         /// <param name="block">The coordinates for the 4x4 block to read the layout data for.</param>
-        /// <param name="blockSize">The number of bytes the block consumes.</param>
-        byte[] GetBlockData(Point block, int blockSize);
+        byte[] GetBlockData(Point block);
 
         /// <summary>
         /// Writes the block-compressed data to the image's main surface buffer 

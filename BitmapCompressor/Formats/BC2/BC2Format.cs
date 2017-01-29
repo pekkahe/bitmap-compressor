@@ -60,6 +60,10 @@ namespace BitmapCompressor.Formats
                 int index = block.ColorIndexes[i];
                 int alpha = block.ColorAlphas[i];
 
+                // Convert 4-bit alpha to 8-bit by shifting the bits left and ORing
+                // with the most significant bits to calculate the remaining values
+                alpha = (alpha << 4) | (alpha & 0x0F);
+
                 var color16 = colorTable[index];
                 var color32 = Color.FromArgb(alpha, ColorUtility.To32Bit(color16));
 
