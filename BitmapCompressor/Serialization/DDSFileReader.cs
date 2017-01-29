@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using BitmapCompressor.DataTypes;
@@ -32,7 +31,7 @@ namespace BitmapCompressor.Serialization
             int imageWidth = (int) header.Width;
             int imageHeight = (int) header.Height;
 
-            var format = DetermineCompressionFormat(header.PixelFormat);
+            var format = DDSPixelFormatFourCC.ToCompressionFormat(header.PixelFormat.FourCC);
             var surfaceData = ReadSurfaceData(imageWidth, imageHeight, format);
 
             return DDSImage.CreateFromData(imageWidth, imageHeight, surfaceData, format);
@@ -59,17 +58,6 @@ namespace BitmapCompressor.Serialization
             handle.Free();
 
             return header;
-        }
-
-        private IBlockCompressionFormat DetermineCompressionFormat(DDSPixelFormat pixelFormat)
-        {
-            if (pixelFormat.FourCC == DDSPixelFormatFourCC.FOURCC_DXT1)
-                return new BC1Format();
-
-            if (pixelFormat.FourCC == DDSPixelFormatFourCC.FOURCC_DXT2)
-                return new BC2Format();
-
-            throw new ArgumentOutOfRangeException(nameof(pixelFormat.FourCC));
         }
 
         private byte[] ReadSurfaceData(int width, int height, IBlockCompressionFormat format)

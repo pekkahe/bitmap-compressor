@@ -18,7 +18,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
             {
                 Size = 32,
                 Flags = DDSPixelFormatFlags.DDPF_FOURCC,
-                FourCC = DDSPixelFormatFourCC.FOURCC_DXT1
+                FourCC = DDSPixelFormatFourCC.FOURCC_BC1_UNORM
             };
             var header = DDSFileHeaderFactory.CreateHeader(1024, 512, CompressionFormat.BC1);
 
