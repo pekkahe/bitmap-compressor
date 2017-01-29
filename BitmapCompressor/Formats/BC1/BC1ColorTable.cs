@@ -12,7 +12,7 @@ namespace BitmapCompressor.Formats
     /// intermediate colors (color2 and color3). Only the two reference colors are stored 
     /// and compressed, and the intermediate colors are calculated from them.
     /// </remarks>
-    public static class BC1ColorTableFactory
+    public static class BC1ColorTable
     {
         /// <summary>
         /// Creates a BC1 color table from two 16-bit reference colors. The table contains

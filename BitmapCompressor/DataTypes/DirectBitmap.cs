@@ -47,9 +47,7 @@ namespace BitmapCompressor.DataTypes
                 return;
 
             if (disposing)
-            {
                 Bitmap.Dispose();
-            }
 
             _dataHandle.Free();
             _disposed = true;
@@ -141,6 +139,11 @@ namespace BitmapCompressor.DataTypes
             }
         }
 
+        public void Save(string fileName)
+        {
+            Bitmap.Save(fileName);
+        }
+
         public static DirectBitmap CreateFromFile(string fileName)
         {
             using (var bitmap = (Bitmap) Image.FromFile(fileName))
@@ -184,11 +187,6 @@ namespace BitmapCompressor.DataTypes
             {
                 to.UnlockBits(toData);
             }
-        }
-
-        public void Save(string fileName)
-        {
-            Bitmap.Save(fileName);
         }
     }
 }

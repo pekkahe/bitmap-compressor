@@ -89,8 +89,8 @@ namespace BitmapCompressor.Formats
             var colorSpace = new ColorSpace(colors);
 
             return colorSpace.HasAlpha?
-                BC1ColorTableFactory.CreateFor1BitAlpha(colorSpace.MinColor, colorSpace.MaxColor) :
-                BC1ColorTableFactory.Create(colorSpace.MaxColor, colorSpace.MinColor);
+                BC1ColorTable.CreateFor1BitAlpha(colorSpace.MinColor, colorSpace.MaxColor) :
+                BC1ColorTable.Create(colorSpace.MaxColor, colorSpace.MinColor);
         }
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace BitmapCompressor.Formats
         private static Color565[] CreateColorTable(Color565 color0, Color565 color1)
         {
             return color0.Value <= color1.Value ?
-                BC1ColorTableFactory.CreateFor1BitAlpha(color0, color1) :
-                BC1ColorTableFactory.Create(color0, color1);
+                BC1ColorTable.CreateFor1BitAlpha(color0, color1) :
+                BC1ColorTable.Create(color0, color1);
         }
     }
 }

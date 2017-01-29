@@ -27,7 +27,7 @@ namespace BitmapCompressor.Formats
             Debug.Assert(colors.Length == BlockFormat.PixelCount);
 
             var colorSpace = new ColorSpace(colors);
-            var colorTable = BC1ColorTableFactory.Create(colorSpace.MaxColor, colorSpace.MinColor);
+            var colorTable = BC1ColorTable.Create(colorSpace.MaxColor, colorSpace.MinColor);
 
             var block = new BC2BlockData();
             block.Color0 = colorTable[0];
@@ -51,7 +51,7 @@ namespace BitmapCompressor.Formats
 
             var block = BC2BlockData.FromBytes(blockData);
 
-            var colorTable = BC1ColorTableFactory.Create(block.Color0, block.Color1);
+            var colorTable = BC1ColorTable.Create(block.Color0, block.Color1);
 
             var colors = new Color[BlockFormat.PixelCount];
 

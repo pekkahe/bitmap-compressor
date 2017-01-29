@@ -21,20 +21,22 @@ namespace BitmapCompressor.Formats
         CompressionFormat Name { get; }
 
         /// <summary>
-        /// The number of bytes a single BCn block of this format consumes.
+        /// The number of bytes a single block of this format consumes.
         /// </summary>
         int BlockSize { get; }
 
         /// <summary>
-        /// Compresses the 16 RGB colors in a 4x4 pixel block into a BCn compressed data buffer.
+        /// Compresses the 32-bit RGB colors of a 4x4 pixel block into
+        /// a byte layout corresponding to this format.
         /// </summary>
-        /// <param name="colors">The 16 32-bit R8:G8:B8 colors to compress.</param>
+        /// <param name="colors">The 16 32-bit RGB colors to compress.</param>
         byte[] Compress(Color[] colors);
 
         /// <summary>
-        /// Decompresses the BCn data buffer into 16 (A)RGB colors.
+        /// Decompresses the byte layout corresponding to this format
+        /// into 32-bit RGB colors of a 4x4 pixel block.
         /// </summary>
-        /// <param name="block">The BCn block-compressed data to uncompress.</param>
+        /// <param name="block">The block compressed data to uncompress.</param>
         Color[] Decompress(byte[] blockData);
     }
 }

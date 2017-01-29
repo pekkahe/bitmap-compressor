@@ -49,7 +49,7 @@
     <Compile Include="DataTypes\ICompressedImage.cs" />
     <Compile Include="DataTypes\IImage.cs" />
     <Compile Include="DataTypes\IUncompressedImage.cs" />
-    <Compile Include="Formats\BC1\BC1ColorTableFactory.cs" />
+    <Compile Include="Formats\BC1\BC1ColorTable.cs" />
     <Compile Include="Formats\BC1\BC1BlockData.cs" />
     <Compile Include="Formats\BC1\BC1Format.cs" />
     <Compile Include="Formats\BC2\BC2BlockData.cs" />
