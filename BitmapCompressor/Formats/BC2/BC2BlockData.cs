@@ -5,21 +5,51 @@ using BitmapCompressor.DataTypes;
 namespace BitmapCompressor.Formats
 {
     /// <summary>
-    /// Represents the data layout for a BC2 compressed block.
+    /// Represents the data layout for a 16-byte BC2 compressed block. 
     /// </summary>
     /// <remarks>
-    /// Bit layout:
+    /// <para>
+    /// The block stores two 16-bit reference colors and a 32-bit color index table, 
+    /// similar to <see cref="BC1BlockData"/>, and also a 64-bit index table
+    /// for mapping a 4-bit alpha value to each pixel in the block.
+    /// </para>
+    /// <para>
+    /// 128-bit block layout:
+    /// -------------------------------------------------------------------------
     /// 127      119      111      103      95       87       79       71       63
     /// | alpha0 | alpha1 | alpha2 | alpha3 | alpha4 | alpha5 | alpha6 | alpha7 |
     /// 63       55       47       39       31       23       15       7        0 
-    /// | c0-low | c0-hi  | c1-low | c1-hi  | index0 | index1 | index2 | index3 |
+    /// | c0-low | c0-hi  | c1-low | c1-hi  | c-idx0 | c-idx1 | c-idx2 | c-idx3 |
     /// -------------------------------------------------------------------------
+    /// </para>
+    /// <para>
+    /// 4-bit alpha values per pixel a-p (0-15):
+    /// -----------------------------------------------------------------------------------------------
+    /// 63 62 61 60 59 58 57 56 55 54 53 52 51 50 49 48 47 46 45 44 43 42 41 40 39 38 37 36 35 34 33 32 
+    ///  |     d     |     c     |     b     |     a     |     h     |     g     |     f     |     e  
+    ///           alpha0         |        alpha1         |        alpha2         |        alpha3
+    /// 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+    ///  |     l     |     k     |     j     |     i     |     p     |     o     |     n     |     m
+    ///           alpha4         |        alpha5         |        alpha6         |        alpha7
+    /// -----------------------------------------------------------------------------------------------
+    /// </para>
+    /// <para>
+    /// 2-bit color index values per pixel a-p (0-15):
+    /// -----------------------------------------------
+    /// 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 
+    ///  |  d  |  c  |  b  |  a  |  h  |  g  |  f  |  e 
+    ///           c-idx0         |        c-idx1
+    /// 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+    ///  |  l  |  k  |  j  |  i  |  p  |  o  |  n  |  m
+    ///           c-idx2         |        c-idx3
+    /// -----------------------------------------------
+    /// </para>
     /// </remarks>
     public class BC2BlockData
     {
         /// <summary>
         /// Instantiates an empty <see cref="BC2BlockData"/> representing
-        /// the data specification of a BC2 compressed block. 
+        /// the data layout of a BC2 compressed block. 
         /// </summary>
         public BC2BlockData()
         { }
@@ -55,9 +85,7 @@ namespace BitmapCompressor.Formats
         public int[] ColorAlphas { get; } = new int[BlockFormat.PixelCount];
 
         /// <summary>
-        /// Convert the block data into a 16-byte BC2 format byte array, storing two 16-bit
-        /// reference colors and two tables mapping a color index and 4-bit alpha value, 
-        /// respectively, to each pixel in a block.
+        /// Convert the block data into a 16-byte BC2 format byte array.
         /// </summary>
         public byte[] ToBytes()
         {
@@ -116,7 +144,7 @@ namespace BitmapCompressor.Formats
         public static BC2BlockData FromBytes(byte[] bytes)
         {
             Debug.Assert(bytes.Length == BlockFormat.BC2ByteSize,
-                "Mismatching number of bytes for BC2 format.");
+                "Mismatching number of bytes for format.");
 
             byte[,] alphas  = new byte[4, 2];
             alphas[0, 0]    = bytes[0];

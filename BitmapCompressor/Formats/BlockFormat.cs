@@ -22,5 +22,10 @@ namespace BitmapCompressor.Formats
         /// The number of bytes consumed by a BC2 block.
         /// </summary>
         public const int BC2ByteSize = 16;
+
+        /// <summary>
+        /// The number of bytes consumed by a BC3 block.
+        /// </summary>
+        public const int BC3ByteSize = 16;
     }
 }

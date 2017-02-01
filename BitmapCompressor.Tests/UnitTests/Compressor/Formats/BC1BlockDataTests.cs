@@ -17,7 +17,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             var buffer = block.ToBytes();
 
             Assert.AreEqual(BlockFormat.BC1ByteSize, buffer.Length);
-            CollectionAssert.AreEqual(buffer, new byte[8] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 });
+
+            CollectionAssert.AreEqual(buffer, new byte[BlockFormat.BC1ByteSize]);
         }
 
         [Test]
