@@ -1,6 +1,5 @@
 ﻿using System;
 using BitmapCompressor.Formats;
-using BitmapCompressor.DataTypes;
 using BitmapCompressor.Tests.Helpers;
 using NUnit.Framework;
 
@@ -58,10 +57,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConversionToBytesSetsColorIndexes()
         {
-            byte expectedIndexes0 = Convert.ToByte("11100100", 2); // d c b a 
-            byte expectedIndexes1 = Convert.ToByte("00111001", 2); // h g f e 
-            byte expectedIndexes2 = Convert.ToByte("01001110", 2); // l k j i 
-            byte expectedIndexes3 = Convert.ToByte("10010011", 2); // p o n m 
+            byte expectedIndexes0 = "11 10 01 00".AsByte(); // d c b a 
+            byte expectedIndexes1 = "00 11 10 01".AsByte(); // h g f e 
+            byte expectedIndexes2 = "01 00 11 10".AsByte(); // l k j i 
+            byte expectedIndexes3 = "10 01 00 11".AsByte(); // p o n m 
                                                                               
             var block = new BC2BlockData();
                                             // pixel    value    byte
@@ -98,14 +97,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConversionToBytesSetsColorAlphas()
         {
-            byte expectedAlphas0 = Convert.ToByte("00110010", 2); // d   c   
-            byte expectedAlphas1 = Convert.ToByte("00010000", 2); // b   a   
-            byte expectedAlphas2 = Convert.ToByte("01110110", 2); // h   g   
-            byte expectedAlphas3 = Convert.ToByte("01010100", 2); // f   e   
-            byte expectedAlphas4 = Convert.ToByte("10111010", 2); // l   k   
-            byte expectedAlphas5 = Convert.ToByte("10011000", 2); // j   i   
-            byte expectedAlphas6 = Convert.ToByte("11111110", 2); // p   o   
-            byte expectedAlphas7 = Convert.ToByte("11011100", 2); // n   m   
+            byte expectedAlphas0 = "0011 0010".AsByte(); // d   c   
+            byte expectedAlphas1 = "0001 0000".AsByte(); // b   a   
+            byte expectedAlphas2 = "0111 0110".AsByte(); // h   g   
+            byte expectedAlphas3 = "0101 0100".AsByte(); // f   e   
+            byte expectedAlphas4 = "1011 1010".AsByte(); // l   k   
+            byte expectedAlphas5 = "1001 1000".AsByte(); // j   i   
+            byte expectedAlphas6 = "1111 1110".AsByte(); // p   o   
+            byte expectedAlphas7 = "1101 1100".AsByte(); // n   m   
 
             var block = new BC2BlockData();
                                             // pixel    value    byte
@@ -176,10 +175,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConstructionFromBytesSetsColorIndexes()
         {
-            byte indexes0 = Convert.ToByte("11100100", 2); // d c b a 
-            byte indexes1 = Convert.ToByte("00111001", 2); // h g f e 
-            byte indexes2 = Convert.ToByte("01001110", 2); // l k j i 
-            byte indexes3 = Convert.ToByte("10010011", 2); // p o n m 
+            byte indexes0 = "11 10 01 00".AsByte(); // d c b a 
+            byte indexes1 = "00 11 10 01".AsByte(); // h g f e 
+            byte indexes2 = "01 00 11 10".AsByte(); // l k j i 
+            byte indexes3 = "10 01 00 11".AsByte(); // p o n m 
 
             var bytes = new byte[BlockFormat.BC2ByteSize];
             bytes[12] = indexes0;
@@ -210,14 +209,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConstructionFromBytesSetsColorAlphas()
         {
-            byte alphas0 = Convert.ToByte("00110010", 2); // d   c   
-            byte alphas1 = Convert.ToByte("00010000", 2); // b   a   
-            byte alphas2 = Convert.ToByte("01110110", 2); // h   g   
-            byte alphas3 = Convert.ToByte("01010100", 2); // f   e   
-            byte alphas4 = Convert.ToByte("10111010", 2); // l   k   
-            byte alphas5 = Convert.ToByte("10011000", 2); // j   i   
-            byte alphas6 = Convert.ToByte("11111110", 2); // p   o   
-            byte alphas7 = Convert.ToByte("11011100", 2); // n   m   
+            byte alphas0 = "0011 0010".AsByte(); // d   c   
+            byte alphas1 = "0001 0000".AsByte(); // b   a   
+            byte alphas2 = "0111 0110".AsByte(); // h   g   
+            byte alphas3 = "0101 0100".AsByte(); // f   e   
+            byte alphas4 = "1011 1010".AsByte(); // l   k   
+            byte alphas5 = "1001 1000".AsByte(); // j   i   
+            byte alphas6 = "1111 1110".AsByte(); // p   o   
+            byte alphas7 = "1101 1100".AsByte(); // n   m   
 
             var bytes = new byte[BlockFormat.BC2ByteSize];
             bytes[0] = alphas0;

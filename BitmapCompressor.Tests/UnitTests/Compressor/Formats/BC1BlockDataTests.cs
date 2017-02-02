@@ -1,6 +1,5 @@
 ﻿using System;
 using BitmapCompressor.Formats;
-using BitmapCompressor.DataTypes;
 using BitmapCompressor.Tests.Helpers;
 using NUnit.Framework;
 
@@ -58,10 +57,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConversionToBytesSetsColorIndexes()
         {
-            byte expectedIndexes0 = Convert.ToByte("11100100", 2); // d c b a
-            byte expectedIndexes1 = Convert.ToByte("00111001", 2); // h g f e
-            byte expectedIndexes2 = Convert.ToByte("01001110", 2); // l k j i
-            byte expectedIndexes3 = Convert.ToByte("10010011", 2); // p o n m  
+            byte expectedIndexes0 = "11 10 01 00".AsByte(); // d c b a
+            byte expectedIndexes1 = "00 11 10 01".AsByte(); // h g f e
+            byte expectedIndexes2 = "01 00 11 10".AsByte(); // l k j i
+            byte expectedIndexes3 = "10 01 00 11".AsByte(); // p o n m  
 
             var block = new BC1BlockData();
                                             // pixel    value    byte
@@ -124,10 +123,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConstructionFromBytesSetsColorIndexes()
         {
-            byte indexes0 = Convert.ToByte("11100100", 2); // d c b a 
-            byte indexes1 = Convert.ToByte("00111001", 2); // h g f e 
-            byte indexes2 = Convert.ToByte("01001110", 2); // l k j i 
-            byte indexes3 = Convert.ToByte("10010011", 2); // p o n m 
+            byte indexes0 = "11 10 01 00".AsByte(); // d c b a 
+            byte indexes1 = "00 11 10 01".AsByte(); // h g f e 
+            byte indexes2 = "01 00 11 10".AsByte(); // l k j i 
+            byte indexes3 = "10 01 00 11".AsByte(); // p o n m 
 
             var bytes = new byte[BlockFormat.BC1ByteSize];
             bytes[4] = indexes0;

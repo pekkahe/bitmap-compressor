@@ -109,26 +109,26 @@ namespace BitmapCompressor.Formats
             // index values given for each pixel a-p (0-15) 
             byte[] alphas = new byte[6]; 
 
-            alphas[0] = (byte)  ((AlphaIndexes[0]  & 0x07) |        // all 3 bits
-                                ((AlphaIndexes[1]  & 0x07) << 3) |  // all 3 bits   
-                                ((AlphaIndexes[2]  & 0x03) << 6));  // 2 LSB
-            alphas[1] = (byte) (((AlphaIndexes[2]  & 0x07) >> 2) |  // 1 MSB     
-                                ((AlphaIndexes[3]  & 0x07) << 1) |  // all 3 bits
-                                ((AlphaIndexes[4]  & 0x07) << 4) |  // all 3 bits
-                                ((AlphaIndexes[5]  & 0x01) << 7));  // 1 LSB
-            alphas[2] = (byte) (((AlphaIndexes[5]  & 0x07) >> 1) |  // 2 MSB
-                                ((AlphaIndexes[6]  & 0x07) << 4) |  // all 3 bits
-                                ((AlphaIndexes[7]  & 0x07) << 7));  // all 3 bits
-            alphas[3] = (byte) (((AlphaIndexes[8]  & 0x07)) |       // all 3 bits
-                                ((AlphaIndexes[9]  & 0x07) << 3) |  // all 3 bits
-                                ((AlphaIndexes[10] & 0x03) << 6));  // 2 LSB
-            alphas[4] = (byte) (((AlphaIndexes[10] & 0x07) >> 2) |  // 1 MSB
-                                ((AlphaIndexes[11] & 0x07) << 1) |  // all 3 bits
-                                ((AlphaIndexes[12] & 0x07) << 4) |  // all 3 bits
-                                ((AlphaIndexes[13] & 0x01) << 7));  // 1 LSB
-            alphas[5] = (byte) (((AlphaIndexes[13] & 0x07) >> 1) |  // 2 MSB
-                                ((AlphaIndexes[14] & 0x07) << 4) |  // all 3 bits
-                                ((AlphaIndexes[15] & 0x07) << 7));  // all 3 bits
+            alphas[0] = (byte)  ((AlphaIndexes[0]  & 0x07) |        // xxxx x111
+                                ((AlphaIndexes[1]  & 0x07) << 3) |  // xx11 1xxx      
+                                ((AlphaIndexes[2]  & 0x03) << 6));  // 11xx xxxx LSB
+            alphas[1] = (byte) (((AlphaIndexes[2]  & 0x07) >> 2) |  // xxxx xxx1 MSB
+                                ((AlphaIndexes[3]  & 0x07) << 1) |  // xxxx 111x
+                                ((AlphaIndexes[4]  & 0x07) << 4) |  // x111 xxxx     
+                                ((AlphaIndexes[5]  & 0x01) << 7));  // 1xxx xxxx LSB
+            alphas[2] = (byte) (((AlphaIndexes[5]  & 0x07) >> 1) |  // xxxx xx11 MSB
+                                ((AlphaIndexes[6]  & 0x07) << 2) |  // xxx1 11xx
+                                ((AlphaIndexes[7]  & 0x07) << 5));  // 111x xxxx
+            alphas[3] = (byte) (((AlphaIndexes[8]  & 0x07)) |       // xxxx x111
+                                ((AlphaIndexes[9]  & 0x07) << 3) |  // xx11 1xxx       
+                                ((AlphaIndexes[10] & 0x03) << 6));  // 11xx xxxx LSB
+            alphas[4] = (byte) (((AlphaIndexes[10] & 0x07) >> 2) |  // xxxx xxx1 MSB
+                                ((AlphaIndexes[11] & 0x07) << 1) |  // xxxx 111x
+                                ((AlphaIndexes[12] & 0x07) << 4) |  // x111 xxxx
+                                ((AlphaIndexes[13] & 0x01) << 7));  // 1xxx xxxx LSB
+            alphas[5] = (byte) (((AlphaIndexes[13] & 0x07) >> 1) |  // xxxx xx11 MSB
+                                ((AlphaIndexes[14] & 0x07) << 2) |  // xxx1 11xx
+                                ((AlphaIndexes[15] & 0x07) << 5));  // 111x xxxx
 
             // Setup color index bytes (c-idx[0-3]) from 2-bit
             // index values given for each pixel a-p (0-15)
@@ -203,26 +203,26 @@ namespace BitmapCompressor.Formats
             block.Color0 = Color565.FromValue((ushort) ((c0Hi << 8) | c0Low));
             block.Color1 = Color565.FromValue((ushort) ((c1Hi << 8) | c1Low));
 
-            block.AlphaIndexes[0]   =   alphas[0]       & 0x07;     // 3 bits
-            block.AlphaIndexes[1]   =  (alphas[0] >> 3) & 0x07;     // 3 bits
-            block.AlphaIndexes[2]   = ((alphas[0] >> 6) & 0x03) |   // 2 bits MSB
-                                       (alphas[1]       & 0x01);    // 1 bit LSB
-            block.AlphaIndexes[3]   =  (alphas[1] >> 1) & 0x07;     // 3 bits
-            block.AlphaIndexes[4]   =  (alphas[1] >> 4) & 0x07;     // 3 bits
-            block.AlphaIndexes[5]   = ((alphas[1] >> 7) & 0x01) |   // 1 bit MSB
-                                       (alphas[2]       & 0x03);    // 2 bits LSB
-            block.AlphaIndexes[6]   =  (alphas[2] >> 4) & 0x07;     // 3 bits
-            block.AlphaIndexes[7]   =  (alphas[2] >> 7) & 0x07;     // 3 bits
-            block.AlphaIndexes[8]   =   alphas[3]       & 0x07;     // 3 bits
-            block.AlphaIndexes[9]   =  (alphas[3] >> 3) & 0x07;     // 3 bits
-            block.AlphaIndexes[10]  = ((alphas[3] >> 6) & 0x03) |   // 2 bits MSB
-                                       (alphas[4]       & 0x01);    // 1 bit LSB
-            block.AlphaIndexes[11]  =  (alphas[4] >> 1) & 0x07;     // 3 bits
-            block.AlphaIndexes[12]  =  (alphas[4] >> 4) & 0x07;     // 3 bits
-            block.AlphaIndexes[13]  = ((alphas[4] >> 7) & 0x01) |   // 1 bit MSB
-                                       (alphas[5]       & 0x03);    // 2 bits LSB
-            block.AlphaIndexes[14]  =  (alphas[5] >> 4) & 0x07;     // 3 bits
-            block.AlphaIndexes[15]  =  (alphas[5] >> 7) & 0x07;     // 3 bits
+            block.AlphaIndexes[0]   =   alphas[0] & 0x07;           // xxxx x111            
+            block.AlphaIndexes[1]   =  (alphas[0] >> 3) & 0x07;     // xx11 1xxx            
+            block.AlphaIndexes[2]   = ((alphas[0] >> 6) & 0x03) |   // 11xx xxxx LSB        
+                                      ((alphas[1] & 0x01) << 2);    // xxxx xxx1 MSB        
+            block.AlphaIndexes[3]   =  (alphas[1] >> 1) & 0x07;     // xxxx 111x            
+            block.AlphaIndexes[4]   =  (alphas[1] >> 4) & 0x07;     // x111 xxxx            
+            block.AlphaIndexes[5]   = ((alphas[1] >> 7) & 0x01) |   // 1xxx xxxx LSB        
+                                      ((alphas[2] & 0x03) << 1);    // xxxx xx11 MSB        
+            block.AlphaIndexes[6]   =  (alphas[2] >> 2) & 0x07;     // xxx1 11xx            
+            block.AlphaIndexes[7]   =  (alphas[2] >> 5) & 0x07;     // 111x xxxx            
+            block.AlphaIndexes[8]   =   alphas[3] & 0x07;           // xxxx x111            
+            block.AlphaIndexes[9]   =  (alphas[3] >> 3) & 0x07;     // xx11 1xxx            
+            block.AlphaIndexes[10]  = ((alphas[3] >> 6) & 0x03) |   // 11xx xxxx LSB        
+                                      ((alphas[4] & 0x01) << 2);    // xxxx xxx1 MSB        
+            block.AlphaIndexes[11]  =  (alphas[4] >> 1) & 0x07;     // xxxx 111x            
+            block.AlphaIndexes[12]  =  (alphas[4] >> 4) & 0x07;     // x111 xxxx            
+            block.AlphaIndexes[13]  = ((alphas[4] >> 7) & 0x01) |   // 1xxx xxxx LSB        
+                                      ((alphas[5] & 0x03) << 1);    // xxxx xx11 MSB        
+            block.AlphaIndexes[14]  =  (alphas[5] >> 2) & 0x07;     // xxx1 11xx            
+            block.AlphaIndexes[15]  =  (alphas[5] >> 5) & 0x07;     // 111x xxxx                      
 
             for (int p = 0, row = 0; p < BlockFormat.PixelCount; p += BlockFormat.Dimension, ++row)
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using BitmapCompressor.Formats;
-using BitmapCompressor.DataTypes;
 using BitmapCompressor.Tests.Helpers;
 using NUnit.Framework;
 
@@ -88,10 +87,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConversionToBytesSetsColorIndexes()
         {
-            byte expectedIndexes0 = Convert.ToByte("11100100", 2); // d c b a 
-            byte expectedIndexes1 = Convert.ToByte("00111001", 2); // h g f e 
-            byte expectedIndexes2 = Convert.ToByte("01001110", 2); // l k j i 
-            byte expectedIndexes3 = Convert.ToByte("10010011", 2); // p o n m 
+            byte expectedIndexes0 = "11 10 01 00".AsByte(); // d c b a 
+            byte expectedIndexes1 = "00 11 10 01".AsByte(); // h g f e 
+            byte expectedIndexes2 = "01 00 11 10".AsByte(); // l k j i 
+            byte expectedIndexes3 = "10 01 00 11".AsByte(); // p o n m 
 
             var block = new BC3BlockData();
                                             // pixel    value    byte
@@ -128,7 +127,47 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConversionToBytesSetsAlphaIndexes()
         {
-            Assert.Fail();
+            // Increment until max value, then decrement
+            byte expectedAlphas0 = "10  001 000".AsByte(); // c b a     
+            byte expectedAlphas1 = "1 100 011 0".AsByte(); // f e d c   
+            byte expectedAlphas2 = "111 110  10".AsByte(); // h g f
+            byte expectedAlphas3 = "01  110 111".AsByte(); // k j i            
+            byte expectedAlphas4 = "0 011 100 1".AsByte(); // n m l k  
+            byte expectedAlphas5 = "000 001  01".AsByte(); // p o n  
+
+            var block = new BC3BlockData();
+            block.AlphaIndexes[0]   = 0;    // a    000  
+            block.AlphaIndexes[1]   = 1;    // b    001
+            block.AlphaIndexes[2]   = 2;    // c    010
+            block.AlphaIndexes[3]   = 3;    // d    011
+            block.AlphaIndexes[4]   = 4;    // e    100
+            block.AlphaIndexes[5]   = 5;    // f    101
+            block.AlphaIndexes[6]   = 6;    // g    110
+            block.AlphaIndexes[7]   = 7;    // h    111
+            block.AlphaIndexes[8]   = 7;    // i    111
+            block.AlphaIndexes[9]   = 6;    // j    110
+            block.AlphaIndexes[10]  = 5;    // k    101
+            block.AlphaIndexes[11]  = 4;    // l    100
+            block.AlphaIndexes[12]  = 3;    // m    011
+            block.AlphaIndexes[13]  = 2;    // n    010
+            block.AlphaIndexes[14]  = 1;    // o    001
+            block.AlphaIndexes[15]  = 0;    // p    000
+
+            var buffer = block.ToBytes();
+
+            byte alphas2 = buffer[2];
+            byte alphas1 = buffer[3];
+            byte alphas0 = buffer[4];
+            byte alphas5 = buffer[5];
+            byte alphas4 = buffer[6];
+            byte alphas3 = buffer[7];
+
+            Assert.AreEqual(expectedAlphas0, alphas0);
+            Assert.AreEqual(expectedAlphas1, alphas1);
+            Assert.AreEqual(expectedAlphas2, alphas2);
+            Assert.AreEqual(expectedAlphas3, alphas3);
+            Assert.AreEqual(expectedAlphas4, alphas4);
+            Assert.AreEqual(expectedAlphas5, alphas5);
         }
 
         [Test]
@@ -186,10 +225,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConstructionFromBytesSetsColorIndexes()
         {
-            byte indexes0 = Convert.ToByte("11100100", 2); // d c b a 
-            byte indexes1 = Convert.ToByte("00111001", 2); // h g f e 
-            byte indexes2 = Convert.ToByte("01001110", 2); // l k j i 
-            byte indexes3 = Convert.ToByte("10010011", 2); // p o n m 
+            byte indexes0 = "11 10 01 00".AsByte(); // d c b a 
+            byte indexes1 = "00 11 10 01".AsByte(); // h g f e 
+            byte indexes2 = "01 00 11 10".AsByte(); // l k j i 
+            byte indexes3 = "10 01 00 11".AsByte(); // p o n m 
 
             var bytes = new byte[BlockFormat.BC3ByteSize];
             bytes[12] = indexes0;
@@ -220,7 +259,40 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void ConstructionFromBytesSetsAlphaIndexes()
         {
-            Assert.Fail();
+            // Increment until max value, then decrement
+            byte alphas0 = "10  001 000".AsByte(); // c b a     
+            byte alphas1 = "1 100 011 0".AsByte(); // f e d c   
+            byte alphas2 = "111 110  10".AsByte(); // h g f
+            byte alphas3 = "01  110 111".AsByte(); // k j i          
+            byte alphas4 = "0 011 100 1".AsByte(); // n m l k  
+            byte alphas5 = "000 001  01".AsByte(); // p o n  
+
+            var bytes = new byte[BlockFormat.BC3ByteSize];
+            bytes[2] = alphas2;
+            bytes[3] = alphas1;
+            bytes[4] = alphas0;
+            bytes[5] = alphas5;
+            bytes[6] = alphas4;
+            bytes[7] = alphas3;
+
+            var block = BC3BlockData.FromBytes(bytes);
+
+            Assert.AreEqual(0, block.AlphaIndexes[0]);  // a    000  
+            Assert.AreEqual(1, block.AlphaIndexes[1]);  // b    001
+            Assert.AreEqual(2, block.AlphaIndexes[2]);  // c    010
+            Assert.AreEqual(3, block.AlphaIndexes[3]);  // d    011
+            Assert.AreEqual(4, block.AlphaIndexes[4]);  // e    100
+            Assert.AreEqual(5, block.AlphaIndexes[5]);  // f    101
+            Assert.AreEqual(6, block.AlphaIndexes[6]);  // g    110
+            Assert.AreEqual(7, block.AlphaIndexes[7]);  // h    111
+            Assert.AreEqual(7, block.AlphaIndexes[8]);  // i    111
+            Assert.AreEqual(6, block.AlphaIndexes[9]);  // j    110
+            Assert.AreEqual(5, block.AlphaIndexes[10]); // k    101
+            Assert.AreEqual(4, block.AlphaIndexes[11]); // l    100
+            Assert.AreEqual(3, block.AlphaIndexes[12]); // m    011
+            Assert.AreEqual(2, block.AlphaIndexes[13]); // n    010
+            Assert.AreEqual(1, block.AlphaIndexes[14]); // o    001
+            Assert.AreEqual(0, block.AlphaIndexes[15]); // p    000              
         }
     }
 }
