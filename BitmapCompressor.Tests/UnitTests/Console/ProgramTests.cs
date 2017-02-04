@@ -42,7 +42,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         }
 
         [Test]
-        public void RunningWithCompressOptionRunsCompression()
+        public void CompressionRunsCompressionAlgorithm()
         {
             _args.Action = CommandLineAction.CompressBC1;
 
@@ -56,7 +56,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         }
 
         [Test]
-        public void RunningWithDecompressOptionRunsDecompression()
+        public void DecompressionRunsDecompressionAlgorithm()
         {
             _args.Action = CommandLineAction.Decompress;
 
@@ -70,7 +70,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         }
 
         [Test]
-        public void RunningCompressionPromptsForOverwriteWhenDDSFileExists()
+        public void CompressionPromptsForOverwriteWhenDDSFileExists()
         {
             _args.Action = CommandLineAction.Decompress;
 
@@ -90,7 +90,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         }
 
         [Test]
-        public void RunningCompressionThrowsExceptionWhenBMPFileDoesNotExist()
+        public void CompressionThrowsExceptionWhenBMPFileDoesNotExist()
         {
             _args.Action = CommandLineAction.CompressBC1;
 
@@ -100,7 +100,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         }
         
         [Test]
-        public void RunningDecompressionPromptsForOverwriteWhenBMPFileExists()
+        public void DecompressionPromptsForOverwriteWhenBMPFileExists()
         {
             _args.Action = CommandLineAction.Decompress;
 
@@ -120,7 +120,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         }
 
         [Test]
-        public void RunningDecompressionThrowsExceptionWhenDDSFileDoesNotExist()
+        public void DecompressionThrowsExceptionWhenDDSFileDoesNotExist()
         {
             _args.Action = CommandLineAction.Decompress;
 
@@ -144,7 +144,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         }
 
         [Test]
-        public void RunningDoesNotThrowExceptionWhenTargetFileExistsAndOverwriteSet()
+        public void RunningDoesNotThrowWhenTargetFileExistsAndOverwriteApproved()
         {
             _args.Action = CommandLineAction.CompressBC1;
             _args.Overwrite = true;

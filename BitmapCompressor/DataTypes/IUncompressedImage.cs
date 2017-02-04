@@ -6,13 +6,17 @@ namespace BitmapCompressor.DataTypes
     public interface IUncompressedImage : IImage
     {
         /// <summary>
-        /// Reads the 16 ARGB (32-bit) colors from the specified 4x4 pixel block of the source image.
+        /// Gets the 32-bit colors from a 4x4 pixel area in the source image.
         /// </summary>
-        Color[] GetBlockPixels(Point block);
+        /// <param name="blockIndex">The index of the 4x4 area in the source image.</param>
+        /// <returns>16 32-bit colors of a 4x4 pixel area in the source image.</returns>
+        Color[] GetBlockColors(Point blockIndex);
 
         /// <summary>
-        /// Sets the 16 ARGB (32-bit) colors at the specified 4x4 pixel block to the source image.
+        /// Sets the 32-bit colors of a 4x4 pixel area in the source image.
         /// </summary>
-        void SetBlockPixels(Point block, Color[] colors);
+        /// <param name="blockIndex">The index of the 4x4 area in the source image.</param>
+        /// <param name="colors">The 16 32-bit colors to write to the area.</param>
+        void SetBlockColors(Point blockIndex, Color[] colors);
     }
 }

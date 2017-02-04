@@ -14,7 +14,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void CompressionReturnsByteArrayOfCorrectSize()
         {
-            var colors = new Color[BlockFormat.PixelCount];
+            var colors = new Color[BlockFormat.TexelCount];
 
             var data = new BC2Format().Compress(colors);
 
@@ -28,11 +28,11 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var colors = new BC2Format().Decompress(bytes);
 
-            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
+            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
         }
 
         [Test]
-        public void CompressionSetsReferenceColors()
+        public void CompressionOrdersReferenceColors()
         {
             var expectedMin     = Color.FromArgb(10, 10, 10);
             var expectedMax     = Color.FromArgb(250, 250, 250);
@@ -55,7 +55,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void CompressionOfColorsWithoutAlpha()
+        public void CompressColorsWithoutAlpha()
         {
             var colors = new Color[16];
             colors[0]   = Color.FromArgb(3, 59, 101);
@@ -96,7 +96,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void CompressionOfColorsWithAlpha()
+        public void CompressColorsWithAlpha()
         {
             var colors = new Color[16];
             colors[0]   = Color.FromArgb(55, 3, 59, 101);
@@ -138,7 +138,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void DecompressionOfBytesWithoutAlpha()
+        public void DecompressBytesWithoutAlpha()
         {
             var bytes = new byte[BlockFormat.BC2ByteSize];
             bytes[0]    = 0xFF; // alphas0
@@ -179,7 +179,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void DecompressionOfBytesWithAlpha()
+        public void DecompressBytesWithAlpha()
         {
             var bytes   = new byte[BlockFormat.BC2ByteSize];
 

@@ -11,7 +11,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
     public class DirectBitmapTests
     {
         [Test]
-        public void GettingColorsReturnsEachPixelInBlock()
+        public void GetColorsForEachPixelInArea()
         {
             var color = Color.FromArgb(50, 100, 150);
             var block = new Point(0, 0);
@@ -36,14 +36,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var bmp = DirectBitmap.CreateFromBitmap(bitmap);
 
-            var colors = bmp.GetBlockPixels(new Point(0, 0));
+            var colors = bmp.GetBlockColors(new Point(0, 0));
 
-            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
+            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
             Assert.IsTrue(colors.All(c => c.Equals(color)));
         }
 
         [Test]
-        public void GettingColorsReturnsEachPixelInBlockWhenAlpha()
+        public void GetColorsWithAlphaForEachPixelInArea()
         {
             var color = Color.FromArgb(170, 50, 100, 150);
             var block = new Point(0, 0);
@@ -68,14 +68,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var bmp = DirectBitmap.CreateFromBitmap(bitmap);
 
-            var colors = bmp.GetBlockPixels(new Point(0, 0));
+            var colors = bmp.GetBlockColors(new Point(0, 0));
 
-            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
+            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
             Assert.IsTrue(colors.All(c => c.Equals(color)));
         }
 
         [Test]
-        public void GettingColorsReturnsEachPixelInBlockWhenOffset()
+        public void GetColorsForEachPixelInOffsetArea()
         {
             var color = Color.FromArgb(50, 100, 150);
 
@@ -99,14 +99,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var bmp = DirectBitmap.CreateFromBitmap(bitmap);
 
-            var colors = bmp.GetBlockPixels(new Point(1, 1));
+            var colors = bmp.GetBlockColors(new Point(1, 1));
 
-            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
+            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
             Assert.IsTrue(colors.All(c => c.Equals(color)));
         }
 
         [Test]
-        public void GettingColorsReturnsEachPixelInBlockWhenColorsAreDifferent()
+        public void GetDifferentColorsForEachPixelInArea()
         {
             var color1 = Color.FromArgb(50, 100, 150);
             var color2 = Color.FromArgb(150, 100, 50);
@@ -133,9 +133,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var bmp = DirectBitmap.CreateFromBitmap(bitmap);
 
-            var colors = bmp.GetBlockPixels(new Point(0, 0));
+            var colors = bmp.GetBlockColors(new Point(0, 0));
 
-            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
+            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
             Assert.AreEqual(4, colors.Count(c => c.Equals(color1)));
             Assert.AreEqual(4, colors.Count(c => c.Equals(color2)));
             Assert.AreEqual(4, colors.Count(c => c.Equals(color3)));
@@ -143,14 +143,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         }
 
         [Test]
-        public void SettingColorsSetsEachPixelInBlock()
+        public void SetColorsForEachPixelInArea()
         {
             var color = Color.FromArgb(50, 100, 150);
-            var colors = Enumerable.Repeat(color, BlockFormat.PixelCount).ToArray();
+            var colors = Enumerable.Repeat(color, BlockFormat.TexelCount).ToArray();
 
             var bmp = new DirectBitmap(BlockFormat.Dimension, BlockFormat.Dimension);
 
-            bmp.SetBlockPixels(new Point(0, 0), colors);
+            bmp.SetBlockColors(new Point(0, 0), colors);
 
             Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 0));
             Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 1));
@@ -171,14 +171,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         }
 
         [Test]
-        public void SettingColorsSetsEachPixelInBlockWhenAlpha()
+        public void SetColorsWithAlphaForEachPixelInArea()
         {
             var color = Color.FromArgb(170, 50, 100, 150);
-            var colors = Enumerable.Repeat(color, BlockFormat.PixelCount).ToArray();
+            var colors = Enumerable.Repeat(color, BlockFormat.TexelCount).ToArray();
 
             var bmp = new DirectBitmap(BlockFormat.Dimension, BlockFormat.Dimension);
 
-            bmp.SetBlockPixels(new Point(0, 0), colors);
+            bmp.SetBlockColors(new Point(0, 0), colors);
 
             Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 0));
             Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 1));
@@ -199,14 +199,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         }
 
         [Test]
-        public void SettingColorsSetsEachPixelInBlockWhenOffset()
+        public void SetColorsForEachPixelInOffsetArea()
         {
             var color = Color.FromArgb(50, 100, 150);
-            var colors = Enumerable.Repeat(color, BlockFormat.PixelCount).ToArray();
+            var colors = Enumerable.Repeat(color, BlockFormat.TexelCount).ToArray();
 
             var bmp = new DirectBitmap(2 * BlockFormat.Dimension, 2 * BlockFormat.Dimension);
 
-            bmp.SetBlockPixels(new Point(1, 1), colors);
+            bmp.SetBlockColors(new Point(1, 1), colors);
 
             Assert.AreEqual(color, bmp.Bitmap.GetPixel(4, 4));
             Assert.AreEqual(color, bmp.Bitmap.GetPixel(4, 5));
@@ -227,14 +227,14 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         }
 
         [Test]
-        public void SettingColorsSetsEachPixelInBlockWhenColorsAreDifferent()
+        public void SetDifferentColorsForEachPixelInArea()
         {
             var color1 = Color.FromArgb(50, 100, 150);
             var color2 = Color.FromArgb(150, 100, 50);
             var color3 = Color.FromArgb(70, 140, 210);
             var color4 = Color.FromArgb(20, 150, 230);
 
-            var colors = new Color[BlockFormat.PixelCount];
+            var colors = new Color[BlockFormat.TexelCount];
             colors[0] = color1;
             colors[1] = color1;
             colors[2] = color1;
@@ -254,7 +254,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var bmp = new DirectBitmap(BlockFormat.Dimension, BlockFormat.Dimension);
 
-            bmp.SetBlockPixels(new Point(0, 0), colors);
+            bmp.SetBlockColors(new Point(0, 0), colors);
 
             Assert.AreEqual(color1, bmp.Bitmap.GetPixel(0, 0));
             Assert.AreEqual(color1, bmp.Bitmap.GetPixel(1, 0));

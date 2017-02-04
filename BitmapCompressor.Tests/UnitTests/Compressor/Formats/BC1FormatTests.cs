@@ -14,7 +14,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         [Test]
         public void CompressionReturnsByteArrayOfCorrectSize()
         {
-            var colors = new Color[BlockFormat.PixelCount];
+            var colors = new Color[BlockFormat.TexelCount];
 
             var data = new BC1Format().Compress(colors);
 
@@ -28,11 +28,11 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var colors = new BC1Format().Decompress(bytes);
 
-            Assert.AreEqual(BlockFormat.PixelCount, colors.Length);
+            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
         }
 
         [Test]
-        public void CompressionSetsReferenceColorsWhenNoAlpha()
+        public void CompressionOrdersReferenceColors()
         {
             var expectedMin     = Color.FromArgb(10, 10, 10);
             var expectedMax     = Color.FromArgb(250, 250, 250);
@@ -55,7 +55,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void CompressionSwitchesOrderOfReferenceColorsWhenAlpha()
+        public void CompressionSwitchesReferenceColorOrderWhenAlpha()
         {
             var expectedMin     = Color.FromArgb(10, 10, 10);
             var expectedMax     = Color.FromArgb(250, 250, 250);
@@ -81,7 +81,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void CompressionOfColorsWithoutAlpha()
+        public void CompressColorsWithoutAlpha()
         {
             var colors = new Color[16];
             colors[0]   = Color.FromArgb(3, 59, 101);
@@ -114,7 +114,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void CompressionOfColorsWithAlpha()
+        public void CompressColorsWithAlpha()
         {
             var colors = new Color[16];
             colors[0]   = Color.FromArgb(200, 3, 59, 101);
@@ -147,7 +147,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void DecompressionOfBytesWithoutAlpha()
+        public void DecompressBytesWithoutAlpha()
         {
             var bytes = new byte[BlockFormat.BC1ByteSize];
             bytes[0] = 0x7B; // c0Low
@@ -180,7 +180,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void DecompressionOfBytesWithAlpha()
+        public void DecompressBytesWithAlpha()
         {
             var bytes = new byte[BlockFormat.BC1ByteSize];
             bytes[0] = 0xCC; // c0Low

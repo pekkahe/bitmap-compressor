@@ -13,7 +13,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
     public class DDSImageTests
     {
         [Test]
-        public void ConstructionCalculatesBufferSizeWhenBC1()
+        public void ConstructionCalculatesBufferSize()
         {
             var format = new Mock<IBlockCompressionFormat>();
             format.Setup(f => f.BlockSize).Returns(BlockFormat.BC1ByteSize);

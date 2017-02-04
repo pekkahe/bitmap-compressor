@@ -64,17 +64,17 @@ namespace BitmapCompressor.DataTypes
             return _data;
         }
         
-        public Color[] GetBlockPixels(Point block)
+        public Color[] GetBlockColors(Point blockIndex)
         {
             var firstPixel = new Point(
-                block.X * BlockFormat.Dimension,
-                block.Y * BlockFormat.Dimension);
+                blockIndex.X * BlockFormat.Dimension,
+                blockIndex.Y * BlockFormat.Dimension);
 
             var lastPixel = new Point(
                 firstPixel.X + BlockFormat.Dimension,
                 firstPixel.Y + BlockFormat.Dimension);
 
-            var colors = new Color[BlockFormat.PixelCount];
+            var colors = new Color[BlockFormat.TexelCount];
             int colorIndex = 0;
 
             for (int y = firstPixel.Y; y < lastPixel.Y; ++y)
@@ -82,14 +82,13 @@ namespace BitmapCompressor.DataTypes
                 for (int x = firstPixel.X; x < lastPixel.X; ++x)
                 {
                     var pixel = new Point(x, y);
-
-                    int index = PointUtility.ToRowMajor(pixel, Width) * 4;
+                    int pixelIndex = PointUtility.ToRowMajor(pixel, Width) * 4;
 
                     // Bytes are stored in inverted (BGRA) order
-                    byte a = _data[index + 3];
-                    byte r = _data[index + 2];
-                    byte g = _data[index + 1];
-                    byte b = _data[index];
+                    byte a = _data[pixelIndex + 3];
+                    byte r = _data[pixelIndex + 2];
+                    byte g = _data[pixelIndex + 1];
+                    byte b = _data[pixelIndex];
 
                     var values = new byte[] { a, r, g, b };
 
@@ -108,11 +107,11 @@ namespace BitmapCompressor.DataTypes
             return colors;
         }
 
-        public void SetBlockPixels(Point block, Color[] colors)
+        public void SetBlockColors(Point blockIndex, Color[] colors)
         {
             var firstPixel = new Point(
-                block.X * BlockFormat.Dimension,
-                block.Y * BlockFormat.Dimension);
+                blockIndex.X * BlockFormat.Dimension,
+                blockIndex.Y * BlockFormat.Dimension);
 
             var lastPixel = new Point(
                 firstPixel.X + BlockFormat.Dimension,
@@ -125,16 +124,15 @@ namespace BitmapCompressor.DataTypes
                 for (int x = firstPixel.X; x < lastPixel.X; ++x)
                 {
                     var pixel = new Point(x, y);
-
-                    int index = PointUtility.ToRowMajor(pixel, Width) * 4;
+                    int pixelIndex = PointUtility.ToRowMajor(pixel, Width) * 4;
 
                     var color = colors[colorIndex++];
 
                     // Bytes are stored in inverted (BGRA) order
-                    _data[index + 3] = color.A;
-                    _data[index + 2] = color.R;
-                    _data[index + 1] = color.G;
-                    _data[index] = color.B;
+                    _data[pixelIndex + 3] = color.A;
+                    _data[pixelIndex + 2] = color.R;
+                    _data[pixelIndex + 1] = color.G;
+                    _data[pixelIndex] = color.B;
                 }
             }
         }

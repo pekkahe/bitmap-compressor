@@ -69,7 +69,7 @@ namespace BitmapCompressor.DataTypes
         public static DDSImage CreateEmpty(int width, int height, IBlockCompressionFormat format)
         {
             int numberOfPixels = width * height;
-            int numberOfRequiredBlocks = numberOfPixels / BlockFormat.PixelCount;
+            int numberOfRequiredBlocks = numberOfPixels / BlockFormat.TexelCount;
             int bufferSize = numberOfRequiredBlocks * format.BlockSize;
 
             return new DDSImage(width, height, new byte[bufferSize], format);

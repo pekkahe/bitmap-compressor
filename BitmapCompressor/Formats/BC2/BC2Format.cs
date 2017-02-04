@@ -7,15 +7,16 @@ using BitmapCompressor.Utilities;
 namespace BitmapCompressor.Formats
 {
     /// <summary>
-    /// Represents the BC2 format which compresses 4x4 pixel blocks into 16-byte data blocks.
-    /// The format stores RGB data as two 16-bit colors and alpha as a separate 4-bit value
-    /// for each pixel.
+    /// The BC2 format compresses 4x4 texel areas into 16-byte data blocks. The format 
+    /// stores RGB data as two 16-bit colors and alpha as a separate 4-bit value for each
+    /// texel.
     /// </summary>
-    /// <remarks><para>
-    /// The BC2 format stores colors with the same number of bits and data layout as the
-    /// <see cref="BC1Format"/>. However, BC2 stores 4-bit alpha for each color and requires
-    /// an additional 64-bits of memory to store the alpha data.
-    /// </para></remarks>
+    /// <remarks>
+    /// The BC2 format stores colors with the same number of bits and data layout as the 
+    /// <see cref="BC1Format"/>, however, alpha is stored as a 4-bit value for each color.
+    /// Compared to BC1, the BC2 format requires an additional 64-bits of memory to store 
+    /// the alpha data.
+    /// </remarks>
     public class BC2Format : IBlockCompressionFormat
     {
         public int BlockSize => BlockFormat.BC2ByteSize;
@@ -24,7 +25,7 @@ namespace BitmapCompressor.Formats
 
         public byte[] Compress(Color[] colors)
         {
-            Debug.Assert(colors.Length == BlockFormat.PixelCount);
+            Debug.Assert(colors.Length == BlockFormat.TexelCount);
 
             var colorSpace = new ColorSpace(colors);
             var colorTable = BC1ColorTable.Create(colorSpace.MaxColor, colorSpace.MinColor);
@@ -53,7 +54,7 @@ namespace BitmapCompressor.Formats
 
             var colorTable = BC1ColorTable.Create(block.Color0, block.Color1);
 
-            var colors = new Color[BlockFormat.PixelCount];
+            var colors = new Color[BlockFormat.TexelCount];
 
             for (int i = 0; i < colors.Length; ++i)
             {

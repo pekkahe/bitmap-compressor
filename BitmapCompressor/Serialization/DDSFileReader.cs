@@ -78,7 +78,7 @@ namespace BitmapCompressor.Serialization
         private byte[] ReadSurfaceData(int width, int height, IBlockCompressionFormat format)
         {
             int pixelsInImage = width * height;
-            int blocksInImage = pixelsInImage / BlockFormat.PixelCount;
+            int blocksInImage = pixelsInImage / BlockFormat.TexelCount;
             int mainImageSize = blocksInImage * format.BlockSize;
 
             return _binaryReader.ReadBytes(mainImageSize);

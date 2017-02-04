@@ -14,7 +14,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
     public class DDSFileWriterTests
     {
         [Test]
-        public void WritingDDSImageWritesDataToMemory()
+        public void WriteImageToMemory()
         {
             var format = new Mock<IBlockCompressionFormat>();
             format.Setup(f => f.FourCC).Returns(FourCC.BC1Unorm);
@@ -62,7 +62,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
         }
 
         [Test]
-        public void CreatingBC1HeaderCreatesDDSFileHeaderStructure()
+        public void CreateFileHeaderForBC1()
         {
             var expectedFlags = DDSFileHeaderFlags.DDSD_CAPS | DDSFileHeaderFlags.DDSD_HEIGHT |
                                 DDSFileHeaderFlags.DDSD_WIDTH | DDSFileHeaderFlags.DDSD_PIXELFORMAT;

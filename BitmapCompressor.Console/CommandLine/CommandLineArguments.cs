@@ -24,6 +24,11 @@ namespace BitmapCompressor.Console.CommandLine
             public const char BC2Format = '2';
 
             /// <summary>
+            /// The command line suffix argument for BC3 compression.
+            /// </summary>
+            public const char BC3Format = '3';
+
+            /// <summary>
             /// The command line argument for decompression.
             /// </summary>
             public const string Decompress = "-d";

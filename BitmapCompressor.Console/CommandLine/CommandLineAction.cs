@@ -20,6 +20,12 @@ namespace BitmapCompressor.Console.CommandLine
         CompressBC2,
 
         /// <summary>
+        /// Compress a BMP image into a DDS file using <see cref="BC3Format"/>
+        /// block compression.
+        /// </summary>
+        CompressBC3,
+
+        /// <summary>
         /// Decompress a DDS file into a BMP file using the same <see cref="IBlockCompressionFormat"/>
         /// which the BMP file was compressed with.
         /// </summary>

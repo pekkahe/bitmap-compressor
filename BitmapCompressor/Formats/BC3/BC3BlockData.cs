@@ -12,7 +12,7 @@ namespace BitmapCompressor.Formats
     /// The block stores two 16-bit reference colors and a 32-bit color index table, 
     /// similar to <see cref="BC1BlockData"/>. It also stores alpha as two 8-bit 
     /// reference values and a 48-bit index table for mapping a 3-bit alpha table
-    /// index to each pixel in the block.
+    /// index to each texel in the block.
     /// </para>
     /// <para>
     /// 128-bit block layout:
@@ -24,7 +24,7 @@ namespace BitmapCompressor.Formats
     /// -------------------------------------------------------------------------
     /// </para>
     /// <para>
-    /// 3-bit alpha index values per pixel a-p (0-15):
+    /// 3-bit alpha index values per texel a-p (0-15):
     /// -----------------------------------------------------------------------
     /// 47 46 45 44 43 42 41 40 39 38 37 36 35 34 33 32 31 30 29 28 27 26 25 24  
     ///  |   h    |   g    |   f    |   e    |   d    |   c    |   b    |   a  
@@ -35,7 +35,7 @@ namespace BitmapCompressor.Formats
     /// -----------------------------------------------------------------------
     /// </para>
     /// <para>
-    /// 2-bit color index values per pixel a-p (0-15):
+    /// 2-bit color index values per texel a-p (0-15):
     /// -----------------------------------------------
     /// 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 
     ///  |  d  |  c  |  b  |  a  |  h  |  g  |  f  |  e 
@@ -76,24 +76,24 @@ namespace BitmapCompressor.Formats
         public Color565 Color1 { get; set; }
 
         /// <summary>
-        /// An array of 16 2-bit color index values, ordered by pixel index p0-15, 
-        /// following row-major order within the 4x4 block.
+        /// An array of 16 2-bit color index values, ordered by texel index 0-15, 
+        /// following row-major order within the 4x4 area.
         /// </summary>
         /// <remarks>
         /// Values higher than 2-bits are automatically stripped to 2-bits when
         /// the block instance is converted to bytes.
         /// </remarks>
-        public int[] ColorIndexes { get; } = new int[BlockFormat.PixelCount];
+        public int[] ColorIndexes { get; } = new int[BlockFormat.TexelCount];
 
         /// <summary>
-        /// An array of 16 3-bit color alpha index values, ordered by pixel index p0-15, 
-        /// following row-major order within the 4x4 block.
+        /// An array of 16 3-bit color alpha index values, ordered by texel index 0-15, 
+        /// following row-major order within the 4x4 area.
         /// </summary>
         /// <remarks>
         /// Values higher than 3-bits are automatically stripped to 3-bits when
         /// the block instance is converted to bytes.
         /// </remarks>
-        public int[] AlphaIndexes { get; } = new int[BlockFormat.PixelCount];
+        public int[] AlphaIndexes { get; } = new int[BlockFormat.TexelCount];
 
         /// <summary>
         /// Convert the block data into a 16-byte BC3 format byte array.
@@ -106,7 +106,7 @@ namespace BitmapCompressor.Formats
             byte c1Hi   = (byte) ((Color1.Value & 0xFF00) >> 8);
 
             // Setup alpha index bytes (a-idx[0-5]) from 3-bit
-            // index values given for each pixel a-p (0-15) 
+            // index values given for each texel a-p (0-15) 
             byte[] alphas = new byte[6]; 
 
             alphas[0] = (byte)  ((AlphaIndexes[0]  & 0x07) |        // xxxx x111
@@ -131,10 +131,10 @@ namespace BitmapCompressor.Formats
                                 ((AlphaIndexes[15] & 0x07) << 5));  // 111x xxxx
 
             // Setup color index bytes (c-idx[0-3]) from 2-bit
-            // index values given for each pixel a-p (0-15)
+            // index values given for each texel a-p (0-15)
             byte[] indexes = new byte[4];
 
-            for (int p = 0, row = 0; p < BlockFormat.PixelCount; p += BlockFormat.Dimension, ++row)
+            for (int p = 0, row = 0; p < BlockFormat.TexelCount; p += BlockFormat.Dimension, ++row)
             {
                 int a = p;
                 int b = p + 1;
@@ -224,7 +224,7 @@ namespace BitmapCompressor.Formats
             block.AlphaIndexes[14]  =  (alphas[5] >> 2) & 0x07;     // xxx1 11xx            
             block.AlphaIndexes[15]  =  (alphas[5] >> 5) & 0x07;     // 111x xxxx                      
 
-            for (int p = 0, row = 0; p < BlockFormat.PixelCount; p += BlockFormat.Dimension, ++row)
+            for (int p = 0, row = 0; p < BlockFormat.TexelCount; p += BlockFormat.Dimension, ++row)
             {
                 int a = p;
                 int b = p + 1;

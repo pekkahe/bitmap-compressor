@@ -10,7 +10,7 @@ namespace BitmapCompressor.Formats
     /// <remarks>
     /// A BC1 color table consists of two reference colors (color0 and color1) and two
     /// intermediate colors (color2 and color3). Only the two reference colors are stored 
-    /// and compressed, and the intermediate colors are calculated from them.
+    /// in the compressed data and the intermediate colors are interpolated between them.
     /// </remarks>
     public static class BC1ColorTable
     {

@@ -17,7 +17,7 @@ namespace BitmapCompressor.Tests.Helpers
 
         public static Color[] CreateRandomColorsBetween(Color min, Color max)
         {
-            var colors = new Color[BlockFormat.PixelCount];
+            var colors = new Color[BlockFormat.TexelCount];
             for (int i = 0; i < colors.Length; ++i)
             {
                 colors[i] = CreateRandomColor(min, max);

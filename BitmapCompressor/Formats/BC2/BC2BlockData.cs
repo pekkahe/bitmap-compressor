@@ -10,8 +10,8 @@ namespace BitmapCompressor.Formats
     /// <remarks>
     /// <para>
     /// The block stores two 16-bit reference colors and a 32-bit color index table, 
-    /// similar to <see cref="BC1BlockData"/>, and also a 64-bit index table
-    /// for mapping a 4-bit alpha value to each pixel in the block.
+    /// similar to <see cref="BC1BlockData"/>, and also a 64-bit index table for
+    /// mapping a 4-bit alpha value to each texel in the block.
     /// </para>
     /// <para>
     /// 128-bit block layout:
@@ -23,7 +23,7 @@ namespace BitmapCompressor.Formats
     /// -------------------------------------------------------------------------
     /// </para>
     /// <para>
-    /// 4-bit alpha values per pixel a-p (0-15):
+    /// 4-bit alpha values per texel a-p (0-15):
     /// -----------------------------------------------------------------------------------------------
     /// 63 62 61 60 59 58 57 56 55 54 53 52 51 50 49 48 47 46 45 44 43 42 41 40 39 38 37 36 35 34 33 32 
     ///  |     d     |     c     |     b     |     a     |     h     |     g     |     f     |     e  
@@ -34,7 +34,7 @@ namespace BitmapCompressor.Formats
     /// -----------------------------------------------------------------------------------------------
     /// </para>
     /// <para>
-    /// 2-bit color index values per pixel a-p (0-15):
+    /// 2-bit color index values per texel a-p (0-15):
     /// -----------------------------------------------
     /// 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 
     ///  |  d  |  c  |  b  |  a  |  h  |  g  |  f  |  e 
@@ -65,24 +65,24 @@ namespace BitmapCompressor.Formats
         public Color565 Color1 { get; set; }
 
         /// <summary>
-        /// An array of 16 2-bit color index values, ordered by pixel index p0-15, 
-        /// following row-major order within the 4x4 block.
+        /// An array of 16 2-bit color index values, ordered by texel index 0-15, 
+        /// following row-major order within the 4x4 area.
         /// </summary>
         /// <remarks>
         /// Values higher than 2-bits are automatically stripped to 2-bits when
         /// the block instance is converted to bytes.
         /// </remarks>
-        public int[] ColorIndexes { get; } = new int[BlockFormat.PixelCount];
+        public int[] ColorIndexes { get; } = new int[BlockFormat.TexelCount];
 
         /// <summary>
-        /// An array of 16 4-bit color alpha values, ordered by pixel index p0-15, 
-        /// following row-major order within the 4x4 block.
+        /// An array of 16 4-bit color alpha values, ordered by texel index p0-15, 
+        /// following row-major order within the 4x4 area.
         /// </summary>
         /// <remarks>
         /// Values higher than 4-bits are automatically stripped to 4-bits when
         /// the block instance is converted to bytes.
         /// </remarks>
-        public int[] ColorAlphas { get; } = new int[BlockFormat.PixelCount];
+        public int[] ColorAlphas { get; } = new int[BlockFormat.TexelCount];
 
         /// <summary>
         /// Convert the block data into a 16-byte BC2 format byte array.
@@ -97,7 +97,7 @@ namespace BitmapCompressor.Formats
             byte[,] alphas  = new byte[4, 2];
             byte[] indexes  = new byte[4];
 
-            for (int p = 0, row = 0; p < BlockFormat.PixelCount; p += BlockFormat.Dimension, ++row)
+            for (int p = 0, row = 0; p < BlockFormat.TexelCount; p += BlockFormat.Dimension, ++row)
             {
                 int a = p;
                 int b = p + 1;
@@ -169,7 +169,7 @@ namespace BitmapCompressor.Formats
             block.Color0 = Color565.FromValue((ushort) ((c0Hi << 8) | c0Low));
             block.Color1 = Color565.FromValue((ushort) ((c1Hi << 8) | c1Low));
 
-            for (int p = 0, row = 0; p < BlockFormat.PixelCount; p += BlockFormat.Dimension, ++row)
+            for (int p = 0, row = 0; p < BlockFormat.TexelCount; p += BlockFormat.Dimension, ++row)
             {
                 int a = p;
                 int b = p + 1;

@@ -40,7 +40,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         }
 
         [Test]
-        public void CompressionRunsBlockCompressionForEachBlock()
+        public void RunsCompressionForEachBlock()
         {
             const int byteCount = 8;
 
@@ -62,7 +62,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         }
 
         /// <summary>
-        /// Creates a <see cref="IUncompressedImage"/> mock of 3x2 blocks (48 pixels)
+        /// Creates a <see cref="IUncompressedImage"/> mock of 3x2 blocks (48 texels)
         /// which returns a different color for each block.
         /// </summary>
         /// <remarks>
@@ -95,9 +95,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
                 for (int x = 0; x < numberOfHorizontalBlocks; ++x)
                 {
                     var color = blockColors[y][x];
-                    var colors = Enumerable.Repeat(color, BlockFormat.PixelCount).ToArray();
+                    var colors = Enumerable.Repeat(color, BlockFormat.TexelCount).ToArray();
 
-                    mock.Setup(m => m.GetBlockPixels(It.Is<Point>(p => p == new Point(x, y)))).Returns(colors);
+                    mock.Setup(m => m.GetBlockColors(It.Is<Point>(p => p == new Point(x, y)))).Returns(colors);
                 }
             }
 
@@ -105,13 +105,13 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         }
 
         [Test]
-        public void DecompressionRunsBlockDecompressionForEachBlock()
+        public void RunsDecompressionForEachBlock()
         {
             const int byteCount = 8;
 
             var format = new Mock<IBlockCompressionFormat>();
             format.Setup(f => f.BlockSize).Returns(byteCount);
-            format.Setup(f => f.Decompress(It.IsAny<byte[]>())).Returns(new Color[BlockFormat.PixelCount]);
+            format.Setup(f => f.Decompress(It.IsAny<byte[]>())).Returns(new Color[BlockFormat.TexelCount]);
 
             var compressor = new BlockCompressor();
 
@@ -127,7 +127,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
         }
 
         /// <summary>
-        /// Creates a <see cref="ICompressedImage"/> mock of 3x2 blocks (48 pixels)
+        /// Creates a <see cref="ICompressedImage"/> mock of 3x2 blocks (48 texels)
         /// with a different set of arbitrary byte values in each block.
         /// </summary>
         /// <remarks>

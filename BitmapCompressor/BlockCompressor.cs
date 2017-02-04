@@ -36,7 +36,7 @@ namespace BitmapCompressor
             {
                 var block = PointUtility.FromRowMajor(i, numberOfHorizontalBlocks);
 
-                var colors = image.GetBlockPixels(block);
+                var colors = image.GetBlockColors(block);
 
                 var data = format.Compress(colors);
 
@@ -77,7 +77,7 @@ namespace BitmapCompressor
 
                 var colors = format.Decompress(data);
 
-                bmp.SetBlockPixels(block, colors);
+                bmp.SetBlockColors(block, colors);
             });
 
             Logger.Default.Log("Decompression successful.");

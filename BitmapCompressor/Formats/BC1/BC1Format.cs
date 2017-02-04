@@ -8,22 +8,23 @@ using BitmapCompressor.Extensions;
 namespace BitmapCompressor.Formats
 {
     /// <summary>
-    /// Represents the BC1 format which compresses 4x4 pixel blocks into 8-byte data blocks.
-    /// The format stores RGB data as two 16-bit colors and supports 1-bit alpha for each pixel.
+    /// The BC1 format compresses 4x4 texel areas into 8-byte data blocks. The format
+    /// stores RGB data as two 16-bit colors and supports 1-bit alpha for each texel.
     /// </summary>
     /// <remarks><para>
-    /// The BC1 algorithm creates a color table which contains four 16-bit colors, and maps
-    /// the index of the closest matching color to each pixel in the block. Only the first
-    /// two colors and the index map are stored and compressed.
+    /// The BC1 format creates a color table which contains four 16-bit colors and
+    /// stores the table index of the closest matching color of each texel in the block.
+    /// The first two colors and the index map are stored in the compressed data while
+    /// the remaining two colors are interpolated between the two reference colors.
     /// </para><para>
-    /// The alpha channel of each color is not stored into the compressed data. BC1 supports
-    /// 1-bit per-pixel alpha by altering the layout order of the two stored reference colors
-    /// in the compressed data.
+    /// The alpha channel of each color is not stored in the compressed data. BC1 supports
+    /// 1-bit per-texel alpha by altering the layout order of the two reference colors in 
+    /// the compressed data.
     /// </para></remarks>
     public class BC1Format : IBlockCompressionFormat
     {
         /// <summary>
-        /// The third BC1 color index which is also used to mark transparent pixels in 1-bit alpha.
+        /// The third BC1 color index which is also used to mark transparency in 1-bit alpha.
         /// </summary>
         private const int AlphaColorIndex = 0x3;
 
@@ -33,7 +34,7 @@ namespace BitmapCompressor.Formats
 
         public byte[] Compress(Color[] colors)
         {
-            Debug.Assert(colors.Length == BlockFormat.PixelCount);
+            Debug.Assert(colors.Length == BlockFormat.TexelCount);
             
             var colorTable = CreateColorTable(colors);
 
@@ -45,8 +46,8 @@ namespace BitmapCompressor.Formats
             {
                 var color32 = colors[i];
 
-                // If color has alpha, use a specific color index 
-                // to identify the pixel when decompressed
+                // If color has alpha, use a specific index 
+                // to identify the color when decompressed
                 block.ColorIndexes[i] = color32.HasAlpha() ? AlphaColorIndex :
                     ColorUtility.GetIndexOfClosest(colorTable, ColorUtility.To16Bit(color32));
             }
@@ -63,7 +64,7 @@ namespace BitmapCompressor.Formats
             var colorTable  = CreateColorTable(block.Color0, block.Color1);
             var is1BitAlpha = colorTable[0].Value <= colorTable[1].Value;
 
-            var colors = new Color[BlockFormat.PixelCount];
+            var colors = new Color[BlockFormat.TexelCount];
 
             for (int i = 0; i < colors.Length; ++i)
             {

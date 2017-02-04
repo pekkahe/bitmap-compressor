@@ -12,7 +12,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
     public class DDSFileReaderTests
     {
         [Test]
-        public void ReadingDataReturnsDDSImage()
+        public void ReadImageFromMemory()
         {
             int imageWidth = 4;
             int imageHeight = 4;
@@ -52,7 +52,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
         }
 
         [Test]
-        public void ReadingDataThrowsExceptionWhenMagicNumberIsInvalid()
+        public void ReadingThrowsExceptionWhenMagicNumberIsInvalid()
         {
             var stream = new MemoryStream();
 

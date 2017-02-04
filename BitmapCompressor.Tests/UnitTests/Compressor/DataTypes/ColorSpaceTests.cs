@@ -9,7 +9,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
     public class ColorSpaceTests
     {
         [Test]
-        public void CalculatesEndpointColorsWhenConstructed()
+        public void CalculatesEndpointColors()
         {
             var low =  Color.FromArgb(50,  50,  50);
             var col =  Color.FromArgb(100, 100, 100);
@@ -22,7 +22,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         }
 
         [Test]
-        public void CalculatesMinAndMaxColorsWhenConstructed()
+        public void CalculatesMinAndMaxColors()
         {
             var low =  Color.FromArgb(50,  50,  50);
             var col =  Color.FromArgb(100, 100, 100);
@@ -50,9 +50,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             Assert.AreEqual(minAs16ShouldBeMax, colorSpace.MaxColor);
         }
 
-        [TestCase(255, false, TestName = "HasAlphaIsFalseWhenCreatedWithoutAlphaChannel")]
-        [TestCase(150, true,  TestName = "HasAlphaIsTrueWhenCreatedWithAlphaChannel")]
-        public void HasAlpha(int alpha, bool expected)
+        [TestCase(255, false, TestName = "ReportsAlphaForColorsWithoutAlpha")]
+        [TestCase(150, true,  TestName = "ReportsAlphaForColorsWithAlpha")]
+        public void ReportsAlpha(int alpha, bool expected)
         {
             var color = Color.FromArgb(alpha, 150, 150, 150);
 

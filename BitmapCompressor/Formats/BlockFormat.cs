@@ -4,14 +4,14 @@ namespace BitmapCompressor.Formats
     public static class BlockFormat
     {
         /// <summary>
-        /// The number of horizontal and vertical pixels in a single block.
+        /// The number of horizontal and vertical texel in a single block.
         /// </summary>
         public const int Dimension = 4;
 
         /// <summary>
-        /// The number of pixels in a single block.
+        /// The number of texel in a single block.
         /// </summary>
-        public const int PixelCount = 16;
+        public const int TexelCount = 16;
 
         /// <summary>
         /// The number of bytes consumed by a BC1 block.

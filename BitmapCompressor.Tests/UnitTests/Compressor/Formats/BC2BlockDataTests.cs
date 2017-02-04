@@ -63,7 +63,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             byte expectedIndexes3 = "10 01 00 11".AsByte(); // p o n m 
                                                                               
             var block = new BC2BlockData();
-                                            // pixel    value    byte
+                                            // texel    value    byte
             block.ColorIndexes[0]   = 0;    // a(0,3)   00       indexes0
             block.ColorIndexes[1]   = 1;    // b(1,3)   01       
             block.ColorIndexes[2]   = 2;    // c(2,3)   10       
@@ -107,7 +107,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             byte expectedAlphas7 = "1101 1100".AsByte(); // n   m   
 
             var block = new BC2BlockData();
-                                            // pixel    value    byte
+                                            // texel    value    byte
             block.ColorAlphas[0]    = 0;    // a(0,3)   0000     alphas1    
             block.ColorAlphas[1]    = 1;    // b(1,3)   0001     
             block.ColorAlphas[2]    = 2;    // c(2,3)   0010     alphas0    
