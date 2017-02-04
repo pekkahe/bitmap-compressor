@@ -157,7 +157,7 @@ namespace BitmapCompressor.Utilities
         /// <param name="colors">The source colors whose distances to <paramref name="targetColor"/>
         ///                      are compared between each other.</param>
         /// <param name="targetColor">The target color of the distance comparison.</param>
-        public static Color565 GetClosest(IEnumerable<Color565> colors, Color565 targetColor)
+        public static Color565 GetClosestColor(IEnumerable<Color565> colors, Color565 targetColor)
         {
             Debug.Assert(colors.Any(), "No source colors specified for comparison.");
 
@@ -184,9 +184,9 @@ namespace BitmapCompressor.Utilities
         /// <param name="colors">The source colors whose distances to <paramref name="targetColor"/>
         ///                      are compared between each other.</param>
         /// <param name="targetColor">The target color of the distance comparison.</param>
-        public static int GetIndexOfClosest(Color565[] colors, Color565 targetColor)
+        public static int GetIndexOfClosestColor(Color565[] colors, Color565 targetColor)
         {
-            var closest = GetClosest(colors, targetColor);
+            var closest = GetClosestColor(colors, targetColor);
             
             return Array.IndexOf(colors, closest);
         }

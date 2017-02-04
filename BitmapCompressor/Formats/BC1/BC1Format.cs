@@ -49,7 +49,7 @@ namespace BitmapCompressor.Formats
                 // If color has alpha, use a specific index 
                 // to identify the color when decompressed
                 block.ColorIndexes[i] = color32.HasAlpha() ? AlphaColorIndex :
-                    ColorUtility.GetIndexOfClosest(colorTable, ColorUtility.To16Bit(color32));
+                    ColorUtility.GetIndexOfClosestColor(colorTable, ColorUtility.To16Bit(color32));
             }
 
             return block.ToBytes();

@@ -25,8 +25,8 @@ namespace BitmapCompressor.Serialization
         {
             WriteMagicNumber();
 
-            var format = image.GetFormat();
-            var header = CreateHeader(image.Width, image.Height, format.FourCC.Value);
+            var header = CreateHeader(image.Width, image.Height, 
+                image.CompressionFormat.FourCC.Value);
 
             WriteHeader(header);
 

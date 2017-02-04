@@ -10,32 +10,33 @@ namespace BitmapCompressor.DataTypes
     public sealed class DDSImage : ICompressedImage
     {
         private readonly byte[] _surfaceData;
-        private readonly IBlockCompressionFormat _format;
+        private readonly IBlockCompressionFormat _compressionFormat;
 
-        private DDSImage(int width, int height, byte[] surfaceData, IBlockCompressionFormat format)
+        private DDSImage(int width, int height, byte[] surfaceData, 
+            IBlockCompressionFormat compressionFormat)
         {
             Width = width;
             Height = height;
             _surfaceData = surfaceData;
-            _format = format;
+            _compressionFormat = compressionFormat;
         }
         
         public int Width { get; }
 
         public int Height { get; }
 
-        public byte[] GetBuffer() => _surfaceData;
+        public IBlockCompressionFormat CompressionFormat => _compressionFormat;
 
-        public IBlockCompressionFormat GetFormat() => _format;
+        public byte[] GetBuffer() => _surfaceData;
         
         public byte[] GetBlockData(Point block)
         {
             int numberOfHorizontalBlocks = Width / BlockFormat.Dimension;
 
             int blockIndex = PointUtility.ToRowMajor(block, numberOfHorizontalBlocks);
-            int bufferIndex = blockIndex * _format.BlockSize;
+            int bufferIndex = blockIndex * _compressionFormat.BlockSize;
 
-            var blockData = _surfaceData.SubArray(bufferIndex, _format.BlockSize);
+            var blockData = _surfaceData.SubArray(bufferIndex, _compressionFormat.BlockSize);
 
             return blockData;
         }
@@ -65,14 +66,15 @@ namespace BitmapCompressor.DataTypes
         /// </summary>
         /// <param name="width">The pixel width of the image.</param>
         /// <param name="height">The pixel height of the image.</param>
-        /// <param name="format">The block compression algorithm for the DDS image.</param>
-        public static DDSImage CreateEmpty(int width, int height, IBlockCompressionFormat format)
+        /// <param name="compressionFormat">The compression format for the image.</param>
+        public static DDSImage CreateEmpty(int width, int height,
+            IBlockCompressionFormat compressionFormat)
         {
             int numberOfPixels = width * height;
             int numberOfRequiredBlocks = numberOfPixels / BlockFormat.TexelCount;
-            int bufferSize = numberOfRequiredBlocks * format.BlockSize;
+            int bufferSize = numberOfRequiredBlocks * compressionFormat.BlockSize;
 
-            return new DDSImage(width, height, new byte[bufferSize], format);
+            return new DDSImage(width, height, new byte[bufferSize], compressionFormat);
         }
 
         /// <summary>
@@ -82,10 +84,11 @@ namespace BitmapCompressor.DataTypes
         /// <param name="width">The pixel width of the image.</param>
         /// <param name="height">The pixel height of the image.</param>
         /// <param name="data">The main surface data of the DDS image.</param>
-        /// <param name="format">The block compression algorithm for the DDS image.</param>
-        public static DDSImage CreateFromData(int width, int height, byte[] data, IBlockCompressionFormat format)
+        /// <param name="compressionFormat">The compression format for the image.</param>
+        public static DDSImage CreateFromData(int width, int height, byte[] data,
+            IBlockCompressionFormat compressionFormat)
         {
-            return new DDSImage(width, height, data, format);
+            return new DDSImage(width, height, data, compressionFormat);
         }
 
         /// <summary>

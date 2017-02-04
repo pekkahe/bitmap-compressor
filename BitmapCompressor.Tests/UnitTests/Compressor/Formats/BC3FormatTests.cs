@@ -142,7 +142,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void DecompressBytesWithoutAlpha()
+        public void DecompressDataWithoutAlpha()
         {
             throw new NotImplementedException();
 
@@ -185,7 +185,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void DecompressBytesWithAlpha()
+        public void DecompressDataWithAlpha()
         {
             throw new NotImplementedException();
 

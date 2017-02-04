@@ -42,6 +42,8 @@ namespace BitmapCompressor.Formats
 
             }
 
+            throw new NotImplementedException();
+
             return block.ToBytes();
         }
 

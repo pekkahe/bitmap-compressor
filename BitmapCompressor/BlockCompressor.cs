@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading.Tasks;
 using BitmapCompressor.DataTypes;
 using BitmapCompressor.Diagnostics;
@@ -14,6 +13,12 @@ namespace BitmapCompressor
     /// </summary>
     public class BlockCompressor : IBlockCompressor
     {
+        /// <summary>
+        /// Option to run parallelized loops in a single thread for easier debugging.
+        /// </summary>
+        private static readonly ParallelOptions RunInSingleThread = 
+            new ParallelOptions { MaxDegreeOfParallelism = 1 };
+
         public ICompressedImage Compress(IUncompressedImage image, IBlockCompressionFormat format)
         {
             if (!AreDimensionsMultipleOfFour(image))
@@ -30,17 +35,15 @@ namespace BitmapCompressor
 
             Parallel.For(0, numberOfBlocks,
 #if DEBUG
-                RunInSingleThreadOption(),
+                RunInSingleThread,
 #endif       
                 (i) =>
             {
-                var block = PointUtility.FromRowMajor(i, numberOfHorizontalBlocks);
+                var blockIndex = PointUtility.FromRowMajor(i, numberOfHorizontalBlocks);
+                var blockColors = image.GetBlockColors(blockIndex);
+                var blockData = format.Compress(blockColors);
 
-                var colors = image.GetBlockColors(block);
-
-                var data = format.Compress(colors);
-
-                dds.SetBlockData(block, data);
+                dds.SetBlockData(blockIndex, blockData);
             });
 
             Logger.Default.Log("Compression successful.");
@@ -59,7 +62,6 @@ namespace BitmapCompressor
             Logger.Default.Log("Decompressing DDS to BMP.");
 
             var bmp = new DirectBitmap(image.Width, image.Height);
-            var format = image.GetFormat();
 
             int numberOfVerticalBlocks = image.Height / BlockFormat.Dimension;
             int numberOfHorizontalBlocks = image.Width / BlockFormat.Dimension;
@@ -67,27 +69,20 @@ namespace BitmapCompressor
 
             Parallel.For(0, numberOfBlocks,
 #if DEBUG
-                RunInSingleThreadOption(),
+                RunInSingleThread,
 #endif
                 (i) =>
             {
-                var block = PointUtility.FromRowMajor(i, numberOfHorizontalBlocks);
+                var blockIndex = PointUtility.FromRowMajor(i, numberOfHorizontalBlocks);
+                var blockData = image.GetBlockData(blockIndex);
+                var blockColors = image.CompressionFormat.Decompress(blockData);
 
-                var data = image.GetBlockData(block);
-
-                var colors = format.Decompress(data);
-
-                bmp.SetBlockColors(block, colors);
+                bmp.SetBlockColors(blockIndex, blockColors);
             });
 
             Logger.Default.Log("Decompression successful.");
 
             return bmp;
-        }
-
-        private static ParallelOptions RunInSingleThreadOption()
-        {
-            return new ParallelOptions { MaxDegreeOfParallelism = 1 };
         }
     }
 }

@@ -3,7 +3,6 @@ using System.IO;
 using System.Diagnostics;
 using BitmapCompressor.Console.CommandLine;
 using BitmapCompressor.Console.Utilities;
-using BitmapCompressor.Formats;
 
 namespace BitmapCompressor.Console
 {
@@ -72,22 +71,19 @@ namespace BitmapCompressor.Console
 
         public void Run(CommandLineArguments args)
         {
-            switch (args.Action)
+            switch (args.Operation)
             {
-                case CommandLineAction.CompressBC1:
-                case CommandLineAction.CompressBC2:
+                case ImageOperation.Compress:
                 {
                     CheckIfFilesExist(args.BMPFileName, args.DDSFileName, args.Overwrite);
 
-                    var format = ToCompressionFormat(args.Action);
-
                     var inputImage  = _fileSystem.LoadBitmap(args.BMPFileName);
-                    var outputImage = _blockCompressor.Compress(inputImage, format);
+                    var outputImage = _blockCompressor.Compress(inputImage, args.Format);
 
                     outputImage.Save(args.DDSFileName);
                     break;
                 }
-                case CommandLineAction.Decompress:
+                case ImageOperation.Decompress:
                 {
                     CheckIfFilesExist(args.DDSFileName, args.BMPFileName, args.Overwrite);
 
@@ -98,7 +94,7 @@ namespace BitmapCompressor.Console
                     break;
                 }
                 default:
-                    throw new ArgumentException("Unknown command line action.");
+                    throw new ArgumentOutOfRangeException(nameof(args));
             }
         }
 
@@ -120,21 +116,6 @@ namespace BitmapCompressor.Console
             System.Console.WriteLine($"File '{fileName}' already exists. Do you wish to overwrite it?");
 
             return _inputSystem.PromptYesOrNo();
-        }
-
-        private static IBlockCompressionFormat ToCompressionFormat(CommandLineAction action)
-        {
-            switch (action)
-            {
-                case CommandLineAction.CompressBC1:
-                    return new BC1Format();
-
-                case CommandLineAction.CompressBC2:
-                    return new BC2Format();
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(action));
-            }
         }
     }
 }

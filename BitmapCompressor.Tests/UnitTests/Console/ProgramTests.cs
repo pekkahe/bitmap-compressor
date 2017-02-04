@@ -41,38 +41,45 @@ namespace BitmapCompressor.Tests.UnitTests.Console
             _program = new Program(_fileSystem.Object, _inputSystem.Object, _compressor.Object);
         }
 
-        [Test]
-        public void CompressionRunsCompressionAlgorithm()
+        public void CompressActionRunsCompression()
         {
-            _args.Action = CommandLineAction.CompressBC1;
+            _args.Operation = ImageOperation.Compress;
 
             _fileSystem.Setup(f => f.Exists(_args.BMPFileName)).Returns(true);
             _fileSystem.Setup(f => f.Exists(_args.DDSFileName)).Returns(false);
 
             _program.Run(_args);
 
-            _compressor.Verify(f => f.Compress(It.IsAny<IUncompressedImage>(), It.IsAny<IBlockCompressionFormat>()), Times.Once);
+            _compressor.Verify(f => 
+                f.Compress(It.IsAny<IUncompressedImage>(), It.IsAny<IBlockCompressionFormat>()),
+                Times.Once);
+
             _compressor.Verify(f => f.Decompress(It.IsAny<ICompressedImage>()), Times.Never);
         }
 
         [Test]
-        public void DecompressionRunsDecompressionAlgorithm()
+        public void DecompressActionRunsDecompression()
         {
-            _args.Action = CommandLineAction.Decompress;
+            _args.Operation = ImageOperation.Decompress;
 
             _fileSystem.Setup(f => f.Exists(_args.BMPFileName)).Returns(false);
             _fileSystem.Setup(f => f.Exists(_args.DDSFileName)).Returns(true);
 
             _program.Run(_args);
 
-            _compressor.Verify(f => f.Compress(It.IsAny<IUncompressedImage>(), It.IsAny<IBlockCompressionFormat>()), Times.Never);
-            _compressor.Verify(f => f.Decompress(It.IsAny<ICompressedImage>()), Times.Once);
+            _compressor.Verify(f => 
+                f.Decompress(It.IsAny<ICompressedImage>()), 
+                Times.Once);
+
+            _compressor.Verify(f =>
+                f.Compress(It.IsAny<IUncompressedImage>(), It.IsAny<IBlockCompressionFormat>()),
+                Times.Never);
         }
 
         [Test]
         public void CompressionPromptsForOverwriteWhenDDSFileExists()
         {
-            _args.Action = CommandLineAction.Decompress;
+            _args.Operation = ImageOperation.Decompress;
 
             _fileSystem.Setup(f => f.Exists(_args.BMPFileName)).Returns(true);
             _fileSystem.Setup(f => f.Exists(_args.DDSFileName)).Returns(true);
@@ -92,7 +99,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         [Test]
         public void CompressionThrowsExceptionWhenBMPFileDoesNotExist()
         {
-            _args.Action = CommandLineAction.CompressBC1;
+            _args.Operation = ImageOperation.Compress;
 
             _fileSystem.Setup(f => f.Exists(_args.BMPFileName)).Returns(false);
 
@@ -102,7 +109,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         [Test]
         public void DecompressionPromptsForOverwriteWhenBMPFileExists()
         {
-            _args.Action = CommandLineAction.Decompress;
+            _args.Operation = ImageOperation.Decompress;
 
             _fileSystem.Setup(f => f.Exists(_args.BMPFileName)).Returns(true);
             _fileSystem.Setup(f => f.Exists(_args.DDSFileName)).Returns(true);
@@ -122,7 +129,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         [Test]
         public void DecompressionThrowsExceptionWhenDDSFileDoesNotExist()
         {
-            _args.Action = CommandLineAction.Decompress;
+            _args.Operation = ImageOperation.Decompress;
 
             _fileSystem.Setup(f => f.Exists(_args.DDSFileName)).Returns(false);
 
@@ -132,7 +139,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         [Test]
         public void RunningThrowsExceptionWhenTargetFileExistsAndOverwriteDeclined()
         {
-            _args.Action = CommandLineAction.CompressBC1;
+            _args.Operation = ImageOperation.Compress;
             _args.Overwrite = false;
 
             _fileSystem.Setup(f => f.Exists(_args.DDSFileName)).Returns(true);
@@ -146,7 +153,7 @@ namespace BitmapCompressor.Tests.UnitTests.Console
         [Test]
         public void RunningDoesNotThrowWhenTargetFileExistsAndOverwriteApproved()
         {
-            _args.Action = CommandLineAction.CompressBC1;
+            _args.Operation = ImageOperation.Compress;
             _args.Overwrite = true;
 
             _fileSystem.Setup(f => f.Exists(_args.DDSFileName)).Returns(true);

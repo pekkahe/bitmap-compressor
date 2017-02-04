@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using BitmapCompressor.Extensions;
+using BitmapCompressor.Formats;
 
 namespace BitmapCompressor.Console.CommandLine
 {
@@ -30,35 +31,43 @@ namespace BitmapCompressor.Console.CommandLine
 
             Array.Reverse(args);
 
-            var inputArgs = new Stack<string>(args);
-            var resultArgs = new CommandLineArguments();
+            var argsStack = new Stack<string>(args);
+            var commandLineArgs = new CommandLineArguments();
 
-            resultArgs.Action = ParseAction(PopNextArgument(inputArgs));
-
-            if (PeekNextArgument(inputArgs) == CommandLineArguments.Keys.Overwrite)
+            var firstArg = PopNextArgument(argsStack);
+            if (firstArg == CommandLineArguments.Keys.Decompress)
             {
-                resultArgs.Overwrite = true;
-                PopNextArgument(inputArgs);
+                commandLineArgs.Operation = ImageOperation.Decompress;
+            }
+            else
+            {
+                commandLineArgs.Operation = ImageOperation.Compress;
+                commandLineArgs.Format = ParseCompressionFormat(firstArg);
             }
 
-            resultArgs.BMPFileName = ParseBMPFileName(PopNextArgument(inputArgs));
-            resultArgs.DDSFileName = ParseDDSFileName(PopNextArgument(inputArgs));
+            if (PeekNextArgument(argsStack) == CommandLineArguments.Keys.Overwrite)
+            {
+                PopNextArgument(argsStack);
+                commandLineArgs.Overwrite = true;
+            }
 
-            return resultArgs;
+            commandLineArgs.BMPFileName = ParseBMPFileName(PopNextArgument(argsStack));
+            commandLineArgs.DDSFileName = ParseDDSFileName(PopNextArgument(argsStack));
+
+            return commandLineArgs;
         }
 
-        private CommandLineAction ParseAction(string arg)
+        private IBlockCompressionFormat ParseCompressionFormat(string arg)
         {
-            if (arg == CommandLineArguments.Keys.Decompress)
-                return CommandLineAction.Decompress;
-
-            if (arg.StartsWith(CommandLineArguments.Keys.Compress) && arg.Length == 3)
+            if (arg.StartsWith(CommandLineArguments.Keys.Compress))
             {
-                if (arg[2] == CommandLineArguments.Keys.BC1Format)
-                    return CommandLineAction.CompressBC1;
-
-                if (arg[2] == CommandLineArguments.Keys.BC2Format)
-                    return CommandLineAction.CompressBC2;
+                var formatChar = arg.Length == 3 ? arg[2] : default(char);
+                if (formatChar == CommandLineArguments.Keys.BC1Format)
+                    return new BC1Format();
+                if (formatChar == CommandLineArguments.Keys.BC2Format)
+                    return new BC2Format();
+                if (formatChar == CommandLineArguments.Keys.BC3Format)
+                    return new BC3Format();
             }
 
             throw UnrecognizedCommandLine();
@@ -121,6 +130,8 @@ namespace BitmapCompressor.Console.CommandLine
                 CommandLineArguments.Keys.Compress, CommandLineArguments.Keys.BC1Format));
             builder.AppendLine("        {0}{1}    Compress the BMP file into a BC2 compressed DDS file.".Parameters(
                 CommandLineArguments.Keys.Compress, CommandLineArguments.Keys.BC2Format));
+            builder.AppendLine("        {0}{1}    Compress the BMP file into a BC3 compressed DDS file.".Parameters(
+                CommandLineArguments.Keys.Compress, CommandLineArguments.Keys.BC3Format));
             builder.AppendLine("        {0}     Decompress the DDS file into an uncompressed BMP file.".Parameters(
                 CommandLineArguments.Keys.Decompress));
             builder.AppendLine("        {0}     Overwrites the target BMP or DDS file if it exists.".Parameters(

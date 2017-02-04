@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLine\CommandLineAction.cs" />
+    <Compile Include="CommandLine\ImageOperation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Utilities\SimpleFileSystem.cs" />
     <Compile Include="Utilities\IFileSystem.cs" />

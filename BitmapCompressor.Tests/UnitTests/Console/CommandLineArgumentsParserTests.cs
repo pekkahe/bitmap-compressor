@@ -1,5 +1,6 @@
 ﻿using System;
 using BitmapCompressor.Console.CommandLine;
+using BitmapCompressor.Formats;
 using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.UnitTests.Console
@@ -7,13 +8,13 @@ namespace BitmapCompressor.Tests.UnitTests.Console
     [TestFixture(Category = "Console")]
     public class CommandLineArgumentsParserTests
     {
-        [TestCase(CommandLineArguments.Keys.BC1Format, CommandLineAction.CompressBC1, 
+        [TestCase(CommandLineArguments.Keys.BC1Format, typeof(BC1Format), 
                   TestName = "ParseCompressOptionForBC1")]
-        [TestCase(CommandLineArguments.Keys.BC2Format, CommandLineAction.CompressBC2,
+        [TestCase(CommandLineArguments.Keys.BC2Format, typeof(BC2Format),
                   TestName = "ParseCompressOptionForBC2")]
-        [TestCase(CommandLineArguments.Keys.BC3Format, CommandLineAction.CompressBC3,
+        [TestCase(CommandLineArguments.Keys.BC3Format, typeof(BC3Format),
                   TestName = "ParseCompressOptionForBC3")]
-        public void ParsingCompressOption(char key, CommandLineAction action)
+        public void ParsingCompressOption(char key, Type compressionFormatType)
         {
             var parser = new CommandLineArgumentsParser();
             var args = new string[]
@@ -25,7 +26,9 @@ namespace BitmapCompressor.Tests.UnitTests.Console
 
             var result = parser.Parse(args);
 
-            Assert.AreEqual(action, result.Action);
+            Assert.AreEqual(ImageOperation.Compress, result.Operation);
+            Assert.IsNotNull(result.Format);
+            Assert.AreEqual(compressionFormatType, result.Format.GetType());
             Assert.AreEqual("file.bmp", result.BMPFileName);
             Assert.AreEqual("file.dds", result.DDSFileName);
         }
@@ -43,8 +46,9 @@ namespace BitmapCompressor.Tests.UnitTests.Console
 
             var result = parser.Parse(args);
 
-            Assert.AreEqual(CommandLineAction.Decompress, result.Action);
-            Assert.AreEqual(false, result.Overwrite);
+            Assert.AreEqual(ImageOperation.Decompress, result.Operation);
+            Assert.IsNull(result.Format);
+            Assert.IsFalse(result.Overwrite);
             Assert.AreEqual("file.bmp", result.BMPFileName);
             Assert.AreEqual("file.dds", result.DDSFileName);
         }
@@ -63,8 +67,9 @@ namespace BitmapCompressor.Tests.UnitTests.Console
 
             var result = parser.Parse(args);
 
-            Assert.AreEqual(CommandLineAction.CompressBC1, result.Action);
-            Assert.AreEqual(true, result.Overwrite);
+            Assert.AreEqual(ImageOperation.Compress, result.Operation);
+            Assert.IsNotNull(result.Format);
+            Assert.IsTrue(result.Overwrite);
             Assert.AreEqual("file.bmp", result.BMPFileName);
             Assert.AreEqual("file.dds", result.DDSFileName);
         }

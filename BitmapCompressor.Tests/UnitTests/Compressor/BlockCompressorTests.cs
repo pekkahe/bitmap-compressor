@@ -13,17 +13,13 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
     {
         #region Test colors
 
-        // Let's use custom colors instead of the static properties provided
-        // by Color because comparing against the statics fails when the color
-        // is read from a bitmap.
-
         private static readonly Color Red =     Color.FromArgb(255, 0, 0);
         private static readonly Color Green =   Color.FromArgb(0, 255, 0);
         private static readonly Color Blue =    Color.FromArgb(0, 0, 255);
         private static readonly Color White =   Color.FromArgb(255, 255, 255);
         private static readonly Color Black =   Color.FromArgb(0, 0, 0);
         private static readonly Color Gray =    Color.FromArgb(150, 150, 150);
-
+        
         #endregion
 
         [Test]

@@ -133,7 +133,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
                 Color565.FromRgb(24, 45, 14),
             };
             
-            var result = ColorUtility.GetClosest(colors, target);
+            var result = ColorUtility.GetClosestColor(colors, target);
 
             Assert.AreEqual(expected, result);
         }

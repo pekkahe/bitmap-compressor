@@ -39,7 +39,7 @@ namespace BitmapCompressor.Formats
                 var color32 = colors[i];
                 var color16 = ColorUtility.To16Bit(color32);
 
-                block.ColorIndexes[i] = ColorUtility.GetIndexOfClosest(colorTable, color16);
+                block.ColorIndexes[i] = ColorUtility.GetIndexOfClosestColor(colorTable, color16);
                 block.ColorAlphas[i]  = color32.A >> 4; // Convert 8-bit alpha to 4-bit
             }
 

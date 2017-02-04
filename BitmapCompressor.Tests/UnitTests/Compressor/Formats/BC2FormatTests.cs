@@ -138,7 +138,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void DecompressBytesWithoutAlpha()
+        public void DecompressDataWithoutAlpha()
         {
             var bytes = new byte[BlockFormat.BC2ByteSize];
             bytes[0]    = 0xFF; // alphas0
@@ -179,7 +179,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
         }
 
         [Test]
-        public void DecompressBytesWithAlpha()
+        public void DecompressDataWithAlpha()
         {
             var bytes   = new byte[BlockFormat.BC2ByteSize];
 

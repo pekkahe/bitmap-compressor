@@ -7,9 +7,10 @@ namespace BitmapCompressor.DataTypes
     public interface ICompressedImage : IImage
     {
         /// <summary>
-        /// Returns the <see cref="IBlockCompressionFormat"/> which operates on this image.
+        /// Returns the <see cref="IBlockCompressionFormat"/> specified for this image.
+        /// Provides block compression operations for the surface data.
         /// </summary>
-        IBlockCompressionFormat GetFormat();
+        IBlockCompressionFormat CompressionFormat { get; }
 
         /// <summary>
         /// Reads the block-compressed data from the image's main surface buffer 

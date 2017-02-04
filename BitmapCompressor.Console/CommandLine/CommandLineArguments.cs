@@ -1,8 +1,40 @@
-﻿
+﻿using BitmapCompressor.Formats;
+
 namespace BitmapCompressor.Console.CommandLine
 {
+    /// <summary>
+    /// Data structure representing the parsed command line arguments
+    /// for this application.
+    /// </summary>
     public class CommandLineArguments
     {
+        /// <summary>
+        /// The selected image processing operation.
+        /// </summary>
+        public ImageOperation Operation { get; set; }
+
+        /// <summary>
+        /// The compression format to use when <see cref="ImageOperation.Compress"/>
+        /// is selected. Set <code>null</code> for <see cref="ImageOperation.Decompress"/>,
+        /// as it's not required.
+        /// </summary>
+        public IBlockCompressionFormat Format { get; set; }
+
+        /// <summary>
+        /// Whether to overwrite an existing output file or not.
+        /// </summary>
+        public bool Overwrite { get; set; }
+
+        /// <summary>
+        /// The file name specified for the BMP file.
+        /// </summary>
+        public string BMPFileName { get; set; }
+
+        /// <summary>
+        /// The file name specified for the DDS file.
+        /// </summary>
+        public string DDSFileName { get; set; }
+
         /// <summary>
         /// The keywords of all supported command line arguments.
         /// </summary>
@@ -38,25 +70,5 @@ namespace BitmapCompressor.Console.CommandLine
             /// </summary>
             public const string Overwrite = "-w";
         }
-
-        /// <summary>
-        /// The selected image processing action.
-        /// </summary>
-        public CommandLineAction Action { get; set; }
-
-        /// <summary>
-        /// Whether to overwrite an existing output file or not.
-        /// </summary>
-        public bool Overwrite { get; set; }
-
-        /// <summary>
-        /// The file name specified for the BMP file.
-        /// </summary>
-        public string BMPFileName { get; set; }
-
-        /// <summary>
-        /// The file name specified for the DDS file.
-        /// </summary>
-        public string DDSFileName { get; set; }
     }
 }
