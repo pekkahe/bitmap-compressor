@@ -61,6 +61,7 @@
     <Compile Include="Helpers\Profiler.cs" />
     <Compile Include="IntegrationTests\BaseIntegrationTests.cs" />
     <Compile Include="IntegrationTests\BC2CompressionTests.cs" />
+    <Compile Include="IntegrationTests\BC3CompressionTests.cs" />
     <Compile Include="UnitTests\Compressor\DataTypes\DirectBitmapTests.cs" />
     <Compile Include="UnitTests\Compressor\Extensions\ArrayExtensionsTests.cs" />
     <Compile Include="UnitTests\Compressor\Extensions\ColorExtensionsTests.cs" />

@@ -149,22 +149,22 @@ namespace BitmapCompressor.Formats
             
             var bytes = new byte[16];
 
-            bytes[0] = Alpha0;
-            bytes[1] = Alpha1;
-            bytes[2] = alphas[2];
-            bytes[3] = alphas[1];
-            bytes[4] = alphas[0];
-            bytes[5] = alphas[5];
-            bytes[6] = alphas[4];
-            bytes[7] = alphas[3];
-            bytes[8] = c0Low;
-            bytes[9] = c0Hi;
-            bytes[10] = c1Low;
-            bytes[11] = c1Hi;
-            bytes[12] = indexes[0];
-            bytes[13] = indexes[1];
-            bytes[14] = indexes[2];
-            bytes[15] = indexes[3];
+            bytes[0]    = Alpha0;
+            bytes[1]    = Alpha1;
+            bytes[2]    = alphas[2];
+            bytes[3]    = alphas[1];
+            bytes[4]    = alphas[0];
+            bytes[5]    = alphas[5];
+            bytes[6]    = alphas[4];
+            bytes[7]    = alphas[3];
+            bytes[8]    = c0Low;
+            bytes[9]    = c0Hi;
+            bytes[10]   = c1Low;
+            bytes[11]   = c1Hi;
+            bytes[12]   = indexes[0];
+            bytes[13]   = indexes[1];
+            bytes[14]   = indexes[2];
+            bytes[15]   = indexes[3];
 
             return bytes;
         }

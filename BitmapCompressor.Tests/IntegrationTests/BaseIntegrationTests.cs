@@ -73,6 +73,16 @@ namespace BitmapCompressor.Tests.IntegrationTests
             public const string CityscapeBmpBc2 = "cityscape.bc2.bmp";
 
             /// <summary>
+            /// DDS file compressed from <see cref="CityscapeBmp"/> using BC3.
+            /// </summary>
+            public const string CityscapeDdsBc3 = "cityscape.bc3.dds";
+
+            /// <summary>
+            /// BMP file decompressed from <see cref="CityscapeDdsBc3"/>.
+            /// </summary>
+            public const string CityscapeBmpBc3 = "cityscape.bc3.bmp";
+
+            /// <summary>
             /// Original source bitmap image with transparency.
             /// </summary>
             public const string CityscapeAlphaBmp = "cityscape-alpha.bmp";
@@ -98,6 +108,16 @@ namespace BitmapCompressor.Tests.IntegrationTests
             public const string CityscapeAlphaBmpBc2 = "cityscape-alpha.bc2.bmp";
 
             /// <summary>
+            /// DDS file compressed from <see cref="CityscapeAlphaBmp"/> using BC3.
+            /// </summary>
+            public const string CityscapeAlphaDdsBc3 = "cityscape-alpha.bc3.dds";
+
+            /// <summary>
+            /// BMP file decompressed from <see cref="CityscapeAlphaDdsBc3"/>.
+            /// </summary>
+            public const string CityscapeAlphaBmpBc3 = "cityscape-alpha.bc3.bmp";
+
+            /// <summary>
             /// Original source bitmap image with transparency.
             /// </summary>
             public const string MarsAlphaBmp = "mars-alpha.bmp";
@@ -121,6 +141,16 @@ namespace BitmapCompressor.Tests.IntegrationTests
             /// BMP file decompressed from <see cref="MarsAlphaDdsBc2"/>.
             /// </summary>
             public const string MarsAlphaBmpBc2 = "mars-alpha.bc2.bmp";
+
+            /// <summary>
+            /// DDS file compressed from <see cref="MarsAlphaBmp"/> using BC3.
+            /// </summary>
+            public const string MarsAlphaDdsBc3 = "mars-alpha.bc3.dds";
+
+            /// <summary>
+            /// BMP file decompressed from <see cref="MarsAlphaDdsBc3"/>.
+            /// </summary>
+            public const string MarsAlphaBmpBc3 = "mars-alpha.bc3.bmp";
         }
     }
 }
