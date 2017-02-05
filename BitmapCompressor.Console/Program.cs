@@ -94,7 +94,7 @@ namespace BitmapCompressor.Console
                     break;
                 }
                 default:
-                    throw new ArgumentException($"Unsupported command line action: {args}");
+                    throw new ArgumentException($"Unsupported command line action: {args.Operation}");
             }
         }
 
