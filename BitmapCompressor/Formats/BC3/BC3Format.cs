@@ -32,24 +32,50 @@ namespace BitmapCompressor.Formats
             var colorSpace = new ColorSpace(colors);
             var colorTable = BC1ColorTable.Create(colorSpace.MaxColor, colorSpace.MinColor);
 
+            // Interpolate 6 alpha values by passing max alpha as alpha0
+            var alphaTable = CreateAlphaTable(colorSpace.MaxAlpha, colorSpace.MinAlpha);
+
             var block = new BC3BlockData();
             block.Color0 = colorTable[0];
             block.Color1 = colorTable[1];
+            block.Alpha0 = alphaTable[0];
+            block.Alpha1 = alphaTable[1];
 
             for (int i = 0; i < colors.Length; ++i)
             {
                 var color32 = colors[i];
+                var color16 = ColorUtility.To16Bit(color32);
 
+                block.ColorIndexes[i] = ColorUtility.GetIndexOfClosestColor(colorTable, color16);
+                block.AlphaIndexes[i] = ColorUtility.GetIndexOfClosestAlpha(alphaTable, color32.A);
             }
-
-            throw new NotImplementedException();
 
             return block.ToBytes();
         }
 
         public Color[] Decompress(byte[] blockData)
         {
-            throw new NotImplementedException();
+            Debug.Assert(blockData.Length == BlockFormat.BC3ByteSize);
+
+            var block = BC3BlockData.FromBytes(blockData);
+
+            var colorTable = BC1ColorTable.Create(block.Color0, block.Color1);
+            var alphaTable = CreateAlphaTable(block.Alpha0, block.Alpha1);
+
+            var colors = new Color[BlockFormat.TexelCount];
+
+            for (int i = 0; i < colors.Length; ++i)
+            {
+                int colorIndex = block.ColorIndexes[i];
+                int alphaIndex = block.AlphaIndexes[i];
+
+                var color = colorTable[colorIndex];
+                var alpha = alphaTable[alphaIndex];
+
+                colors[i] = Color.FromArgb(alpha, ColorUtility.To32Bit(color));
+            }
+
+            return colors;
         }
 
         /// <summary>
@@ -63,14 +89,13 @@ namespace BitmapCompressor.Formats
         /// only 4 alpha values, it sets two additional alpha values (0 for fully transparent 
         /// and 255 for fully opaque).
         /// </para><para>
-        /// BC3 compresses the alpha values in the 4×4 texel area 
-        /// by storing the bit code corresponding to the interpolated alpha values which most 
-        /// closely matches the original alpha for a given texel.
+        /// BC3 compresses the alpha values in the 4×4 texel area by storing the bit code 
+        /// corresponding to the interpolated alpha values which most closely matches the
+        /// original alpha for a given texel.
         /// </para></remarks>
-        /// <param name="alpha0"></param>
-        /// <param name="alpha1"></param>
-        /// <returns></returns>
-        private byte[] CreateAlphaTable(byte alpha0, byte alpha1)
+        /// <param name="alpha0">The first reference alpha.</param>
+        /// <param name="alpha1">The second reference alpha.</param>
+        public static byte[] CreateAlphaTable(byte alpha0, byte alpha1)
         {
             var alphas = new byte[8];
             alphas[0] = alpha0;
@@ -78,7 +103,6 @@ namespace BitmapCompressor.Formats
 
             if (alphas[0] > alphas[1])
             {
-                // 6 interpolated alpha values.
                 alphas[2] = (byte) (6 / 7 * alphas[0] + 1 / 7 * alphas[1]); // bit code 010
                 alphas[3] = (byte) (5 / 7 * alphas[0] + 2 / 7 * alphas[1]); // bit code 011
                 alphas[4] = (byte) (4 / 7 * alphas[0] + 3 / 7 * alphas[1]); // bit code 100
@@ -88,7 +112,6 @@ namespace BitmapCompressor.Formats
             }
             else
             {
-                // 4 interpolated alpha values.
                 alphas[2] = (byte) (4 / 5 * alphas[0] + 1 / 5 * alphas[1]); // bit code 010
                 alphas[3] = (byte) (3 / 5 * alphas[0] + 2 / 5 * alphas[1]); // bit code 011
                 alphas[4] = (byte) (2 / 5 * alphas[0] + 3 / 5 * alphas[1]); // bit code 100

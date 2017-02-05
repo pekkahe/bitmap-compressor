@@ -77,6 +77,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var data = new BC2Format().Compress(colors);
 
+            // Assert against data hard-coded from a successful test
+            // run where the data was built using unit tested components.
+
             Assert.AreEqual(0xFF, data[0]);  // alphas0
             Assert.AreEqual(0xFF, data[1]);  // alphas1
             Assert.AreEqual(0xFF, data[2]);  // alphas2
@@ -117,6 +120,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             colors[15]  = Color.FromArgb(70, 190, 158, 111);
 
             var data = new BC2Format().Compress(colors);
+
+            // Assert against data hard-coded from a successful test
+            // run where the data was built using unit tested components;
+            // byte values for alphas were calculated manually.
 
                                              //                8-bit     4-bit
             Assert.AreEqual(0xF5, data[0]);  // alphas0 [d c] [250  80] [15  5] -> [1111 0101]
@@ -160,29 +167,31 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var colors = new BC2Format().Decompress(bytes);
 
-            Assert.AreEqual(Color.FromArgb(0, 56, 99),      colors[0]);
-            Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[1]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[2]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[3]);
-            Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[4]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[5]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[6]);
-            Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[7]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[8]);
-            Assert.AreEqual(Color.FromArgb(181, 239, 222),  colors[9]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[10]);
-            Assert.AreEqual(Color.FromArgb(181, 239, 222),  colors[11]);
-            Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[12]);
-            Assert.AreEqual(Color.FromArgb(181, 239, 222),  colors[13]);
-            Assert.AreEqual(Color.FromArgb(181, 239, 222),  colors[14]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[15]);
+            // Assert against data hard-coded from a successful test
+            // run where the data was built using unit tested components.
+
+            Assert.AreEqual(Color.FromArgb(255, 0, 56, 99),      colors[0]);
+            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[1]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[2]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[3]);
+            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[4]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[5]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[6]);
+            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[7]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[8]);
+            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[9]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[10]);
+            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[11]);
+            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[12]);
+            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[13]);
+            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[14]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[15]);
         }
 
         [Test]
         public void DecompressDataWithAlpha()
         {
             var bytes   = new byte[BlockFormat.BC2ByteSize];
-
                                 //                            4-bit      8-bit
             bytes[0]    = 0xF5; // alphas0 [d c] [1111 0101] [15  5] -> [255  85]
             bytes[1]    = 0x63; // alphas1 [b a] [0110 0011] [6   3] -> [102  51]
@@ -202,6 +211,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             bytes[15]   = 0x83; // indexes3
 
             var colors = new BC2Format().Decompress(bytes);
+
+            // Assert against data hard-coded from a successful test
+            // run where the data was built using unit tested components.
 
             Assert.AreEqual(Color.FromArgb(51, 0, 56, 99),      colors[0]);
             Assert.AreEqual(Color.FromArgb(102, 57, 117, 140),  colors[1]);

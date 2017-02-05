@@ -9,36 +9,54 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
     public class ColorSpaceTests
     {
         [Test]
-        public void CalculatesEndpointColors()
+        public void CalculatesMinAndMaxColors()
         {
-            var low =  Color.FromArgb(50,  50,  50);
-            var col =  Color.FromArgb(100, 100, 100);
-            var high = Color.FromArgb(150, 150, 150);
+            var min     = Color.FromArgb(50, 50, 50);
+            var colorA  = Color.FromArgb(70, 60, 90);
+            var colorB  = Color.FromArgb(100, 100, 100);
+            var colorC  = Color.FromArgb(130, 110, 130);
+            var max     = Color.FromArgb(150, 150, 150);
 
-            var colorSpace = new ColorSpace(new[] { col, low, high });
+            var colorSpace = new ColorSpace(new[] 
+            {
+                colorA,
+                min,
+                colorB,
+                colorC,
+                max
+            });
 
-            Assert.AreEqual(low,  colorSpace.LowColor);
-            Assert.AreEqual(high, colorSpace.HighColor);
+            Assert.AreEqual(ColorUtility.To16Bit(min), colorSpace.MinColor);
+            Assert.AreEqual(ColorUtility.To16Bit(max), colorSpace.MaxColor);
         }
 
         [Test]
-        public void CalculatesMinAndMaxColors()
+        public void CalculatesMinAndMaxAlpha()
         {
-            var low =  Color.FromArgb(50,  50,  50);
-            var col =  Color.FromArgb(100, 100, 100);
-            var high = Color.FromArgb(150, 150, 150);
+            var min     = Color.FromArgb(30, 50, 150, 250);
+            var colorA  = Color.FromArgb(170, 170, 60, 90);
+            var colorB  = Color.FromArgb(90, 140, 100, 190);
+            var colorC  = Color.FromArgb(45, 130, 110, 130);
+            var max     = Color.FromArgb(210, 50, 150, 150);
 
-            var colorSpace = new ColorSpace(new[] { col, low, high });
+            var colorSpace = new ColorSpace(new[]
+            {
+                colorA,
+                min,
+                colorB,
+                colorC,
+                max
+            });
 
-            Assert.AreEqual(ColorUtility.To16Bit(low),  colorSpace.MinColor);
-            Assert.AreEqual(ColorUtility.To16Bit(high), colorSpace.MaxColor);
+            Assert.AreEqual(min.A, colorSpace.MinAlpha);
+            Assert.AreEqual(max.A, colorSpace.MaxAlpha);
         }
 
         [Test]
         public void Recognizes16BitColorOrderWhen32BitOrderIsInverted()
         {
-            var min =     Color.FromArgb(50, 255, 255);
-            var max =     Color.FromArgb(55, 0,   0);
+            var min = Color.FromArgb(50, 255, 255);
+            var max = Color.FromArgb(55, 0, 0);
             var minAs16ShouldBeMax = ColorUtility.To16Bit(min);
             var maxAs16ShouldBeMin = ColorUtility.To16Bit(max);
 

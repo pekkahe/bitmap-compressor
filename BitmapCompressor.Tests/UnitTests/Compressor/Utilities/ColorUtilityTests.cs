@@ -133,9 +133,32 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
                 Color565.FromRgb(24, 45, 14),
             };
             
-            var result = ColorUtility.GetClosestColor(colors, target);
+            var closest = ColorUtility.GetClosestColor(colors, target);
 
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, closest);
+        }
+
+        [Test]
+        public void CalculateClosestAlpha()
+        {
+            byte target = 80;
+            byte expected = 70;
+            var alphas = new byte[]
+            {
+                255,
+                0,
+                140,
+                90,
+                expected,
+                90,
+                60,
+                255,
+                0
+            };
+
+            var closest = ColorUtility.GetClosestAlpha(alphas, target);
+
+            Assert.AreEqual(expected, closest);
         }
 
         [Test]

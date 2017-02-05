@@ -94,7 +94,7 @@ namespace BitmapCompressor.Console
                     break;
                 }
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(args));
+                    throw new ArgumentException($"Unsupported command line action: {args}");
             }
         }
 

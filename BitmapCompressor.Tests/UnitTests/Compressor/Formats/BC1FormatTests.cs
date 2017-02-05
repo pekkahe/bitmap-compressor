@@ -102,7 +102,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             colors[15]  = Color.FromArgb(190, 158, 111);
 
             var data = new BC1Format().Compress(colors);
-            
+
+            // Assert against data hard-coded from a successful test
+            // run where the data was built using unit tested components.
+
             Assert.AreEqual(0x7B, data[0]); // c0Low
             Assert.AreEqual(0xB7, data[1]); // c0Hi
             Assert.AreEqual(0xCC, data[2]); // c1Low
@@ -136,6 +139,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var data = new BC1Format().Compress(colors);
 
+            // Assert against data hard-coded from a successful test
+            // run where the data was built using unit tested components.
+
             Assert.AreEqual(0xCC, data[0]); // c0Low
             Assert.AreEqual(0x01, data[1]); // c0Hi
             Assert.AreEqual(0x7B, data[2]); // c1Low
@@ -160,23 +166,26 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             bytes[7] = 0x83; // indexes3
 
             var colors = new BC1Format().Decompress(bytes);
-            
-            Assert.AreEqual(Color.FromArgb(0, 56, 99),      colors[0]);
-            Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[1]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[2]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[3]);
-            Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[4]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[5]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[6]);
-            Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[7]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[8]);
-            Assert.AreEqual(Color.FromArgb(181, 239, 222),  colors[9]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[10]);
-            Assert.AreEqual(Color.FromArgb(181, 239, 222),  colors[11]);
-            Assert.AreEqual(Color.FromArgb(57, 117, 140),   colors[12]);
-            Assert.AreEqual(Color.FromArgb(181, 239, 222),  colors[13]);
-            Assert.AreEqual(Color.FromArgb(181, 239, 222),  colors[14]);
-            Assert.AreEqual(Color.FromArgb(123, 178, 181),  colors[15]);
+
+            // Assert against data hard-coded from a successful test
+            // run where the data was built using unit tested components.
+
+            Assert.AreEqual(Color.FromArgb(255, 0, 56, 99),      colors[0]);
+            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[1]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[2]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[3]);
+            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[4]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[5]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[6]);
+            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[7]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[8]);
+            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[9]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[10]);
+            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[11]);
+            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[12]);
+            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[13]);
+            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[14]);
+            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[15]);
         }
 
         [Test]
@@ -193,6 +202,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             bytes[7] = 0x9F; // indexes3
 
             var colors = new BC1Format().Decompress(bytes);
+
+            // Assert against data hard-coded from a successful test
+            // run where the data was built using unit tested components.
 
             Assert.AreEqual(Color.FromArgb(0, 0, 0, 0),         colors[0]);
             Assert.AreEqual(Color.FromArgb(0, 0, 0, 0),         colors[1]);

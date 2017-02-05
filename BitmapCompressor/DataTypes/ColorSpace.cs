@@ -3,121 +3,107 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
-using BitmapCompressor.Extensions;
 using BitmapCompressor.Utilities;
 
 namespace BitmapCompressor.DataTypes
 {
     /// <summary>
-    /// A utility class which provides color space information for a set of colors.
+    /// Provides color space information for a set of colors.
     /// </summary>
-    /// <remarks>
-    /// The minimum and maximum colors <see cref="MinColor"/> and <see cref="MaxColor"/> are 
-    /// represented in RGB565 because the order might change if we compared the integer values
-    /// of the 32-bit RGB colors.
-    /// </remarks>
     public class ColorSpace : IReadOnlyList<Color>
     {
-        /// <summary>
-        /// The color used in calculating the two endpoints for this color space.
-        /// </summary>
-        public static readonly Color ReferenceColor = Color.FromArgb(0, 0, 0);
-
         private readonly List<Color> _colors;
 
         /// <summary>
-        /// Instantiates a <see cref="ColorSpace"/> instance from the given colors which
-        /// stores information about the color space and provides access to each individual 
-        /// color by index.
+        /// Instantiates a new <see cref="ColorSpace"/> instance from the specified colors.
         /// </summary>
-        /// <param name="colors">The colors to calculate the color space from.</param>
         public ColorSpace(IEnumerable<Color> colors)
         {
             _colors = colors.ToList();
-
-            HasAlpha = CalculateColorEndpoints();
-
-            var low = ColorUtility.To16Bit(LowColor);
-            var high = ColorUtility.To16Bit(HighColor);
-
-            if (low.Value < high.Value)
-            {
-                MinColor = low;
-                MaxColor = high;
-            }
-            else
-            {
-                MinColor = high;
-                MaxColor = low;
-            }
+            CalculateColorSpace();
         }
 
-        /// <summary>
-        /// Calculates <see cref="LowColor"/> and <see cref="HighColor"/> and
-        /// returns true whether the colors in this color space contain alpha.
-        /// </summary>
-        private bool CalculateColorEndpoints()
+        private void CalculateColorSpace()
         {
-            var low = Color.FromArgb(255, 255, 255);
-            var lowDistance = ColorUtility.Distance(low, ReferenceColor);
+            var referenceColor = Color.FromArgb(0, 0, 0);
+            var lowColor = Color.FromArgb(255, 255, 255);
+            var highColor = Color.FromArgb(0, 0, 0);
+            var lowDistance = ColorUtility.Distance(lowColor, referenceColor);
+            var highDistance = ColorUtility.Distance(highColor, referenceColor);
 
-            var high = Color.FromArgb(0, 0, 0);
-            var highDistance = ColorUtility.Distance(high, ReferenceColor);
-
-            bool hasAlpha = false;
+            MinAlpha = 255;
+            MaxAlpha = 0;
 
             foreach (var color in _colors)
             {
-                var distance = ColorUtility.Distance(color, ReferenceColor);
-
+                var distance = ColorUtility.Distance(color, referenceColor);
                 if (distance < lowDistance)
                 {
-                    low = color;
+                    lowColor = color;
                     lowDistance = distance;
                 }
-
                 if (distance > highDistance)
                 {
-                    high = color;
+                    highColor = color;
                     highDistance = distance;
                 }
 
-                hasAlpha = hasAlpha || color.HasAlpha();
+                if (color.A < MinAlpha)
+                    MinAlpha = color.A;
+                if (color.A > MaxAlpha)
+                    MaxAlpha = color.A;
             }
 
-            LowColor = low;
-            HighColor = high;
+            // Calculate min and max colors from 16-bit colors because their 
+            // order might change if the comparison was made with 32-bit colors.
 
-            return hasAlpha;
+            var lowColor16 = ColorUtility.To16Bit(lowColor);
+            var highColor16 = ColorUtility.To16Bit(highColor);
+
+            if (lowColor16.Value < highColor16.Value)
+            {
+                MinColor = lowColor16;
+                MaxColor = highColor16;
+            }
+            else
+            {
+                MinColor = highColor16;
+                MaxColor = lowColor16;
+            }
         }
-        
-        /// <summary>
-        /// The 32-bit color endpoint with the closest Euclidean 
-        /// distance to the reference color <see cref="ReferenceColor"/>.
-        /// </summary>
-        public Color LowColor { get; private set; }
 
         /// <summary>
-        /// The 32-bit color endpoint with the furthest Euclidean 
-        /// distance to the reference color <see cref="ReferenceColor"/>.
+        /// The 16-bit color with the lower integer value out of the two 32-bit color
+        /// endpoints in this color space. The endpoints are the colors with the closest 
+        /// and furthest Euclidean distances to a reference color (#000).
         /// </summary>
-        public Color HighColor { get; private set; }
+        public Color565 MinColor { get; private set; }
 
         /// <summary>
-        /// The 16-bit color endpoint with the lower integer value.
+        /// The 16-bit color with the higher integer value out of the two 32-bit color
+        /// endpoints in this color space. The endpoints are the colors with the closest 
+        /// and furthest Euclidean distances to a reference color (#000).
         /// </summary>
-        public Color565 MinColor { get; }
+        public Color565 MaxColor { get; private set; }
 
         /// <summary>
-        /// The 16-bit color endpoint with the higher integer value.
+        /// The lowest alpha value in this color space.
         /// </summary>
-        public Color565 MaxColor { get; }
+        public byte MinAlpha { get; private set; }
 
         /// <summary>
-        /// Whether this color space has an alpha channel or not.
+        /// The highest alpha value in this color space.
         /// </summary>
-        public bool HasAlpha { get; }
+        public byte MaxAlpha { get; private set; }
 
+        /// <summary>
+        /// Whether this color space has any alpha values or not.
+        /// </summary>
+        public bool HasAlpha => MinAlpha < byte.MaxValue;
+
+        /// <summary>
+        /// The number of colors in this color space.
+        /// </summary>
         public int Count => _colors.Count;
 
         public Color this[int index] => _colors[index];

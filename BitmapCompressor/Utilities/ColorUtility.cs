@@ -154,14 +154,12 @@ namespace BitmapCompressor.Utilities
         /// Returns the color with the closest Euclidean distance to <paramref name="targetColor"/> 
         /// from the given set of colors.
         /// </summary>
-        /// <param name="colors">The source colors whose distances to <paramref name="targetColor"/>
-        ///                      are compared between each other.</param>
-        /// <param name="targetColor">The target color of the distance comparison.</param>
-        public static Color565 GetClosestColor(IEnumerable<Color565> colors, Color565 targetColor)
+        /// <param name="colors">The colors whose distances are compared against
+        ///                      <paramref name="targetColor"/>.</param>
+        /// <param name="targetColor">The target color of the comparison.</param>
+        public static Color565 GetClosestColor(ICollection<Color565> colors, Color565 targetColor)
         {
-            Debug.Assert(colors.Any(), "No source colors specified for comparison.");
-
-            var closest = colors.First();
+            var closest = colors.FirstOrDefault();
             var closestDistance = double.MaxValue;
 
             foreach (var color in colors)
@@ -181,14 +179,55 @@ namespace BitmapCompressor.Utilities
         /// Returns the array index of the color with the closest Euclidean distance to 
         /// <paramref name="targetColor"/> from the given array of colors.
         /// </summary>
-        /// <param name="colors">The source colors whose distances to <paramref name="targetColor"/>
-        ///                      are compared between each other.</param>
-        /// <param name="targetColor">The target color of the distance comparison.</param>
+        /// <param name="colors">The colors whose distances are compared against
+        ///                      <paramref name="targetColor"/>.</param>
+        /// <param name="targetColor">The target color of the comparison.</param>
         public static int GetIndexOfClosestColor(Color565[] colors, Color565 targetColor)
         {
-            var closest = GetClosestColor(colors, targetColor);
-            
-            return Array.IndexOf(colors, closest);
+            return Array.IndexOf(colors, GetClosestColor(colors, targetColor));
+        }
+
+        /// <summary>
+        /// Returns the alpha value which matches closest to <paramref name="targetAlpha"/> 
+        /// from the given set of alphas.
+        /// </summary>
+        /// <param name="alphas">The alphas whose values are compared against 
+        ///                      <paramref name="targetAlpha"/>.</param>
+        /// <param name="targetColor">The target alpha of the comparison.</param>
+        public static byte GetClosestAlpha(ICollection<byte> alphas, byte targetAlpha)
+        {
+            var closest = alphas.FirstOrDefault();
+            var closestDifference = byte.MaxValue;
+
+            foreach (var alpha in alphas)
+            {
+                var difference = (byte) Math.Abs(targetAlpha - alpha);
+                if (difference < closestDifference)
+                {
+                    closest = alpha;
+                    closestDifference = difference;
+                }
+                else if (difference == closestDifference)
+                {
+                    // Prefer smaller alpha in ties
+                    closest = alpha < closest ? alpha : closest;
+                    closestDifference = difference;
+                }
+            }
+
+            return closest;
+        }
+
+        /// <summary>
+        /// Returns the array index of the alpha value which matches closest to
+        /// <paramref name="targetAlpha"/> from the given set of alphas.
+        /// </summary>
+        /// <param name="alphas">The alphas whose values are compared against 
+        ///                      <paramref name="targetAlpha"/>.</param>
+        /// <param name="targetColor">The target alpha of the comparison.</param>
+        public static int GetIndexOfClosestAlpha(byte[] alphas, byte targetAlpha)
+        {
+            return Array.IndexOf(alphas, GetClosestAlpha(alphas, targetAlpha));
         }
 
         /// <summary>
