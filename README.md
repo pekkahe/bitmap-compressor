@@ -1,5 +1,5 @@
 # Bitmap Compressor
-**Bitmap Compressor** is a Windows console application for compressing BMP image files into [block compressed](http://msdn.microsoft.com/en-us/library/bb694531(v=VS.85).aspx) [DDS](http://msdn.microsoft.com/en-us/library/bb943990(v=VS.85).aspx) files and vice versa. 
+Bitmap Compressor is a Windows console application for compressing BMP image files into [block compressed](http://msdn.microsoft.com/en-us/library/bb694531(v=VS.85).aspx) [DDS](http://msdn.microsoft.com/en-us/library/bb943990(v=VS.85).aspx) files and vice versa. 
 
 Currently BC1, BC2, and BC3 compression formats are implemented.
 
