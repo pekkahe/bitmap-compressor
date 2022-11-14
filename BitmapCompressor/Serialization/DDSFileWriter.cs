@@ -65,17 +65,6 @@ namespace BitmapCompressor.Serialization
             return header;
         }
 
-        /// <summary>
-        /// Generates a FourCC code from four character integer values.
-        /// </summary>
-        private static uint MakeFourCC(int char0, int char1, int char2, int char3)
-        {
-            return (uint) ((byte) (char0) |
-                           (byte) (char1) << 8 |
-                           (byte) (char2) << 16 |
-                           (byte) (char3) << 24);
-        }
-
         private static uint MinimumRequiredFlags()
         {
             return DDSFileHeaderFlags.DDSD_CAPS | DDSFileHeaderFlags.DDSD_HEIGHT |

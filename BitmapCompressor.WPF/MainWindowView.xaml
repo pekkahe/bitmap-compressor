@@ -1,0 +1,26 @@
+﻿<Window x:Class="BitmapCompressor.WPF.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BitmapCompressor.WPF"
+        xmlns:vm="clr-namespace:BitmapCompressor.WPF.Imaging"
+        mc:Ignorable="d"
+        Title="Bitmap Compressor" Height="350" Width="525" SizeToContent="WidthAndHeight">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" IsMainMenu="True">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Command="{Binding OpenBitmap}">
+                    <!--<MenuItem.Icon>
+                        <Image Source="Images/cut.png" />
+                    </MenuItem.Icon>-->
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <Image Grid.Row="1" Source="{Binding ImageSource}" Stretch="Uniform" />
+    </Grid>
+</Window>

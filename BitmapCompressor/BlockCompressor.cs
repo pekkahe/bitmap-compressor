@@ -55,6 +55,7 @@ namespace BitmapCompressor
         {
             return image.Width != 0 && (image.Width % BlockFormat.Dimension) == 0 &&
                    image.Height != 0 && (image.Height % BlockFormat.Dimension) == 0;
+            
         }
 
         public IUncompressedImage Decompress(ICompressedImage image)
