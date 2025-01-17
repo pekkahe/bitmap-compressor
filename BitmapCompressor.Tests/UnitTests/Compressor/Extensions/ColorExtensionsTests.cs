@@ -17,7 +17,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Extensions
 
             var result = color.HasAlpha();
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
     }
 }

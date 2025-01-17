@@ -43,9 +43,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Serialization
             var reader = new DDSFileReader(stream);
             var ddsImage = reader.Read();
 
-            Assert.AreEqual(imageWidth, ddsImage.Width);
-            Assert.AreEqual(imageHeight, ddsImage.Height);
-            CollectionAssert.AreEqual(mainImage, ddsImage.GetBuffer());
+            Assert.That(ddsImage.Width, Is.EqualTo(imageWidth));
+            Assert.That(ddsImage.Height, Is.EqualTo(imageHeight));
+            Assert.That(ddsImage.GetBuffer(), Is.EquivalentTo(mainImage));
 
             reader.Dispose();
             writer.Dispose();

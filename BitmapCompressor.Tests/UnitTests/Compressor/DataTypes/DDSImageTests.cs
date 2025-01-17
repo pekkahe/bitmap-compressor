@@ -6,6 +6,7 @@ using BitmapCompressor.DataTypes;
 using BitmapCompressor.Formats;
 using NUnit.Framework;
 using Moq;
+using System.Net;
 
 namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 {
@@ -25,9 +26,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var dds = DDSImage.CreateEmpty(width, height, format.Object);
 
-            Assert.AreEqual(width, dds.Width);
-            Assert.AreEqual(height, dds.Height);
-            Assert.AreEqual(blockCount * byteCount, dds.GetBuffer().Length);
+            Assert.That(dds.Width, Is.EqualTo(width));
+            Assert.That(dds.Height, Is.EqualTo(height));
+            Assert.That(dds.GetBuffer().Length, Is.EqualTo(blockCount * byteCount));
         }
 
         [Test]
@@ -42,7 +43,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var data = ddsImage.GetBlockData(new Point(0, 0));
 
-            CollectionAssert.AreEqual(buffer, data);
+            Assert.That(data, Is.EquivalentTo(buffer));
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var blockData = dds.GetBlockData(new Point(3, 0));
 
-            CollectionAssert.AreEqual(bytes, blockData);
+            Assert.That(blockData, Is.EquivalentTo(bytes));
         }
 
         [Test]
@@ -78,7 +79,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             dds.SetBlockData(new Point(0, 0), block.ToBytes());
 
-            CollectionAssert.AreEqual(dds.GetBuffer(), bytes);
+            Assert.That(bytes, Is.EquivalentTo(dds.GetBuffer()));
         }
 
         [Test]
@@ -114,7 +115,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             ddsImage.SetBlockData(new Point(0, 1), data3);
             ddsImage.SetBlockData(new Point(1, 1), data4);
 
-            CollectionAssert.AreEqual(ddsImage.GetBuffer(), buffer);
+            Assert.That(buffer, Is.EquivalentTo(ddsImage.GetBuffer()));
         }
     }
 }

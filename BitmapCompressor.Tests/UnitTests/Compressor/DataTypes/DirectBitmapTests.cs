@@ -38,8 +38,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var colors = bmp.GetBlockColors(new Point(0, 0));
 
-            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
-            Assert.IsTrue(colors.All(c => c.Equals(color)));
+            Assert.That(colors.Length, Is.EqualTo(BlockFormat.TexelCount));
+            Assert.That(colors.All(c => c.Equals(color)));
         }
 
         [Test]
@@ -70,8 +70,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var colors = bmp.GetBlockColors(new Point(0, 0));
 
-            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
-            Assert.IsTrue(colors.All(c => c.Equals(color)));
+            Assert.That(colors.Length, Is.EqualTo(BlockFormat.TexelCount));
+            Assert.That(colors.All(c => c.Equals(color)));
         }
 
         [Test]
@@ -101,8 +101,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var colors = bmp.GetBlockColors(new Point(1, 1));
 
-            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
-            Assert.IsTrue(colors.All(c => c.Equals(color)));
+            Assert.That(colors.Length, Is.EqualTo(BlockFormat.TexelCount));
+            Assert.That(colors.All(c => c.Equals(color)));
         }
 
         [Test]
@@ -135,11 +135,11 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var colors = bmp.GetBlockColors(new Point(0, 0));
 
-            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
-            Assert.AreEqual(4, colors.Count(c => c.Equals(color1)));
-            Assert.AreEqual(4, colors.Count(c => c.Equals(color2)));
-            Assert.AreEqual(4, colors.Count(c => c.Equals(color3)));
-            Assert.AreEqual(4, colors.Count(c => c.Equals(color4)));
+            Assert.That(colors.Length, Is.EqualTo(BlockFormat.TexelCount));
+            Assert.That(colors.Count(c => c.Equals(color1)), Is.EqualTo(4));
+            Assert.That(colors.Count(c => c.Equals(color2)), Is.EqualTo(4));
+            Assert.That(colors.Count(c => c.Equals(color3)), Is.EqualTo(4));
+            Assert.That(colors.Count(c => c.Equals(color4)), Is.EqualTo(4));
         }
 
         [Test]
@@ -152,22 +152,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             bmp.SetBlockColors(new Point(0, 0), colors);
 
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 0));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 1));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 2));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 3));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(1, 0));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(1, 1));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(1, 2));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(1, 3));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(2, 0));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(2, 1));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(2, 2));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(2, 3));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(3, 0));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(3, 1));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(3, 2));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(3, 3));
+            Assert.That(bmp.Bitmap.GetPixel(0, 0), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(0, 1), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(0, 2), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(0, 3), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(1, 0), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(1, 1), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(1, 2), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(1, 3), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(2, 0), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(2, 1), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(2, 2), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(2, 3), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(3, 0), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(3, 1), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(3, 2), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(3, 3), Is.EqualTo(color));
         }
 
         [Test]
@@ -180,22 +180,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             bmp.SetBlockColors(new Point(0, 0), colors);
 
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 0));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 1));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 2));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(0, 3));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(1, 0));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(1, 1));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(1, 2));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(1, 3));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(2, 0));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(2, 1));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(2, 2));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(2, 3));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(3, 0));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(3, 1));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(3, 2));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(3, 3));
+            Assert.That(bmp.Bitmap.GetPixel(0, 0), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(0, 1), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(0, 2), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(0, 3), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(1, 0), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(1, 1), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(1, 2), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(1, 3), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(2, 0), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(2, 1), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(2, 2), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(2, 3), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(3, 0), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(3, 1), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(3, 2), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(3, 3), Is.EqualTo(color));
         }
 
         [Test]
@@ -208,22 +208,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             bmp.SetBlockColors(new Point(1, 1), colors);
 
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(4, 4));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(4, 5));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(4, 6));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(4, 7));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(5, 4));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(5, 5));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(5, 6));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(5, 7));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(6, 4));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(6, 5));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(6, 6));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(6, 7));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(7, 4));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(7, 5));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(7, 6));
-            Assert.AreEqual(color, bmp.Bitmap.GetPixel(7, 7));
+            Assert.That(bmp.Bitmap.GetPixel(4, 4), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(4, 5), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(4, 6), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(4, 7), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(5, 4), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(5, 5), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(5, 6), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(5, 7), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(6, 4), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(6, 5), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(6, 6), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(6, 7), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(7, 4), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(7, 5), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(7, 6), Is.EqualTo(color));
+            Assert.That(bmp.Bitmap.GetPixel(7, 7), Is.EqualTo(color));
         }
 
         [Test]
@@ -256,22 +256,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             bmp.SetBlockColors(new Point(0, 0), colors);
 
-            Assert.AreEqual(color1, bmp.Bitmap.GetPixel(0, 0));
-            Assert.AreEqual(color1, bmp.Bitmap.GetPixel(1, 0));
-            Assert.AreEqual(color1, bmp.Bitmap.GetPixel(2, 0));
-            Assert.AreEqual(color1, bmp.Bitmap.GetPixel(3, 0));
-            Assert.AreEqual(color2, bmp.Bitmap.GetPixel(0, 1));
-            Assert.AreEqual(color2, bmp.Bitmap.GetPixel(1, 1));
-            Assert.AreEqual(color2, bmp.Bitmap.GetPixel(2, 1));
-            Assert.AreEqual(color2, bmp.Bitmap.GetPixel(3, 1));
-            Assert.AreEqual(color3, bmp.Bitmap.GetPixel(0, 2));
-            Assert.AreEqual(color3, bmp.Bitmap.GetPixel(1, 2));
-            Assert.AreEqual(color3, bmp.Bitmap.GetPixel(2, 2));
-            Assert.AreEqual(color3, bmp.Bitmap.GetPixel(3, 2));
-            Assert.AreEqual(color4, bmp.Bitmap.GetPixel(0, 3));
-            Assert.AreEqual(color4, bmp.Bitmap.GetPixel(1, 3));
-            Assert.AreEqual(color4, bmp.Bitmap.GetPixel(2, 3));
-            Assert.AreEqual(color4, bmp.Bitmap.GetPixel(3, 3));
+            Assert.That(bmp.Bitmap.GetPixel(0, 0), Is.EqualTo(color1));
+            Assert.That(bmp.Bitmap.GetPixel(1, 0), Is.EqualTo(color1));
+            Assert.That(bmp.Bitmap.GetPixel(2, 0), Is.EqualTo(color1));
+            Assert.That(bmp.Bitmap.GetPixel(3, 0), Is.EqualTo(color1));
+            Assert.That(bmp.Bitmap.GetPixel(0, 1), Is.EqualTo(color2));
+            Assert.That(bmp.Bitmap.GetPixel(1, 1), Is.EqualTo(color2));
+            Assert.That(bmp.Bitmap.GetPixel(2, 1), Is.EqualTo(color2));
+            Assert.That(bmp.Bitmap.GetPixel(3, 1), Is.EqualTo(color2));
+            Assert.That(bmp.Bitmap.GetPixel(0, 2), Is.EqualTo(color3));
+            Assert.That(bmp.Bitmap.GetPixel(1, 2), Is.EqualTo(color3));
+            Assert.That(bmp.Bitmap.GetPixel(2, 2), Is.EqualTo(color3));
+            Assert.That(bmp.Bitmap.GetPixel(3, 2), Is.EqualTo(color3));
+            Assert.That(bmp.Bitmap.GetPixel(0, 3), Is.EqualTo(color4));
+            Assert.That(bmp.Bitmap.GetPixel(1, 3), Is.EqualTo(color4));
+            Assert.That(bmp.Bitmap.GetPixel(2, 3), Is.EqualTo(color4));
+            Assert.That(bmp.Bitmap.GetPixel(3, 3), Is.EqualTo(color4));
         }
     }
 }

@@ -26,11 +26,11 @@ namespace BitmapCompressor.Tests.UnitTests.Console
 
             var result = parser.Parse(args);
 
-            Assert.AreEqual(ImageOperation.Compress, result.Operation);
-            Assert.IsNotNull(result.Format);
-            Assert.AreEqual(compressionFormatType, result.Format.GetType());
-            Assert.AreEqual("file.bmp", result.BMPFileName);
-            Assert.AreEqual("file.dds", result.DDSFileName);
+            Assert.That(result.Operation, Is.EqualTo(ImageOperation.Compress));
+            Assert.That(result.Format, Is.Not.Null);
+            Assert.That(result.Format.GetType(), Is.EqualTo(compressionFormatType));
+            Assert.That(result.BMPFileName, Is.EqualTo("file.bmp"));
+            Assert.That(result.DDSFileName, Is.EqualTo("file.dds"));
         }
 
         [Test]
@@ -46,11 +46,11 @@ namespace BitmapCompressor.Tests.UnitTests.Console
 
             var result = parser.Parse(args);
 
-            Assert.AreEqual(ImageOperation.Decompress, result.Operation);
-            Assert.IsNull(result.Format);
-            Assert.IsFalse(result.Overwrite);
-            Assert.AreEqual("file.bmp", result.BMPFileName);
-            Assert.AreEqual("file.dds", result.DDSFileName);
+            Assert.That(result.Operation, Is.EqualTo(ImageOperation.Decompress));
+            Assert.That(result.Format, Is.Null);
+            Assert.That(result.Overwrite, Is.False);
+            Assert.That(result.BMPFileName, Is.EqualTo("file.bmp"));
+            Assert.That(result.DDSFileName, Is.EqualTo("file.dds"));
         }
 
         [Test]
@@ -67,11 +67,11 @@ namespace BitmapCompressor.Tests.UnitTests.Console
 
             var result = parser.Parse(args);
 
-            Assert.AreEqual(ImageOperation.Compress, result.Operation);
-            Assert.IsNotNull(result.Format);
-            Assert.IsTrue(result.Overwrite);
-            Assert.AreEqual("file.bmp", result.BMPFileName);
-            Assert.AreEqual("file.dds", result.DDSFileName);
+            Assert.That(result.Operation, Is.EqualTo(ImageOperation.Compress));
+            Assert.That(result.Format, Is.Not.Null);
+            Assert.That(result.Overwrite, Is.True);
+            Assert.That(result.BMPFileName, Is.EqualTo("file.bmp"));
+            Assert.That(result.DDSFileName, Is.EqualTo("file.dds"));
         }
 
         [Test]

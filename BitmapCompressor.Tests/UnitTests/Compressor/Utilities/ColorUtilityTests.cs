@@ -18,7 +18,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             var result = ColorUtility.Blend(a, b);
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             var result = ColorUtility.Blend(a, b);
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             var result = ColorUtility.LerpTwoThirds(a, b);
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             var result = ColorUtility.LerpTwoThirds(a, b);
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -69,8 +69,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
             var result1 = ColorUtility.To32Bit(color1);
             var result2 = ColorUtility.To32Bit(color2);
 
-            Assert.AreEqual(expected1, result1);
-            Assert.AreEqual(expected2, result2);
+            Assert.That(result1, Is.EqualTo(expected1));
+            Assert.That(result2, Is.EqualTo(expected2));
         }
 
         [Test]
@@ -85,8 +85,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
             var result1 = ColorUtility.To16Bit(color1);
             var result2 = ColorUtility.To16Bit(color2);
 
-            Assert.AreEqual(expected1, result1);
-            Assert.AreEqual(expected2, result2);
+            Assert.That(result1, Is.EqualTo(expected1));
+            Assert.That(result2, Is.EqualTo(expected2));
         }
 
         [Test]
@@ -100,8 +100,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             var result = ColorUtility.Distance(a, b);
 
-            const double delta = 0.0001d;
-            Assert.AreEqual(expected, result, delta);
+            Assert.That(result, Is.EqualTo(expected).Within(0.0001d));
         }
 
         [Test]
@@ -115,8 +114,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             var result = ColorUtility.Distance(a, b);
 
-            const double delta = 0.0001d;
-            Assert.AreEqual(expected, result, delta);
+            Assert.That(result, Is.EqualTo(expected).Within(0.0001d));
         }
 
         [Test]
@@ -135,7 +133,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
             
             var closest = ColorUtility.GetClosestColor(colors, target);
 
-            Assert.AreEqual(expected, closest);
+            Assert.That(closest, Is.EqualTo(expected));
         }
 
         [Test]
@@ -158,7 +156,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             var closest = ColorUtility.GetClosestAlpha(alphas, target);
 
-            Assert.AreEqual(expected, closest);
+            Assert.That(closest, Is.EqualTo(expected));
         }
 
         [Test]
@@ -171,8 +169,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             ColorUtility.TryDifferentiateByOne(ref min, ref max);
 
-            Assert.AreEqual(minOriginal, min);
-            Assert.AreEqual(Color565.FromRgb(15, 44, 9), max);
+            Assert.That(min, Is.EqualTo(minOriginal));
+            Assert.That(max, Is.EqualTo(Color565.FromRgb(15, 44, 9)));
         }
 
         [Test]
@@ -185,8 +183,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             ColorUtility.TryDifferentiateByOne(ref min, ref max);
 
-            Assert.AreEqual(Color565.FromRgb(31, 62, 31), min);
-            Assert.AreEqual(maxOriginal, max);
+            Assert.That(min, Is.EqualTo(Color565.FromRgb(31, 62, 31)));
+            Assert.That(max, Is.EqualTo(maxOriginal));
         }
 
         [Test]
@@ -199,8 +197,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             ColorUtility.TryDifferentiateByOne(ref min, ref max);
 
-            Assert.AreEqual(minOriginal, min);
-            Assert.AreEqual(maxOriginal, max);
+            Assert.That(min, Is.EqualTo(minOriginal));
+            Assert.That(max, Is.EqualTo(maxOriginal));
         }
     }
 }

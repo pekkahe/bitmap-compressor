@@ -23,7 +23,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var value = color.Value;
 
-            Assert.AreEqual(expected, value);
+            Assert.That(value, Is.EqualTo(expected));
         }
 
         [Test]
@@ -31,9 +31,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         {
             var color = Color565.FromRgb((byte) 10, (byte) 51, (byte) 23);
 
-            Assert.AreEqual(10, color.R);
-            Assert.AreEqual(51, color.G);
-            Assert.AreEqual(23, color.B);
+            Assert.That(color.R, Is.EqualTo(10));
+            Assert.That(color.G, Is.EqualTo(51));
+            Assert.That(color.B, Is.EqualTo(23));
         }
 
         [Test]
@@ -41,9 +41,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         {
             var color = Color565.FromRgb(10, 51, 23);
 
-            Assert.AreEqual(10, color.R);
-            Assert.AreEqual(51, color.G);
-            Assert.AreEqual(23, color.B);
+            Assert.That(color.R, Is.EqualTo(10));
+            Assert.That(color.G, Is.EqualTo(51));
+            Assert.That(color.B, Is.EqualTo(23));
         }
 
         [Test]
@@ -51,10 +51,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         {
             var color = Color565.FromValue(22135);
 
-            Assert.AreEqual(10, color.R);
-            Assert.AreEqual(51, color.G);
-            Assert.AreEqual(23, color.B);
-            Assert.AreEqual(22135, color.Value);
+            Assert.That(color.R, Is.EqualTo(10));
+            Assert.That(color.G, Is.EqualTo(51));
+            Assert.That(color.B, Is.EqualTo(23));
+            Assert.That(color.Value, Is.EqualTo(22135));
         }
 
         [Test]
@@ -65,10 +65,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             var color1 = Color565.FromRgb((byte) 255, (byte) 255, (byte) 255);
             var color2 = Color565.FromRgb((byte) 150, (byte) 230, (byte) 130);
 
-            Assert.AreEqual(expected, color1);
-            Assert.AreEqual(expected, color2);
-            Assert.AreEqual(MaxValue16Bit, color1.Value);
-            Assert.AreEqual(MaxValue16Bit, color2.Value);
+            Assert.That(color1, Is.EqualTo(expected));
+            Assert.That(color2, Is.EqualTo(expected));
+            Assert.That(color1.Value, Is.EqualTo(MaxValue16Bit));
+            Assert.That(color2.Value, Is.EqualTo(MaxValue16Bit));
         }
 
         [Test]
@@ -80,12 +80,12 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
             var color2 = Color565.FromRgb(255, 255, 255);
             var color3 = Color565.FromRgb(150, 230, 130);
 
-            Assert.AreEqual(expected, color1);
-            Assert.AreEqual(expected, color2);
-            Assert.AreEqual(expected, color3);
-            Assert.AreEqual(MaxValue16Bit, color1.Value);
-            Assert.AreEqual(MaxValue16Bit, color2.Value);
-            Assert.AreEqual(MaxValue16Bit, color3.Value);
+            Assert.That(color1, Is.EqualTo(expected));
+            Assert.That(color2, Is.EqualTo(expected));
+            Assert.That(color3, Is.EqualTo(expected));
+            Assert.That(color1.Value, Is.EqualTo(MaxValue16Bit));
+            Assert.That(color2.Value, Is.EqualTo(MaxValue16Bit));
+            Assert.That(color3.Value, Is.EqualTo(MaxValue16Bit));
         }
     }
 }

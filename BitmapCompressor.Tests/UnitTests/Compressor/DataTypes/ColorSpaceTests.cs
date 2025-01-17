@@ -26,8 +26,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
                 max
             });
 
-            Assert.AreEqual(ColorUtility.To16Bit(min), colorSpace.MinColor);
-            Assert.AreEqual(ColorUtility.To16Bit(max), colorSpace.MaxColor);
+            Assert.That(colorSpace.MinColor, Is.EqualTo(ColorUtility.To16Bit(min)));
+            Assert.That(colorSpace.MaxColor, Is.EqualTo(ColorUtility.To16Bit(max)));
         }
 
         [Test]
@@ -48,8 +48,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
                 max
             });
 
-            Assert.AreEqual(min.A, colorSpace.MinAlpha);
-            Assert.AreEqual(max.A, colorSpace.MaxAlpha);
+            Assert.That(colorSpace.MinAlpha, Is.EqualTo(min.A));
+            Assert.That(colorSpace.MaxAlpha, Is.EqualTo(max.A));
         }
 
         [Test]
@@ -62,10 +62,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
 
             var colorSpace = new ColorSpace(new[] { min, max });
 
-            Assert.IsTrue(min.ToArgb() < max.ToArgb());
-            Assert.IsTrue(minAs16ShouldBeMax.Value > maxAs16ShouldBeMin.Value);
-            Assert.AreEqual(maxAs16ShouldBeMin, colorSpace.MinColor);
-            Assert.AreEqual(minAs16ShouldBeMax, colorSpace.MaxColor);
+            Assert.That(min.ToArgb() < max.ToArgb());
+            Assert.That(minAs16ShouldBeMax.Value > maxAs16ShouldBeMin.Value);
+            Assert.That(colorSpace.MinColor, Is.EqualTo(maxAs16ShouldBeMin));
+            Assert.That(colorSpace.MaxColor, Is.EqualTo(minAs16ShouldBeMax));
         }
 
         [TestCase(255, false, TestName = "ReportsAlphaForColorsWithoutAlpha")]
@@ -74,9 +74,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.DataTypes
         {
             var color = Color.FromArgb(alpha, 150, 150, 150);
 
-            var colorSpace = new ColorSpace(new[] { color });
+            var colorSpace = new ColorSpace([color]);
 
-            Assert.AreEqual(expected, colorSpace.HasAlpha);
+            Assert.That(colorSpace.HasAlpha, Is.EqualTo(expected));
         }
     }
 }

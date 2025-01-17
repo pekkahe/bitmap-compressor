@@ -159,19 +159,19 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor
 
             // Assert bytes have been set correctly
             // (for start and end byte value of each block only)
-            Assert.AreEqual(1, buffer[0]);
-            Assert.AreEqual(1, buffer[7]);
-            Assert.AreEqual(2, buffer[8]);
-            Assert.AreEqual(2, buffer[15]);
-            Assert.AreEqual(3, buffer[16]);
-            Assert.AreEqual(3, buffer[23]);
+            Assert.That(buffer[0], Is.EqualTo(1));
+            Assert.That(buffer[7], Is.EqualTo(1));
+            Assert.That(buffer[8], Is.EqualTo(2));
+            Assert.That(buffer[15], Is.EqualTo(2));
+            Assert.That(buffer[16], Is.EqualTo(3));
+            Assert.That(buffer[23], Is.EqualTo(3));
 
-            Assert.AreEqual(4, buffer[24]);
-            Assert.AreEqual(4, buffer[31]);
-            Assert.AreEqual(5, buffer[32]);
-            Assert.AreEqual(5, buffer[39]);
-            Assert.AreEqual(6, buffer[40]);
-            Assert.AreEqual(6, buffer[47]);
+            Assert.That(buffer[24], Is.EqualTo(4));
+            Assert.That(buffer[31], Is.EqualTo(4));
+            Assert.That(buffer[32], Is.EqualTo(5));
+            Assert.That(buffer[39], Is.EqualTo(5));
+            Assert.That(buffer[40], Is.EqualTo(6));
+            Assert.That(buffer[47], Is.EqualTo(6));
 
             const int width = 12;
             const int height = 8;

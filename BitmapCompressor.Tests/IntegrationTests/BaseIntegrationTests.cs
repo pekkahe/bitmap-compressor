@@ -36,10 +36,9 @@ namespace BitmapCompressor.Tests.IntegrationTests
 
         public static void AssertEqual(IImage expected, IImage actual)
         {
-            Assert.AreEqual(expected.Width, actual.Width);
-            Assert.AreEqual(expected.Height, actual.Height);
-
-            CollectionAssert.AreEqual(expected.GetBuffer(), actual.GetBuffer());
+            Assert.That(actual.Width, Is.EqualTo(expected.Width));
+            Assert.That(actual.Height, Is.EqualTo(expected.Height));
+            Assert.That(actual.GetBuffer(), Is.EquivalentTo(expected.GetBuffer()));
         }
 
         /// <summary>

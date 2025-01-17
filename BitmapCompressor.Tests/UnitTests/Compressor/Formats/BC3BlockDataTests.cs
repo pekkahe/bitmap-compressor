@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using BitmapCompressor.Formats;
 using BitmapCompressor.Tests.Helpers;
 using NUnit.Framework;
@@ -15,9 +16,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var buffer = block.ToBytes();
 
-            Assert.AreEqual(BlockFormat.BC3ByteSize, buffer.Length);
-
-            CollectionAssert.AreEqual(buffer, new byte[BlockFormat.BC3ByteSize]);
+            Assert.That(buffer.Length, Is.EqualTo(BlockFormat.BC3ByteSize));
+            Assert.That(buffer, Is.EquivalentTo(new byte[BlockFormat.BC3ByteSize]));
         }
 
         [Test]
@@ -33,8 +33,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             byte c0Low = buffer[8];
             byte c0High = buffer[9];
 
-            Assert.AreEqual(color.LowByte, c0Low);
-            Assert.AreEqual(color.HighByte, c0High);
+            Assert.That(c0Low, Is.EqualTo(color.LowByte));
+            Assert.That(c0High, Is.EqualTo(color.HighByte));
         }
 
         [Test]
@@ -50,8 +50,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             byte c1Low = buffer[10];
             byte c1High = buffer[11];
 
-            Assert.AreEqual(color.LowByte, c1Low);
-            Assert.AreEqual(color.HighByte, c1High);
+            Assert.That(c1Low, Is.EqualTo(color.LowByte));
+            Assert.That(c1High, Is.EqualTo(color.HighByte));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             byte alpha0 = buffer[0];
 
-            Assert.AreEqual(alphaValue, alpha0);
+            Assert.That(alpha0, Is.EqualTo(alphaValue));
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             byte alpha1 = buffer[1];
 
-            Assert.AreEqual(alphaValue, alpha1);
+            Assert.That(alpha1, Is.EqualTo(alphaValue));
         }
 
         [Test]
@@ -118,10 +118,10 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             byte indexes2 = buffer[14];
             byte indexes3 = buffer[15];
 
-            Assert.AreEqual(expectedIndexes0, indexes0);
-            Assert.AreEqual(expectedIndexes1, indexes1);
-            Assert.AreEqual(expectedIndexes2, indexes2);
-            Assert.AreEqual(expectedIndexes3, indexes3);
+            Assert.That(indexes0, Is.EqualTo(expectedIndexes0));
+            Assert.That(indexes1, Is.EqualTo(expectedIndexes1));
+            Assert.That(indexes2, Is.EqualTo(expectedIndexes2));
+            Assert.That(indexes3, Is.EqualTo(expectedIndexes3));
         }
         
         [Test]
@@ -162,12 +162,12 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             byte alphas4 = buffer[6];
             byte alphas3 = buffer[7];
 
-            Assert.AreEqual(expectedAlphas0, alphas0);
-            Assert.AreEqual(expectedAlphas1, alphas1);
-            Assert.AreEqual(expectedAlphas2, alphas2);
-            Assert.AreEqual(expectedAlphas3, alphas3);
-            Assert.AreEqual(expectedAlphas4, alphas4);
-            Assert.AreEqual(expectedAlphas5, alphas5);
+            Assert.That(alphas0, Is.EqualTo(expectedAlphas0));
+            Assert.That(alphas1, Is.EqualTo(expectedAlphas1));
+            Assert.That(alphas2, Is.EqualTo(expectedAlphas2));
+            Assert.That(alphas3, Is.EqualTo(expectedAlphas3));
+            Assert.That(alphas4, Is.EqualTo(expectedAlphas4));
+            Assert.That(alphas5, Is.EqualTo(expectedAlphas5));
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var block = BC3BlockData.FromBytes(bytes);
 
-            Assert.AreEqual(color.Color.Value, block.Color0.Value);
+            Assert.That(block.Color0.Value, Is.EqualTo(color.Color.Value));
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var block = BC3BlockData.FromBytes(bytes);
 
-            Assert.AreEqual(color.Color.Value, block.Color1.Value);
+            Assert.That(block.Color1.Value, Is.EqualTo(color.Color.Value));
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var block = BC3BlockData.FromBytes(bytes);
 
-            Assert.AreEqual(alphaValue, block.Alpha0);
+            Assert.That(block.Alpha0, Is.EqualTo(alphaValue));
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var block = BC3BlockData.FromBytes(bytes);
 
-            Assert.AreEqual(alphaValue, block.Alpha1);
+            Assert.That(block.Alpha1, Is.EqualTo(alphaValue));
         }
 
         [Test]
@@ -238,22 +238,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var block = BC3BlockData.FromBytes(bytes);
 
-            Assert.AreEqual(0, block.ColorIndexes[0]);  // a    00
-            Assert.AreEqual(1, block.ColorIndexes[1]);  // b    01
-            Assert.AreEqual(2, block.ColorIndexes[2]);  // c    10
-            Assert.AreEqual(3, block.ColorIndexes[3]);  // d    11
-            Assert.AreEqual(1, block.ColorIndexes[4]);  // e    01
-            Assert.AreEqual(2, block.ColorIndexes[5]);  // f    10
-            Assert.AreEqual(3, block.ColorIndexes[6]);  // g    11
-            Assert.AreEqual(0, block.ColorIndexes[7]);  // h    00
-            Assert.AreEqual(2, block.ColorIndexes[8]);  // i    10
-            Assert.AreEqual(3, block.ColorIndexes[9]);  // j    11
-            Assert.AreEqual(0, block.ColorIndexes[10]); // k    00
-            Assert.AreEqual(1, block.ColorIndexes[11]); // l    01
-            Assert.AreEqual(3, block.ColorIndexes[12]); // m    11
-            Assert.AreEqual(0, block.ColorIndexes[13]); // n    00
-            Assert.AreEqual(1, block.ColorIndexes[14]); // o    01
-            Assert.AreEqual(2, block.ColorIndexes[15]); // p    10                    
+            Assert.That(block.ColorIndexes[0], Is.EqualTo(0));  // a    00
+            Assert.That(block.ColorIndexes[1], Is.EqualTo(1));  // b    01
+            Assert.That(block.ColorIndexes[2], Is.EqualTo(2));  // c    10
+            Assert.That(block.ColorIndexes[3], Is.EqualTo(3));  // d    11
+            Assert.That(block.ColorIndexes[4], Is.EqualTo(1));  // e    01
+            Assert.That(block.ColorIndexes[5], Is.EqualTo(2));  // f    10
+            Assert.That(block.ColorIndexes[6], Is.EqualTo(3));  // g    11
+            Assert.That(block.ColorIndexes[7], Is.EqualTo(0));  // h    00
+            Assert.That(block.ColorIndexes[8], Is.EqualTo(2));  // i    10
+            Assert.That(block.ColorIndexes[9], Is.EqualTo(3));  // j    11
+            Assert.That(block.ColorIndexes[10], Is.EqualTo(0)); // k    00
+            Assert.That(block.ColorIndexes[11], Is.EqualTo(1)); // l    01
+            Assert.That(block.ColorIndexes[12], Is.EqualTo(3)); // m    11
+            Assert.That(block.ColorIndexes[13], Is.EqualTo(0)); // n    00
+            Assert.That(block.ColorIndexes[14], Is.EqualTo(1)); // o    01
+            Assert.That(block.ColorIndexes[15], Is.EqualTo(2)); // p    10                    
         }
         
         [Test]
@@ -277,22 +277,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var block = BC3BlockData.FromBytes(bytes);
 
-            Assert.AreEqual(0, block.AlphaIndexes[0]);  // a    000  
-            Assert.AreEqual(1, block.AlphaIndexes[1]);  // b    001
-            Assert.AreEqual(2, block.AlphaIndexes[2]);  // c    010
-            Assert.AreEqual(3, block.AlphaIndexes[3]);  // d    011
-            Assert.AreEqual(4, block.AlphaIndexes[4]);  // e    100
-            Assert.AreEqual(5, block.AlphaIndexes[5]);  // f    101
-            Assert.AreEqual(6, block.AlphaIndexes[6]);  // g    110
-            Assert.AreEqual(7, block.AlphaIndexes[7]);  // h    111
-            Assert.AreEqual(7, block.AlphaIndexes[8]);  // i    111
-            Assert.AreEqual(6, block.AlphaIndexes[9]);  // j    110
-            Assert.AreEqual(5, block.AlphaIndexes[10]); // k    101
-            Assert.AreEqual(4, block.AlphaIndexes[11]); // l    100
-            Assert.AreEqual(3, block.AlphaIndexes[12]); // m    011
-            Assert.AreEqual(2, block.AlphaIndexes[13]); // n    010
-            Assert.AreEqual(1, block.AlphaIndexes[14]); // o    001
-            Assert.AreEqual(0, block.AlphaIndexes[15]); // p    000              
+            Assert.That(block.AlphaIndexes[0], Is.EqualTo(0));  // a    000  
+            Assert.That(block.AlphaIndexes[1], Is.EqualTo(1));  // b    001
+            Assert.That(block.AlphaIndexes[2], Is.EqualTo(2));  // c    010
+            Assert.That(block.AlphaIndexes[3], Is.EqualTo(3));  // d    011
+            Assert.That(block.AlphaIndexes[4], Is.EqualTo(4));  // e    100
+            Assert.That(block.AlphaIndexes[5], Is.EqualTo(5));  // f    101
+            Assert.That(block.AlphaIndexes[6], Is.EqualTo(6));  // g    110
+            Assert.That(block.AlphaIndexes[7], Is.EqualTo(7));  // h    111
+            Assert.That(block.AlphaIndexes[8], Is.EqualTo(7));  // i    111
+            Assert.That(block.AlphaIndexes[9], Is.EqualTo(6));  // j    110
+            Assert.That(block.AlphaIndexes[10], Is.EqualTo(5)); // k    101
+            Assert.That(block.AlphaIndexes[11], Is.EqualTo(4)); // l    100
+            Assert.That(block.AlphaIndexes[12], Is.EqualTo(3)); // m    011
+            Assert.That(block.AlphaIndexes[13], Is.EqualTo(2)); // n    010
+            Assert.That(block.AlphaIndexes[14], Is.EqualTo(1)); // o    001
+            Assert.That(block.AlphaIndexes[15], Is.EqualTo(0)); // p    000              
         }
     }
 }

@@ -20,7 +20,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
 
             var index = PointUtility.ToRowMajor(point, columns);
 
-            Assert.AreEqual(result, index);
+            Assert.That(result, Is.EqualTo(index));
         }
 
         [TestCase(0, 2, 0, 0, TestName = "ConvertRowMajorIndexToPoint#1")]
@@ -34,8 +34,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Utilities
         {
             var point = PointUtility.FromRowMajor(index, columns);
 
-            Assert.AreEqual(resultX, point.X);
-            Assert.AreEqual(resultY, point.Y);
+            Assert.That(resultX, Is.EqualTo(point.X));
+            Assert.That(resultY, Is.EqualTo(point.Y));
         }
     }
 }

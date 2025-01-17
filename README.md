@@ -3,7 +3,7 @@ Bitmap Compressor is a Windows console application for compressing BMP image fil
 
 Currently BC1, BC2, and BC3 compression formats are implemented.
 
-The application is developed with Visual Studio 2015 using C# and the .NET Framework 4.6.
+The application is developed with Visual Studio 2022 using C# and .NET Core 9.0.
 
 ## Usage
 You can use NuGet Package Manager to download the library dependencies when you open the solution in Visual Studio.

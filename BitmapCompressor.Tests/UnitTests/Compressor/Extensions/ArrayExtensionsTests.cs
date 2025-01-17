@@ -15,7 +15,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Extensions
 
             var result = array.SubArray(sourceIndex, length);
 
-            CollectionAssert.AreEqual(expected, result);
+            Assert.That(result, Is.EquivalentTo(expected));
         }
 
         [TestCase(new[] { 1, 2, 3 }, 0, new[] { 1, 2, 3, 0, 0, 0 },       TestName = "CopyFromSourceToStart")]
@@ -27,7 +27,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Extensions
 
             array.CopyFrom(source, destinationIndex);
 
-            CollectionAssert.AreEqual(array, expected);
+            Assert.That(array, Is.EquivalentTo(expected));
         }
     }
 }

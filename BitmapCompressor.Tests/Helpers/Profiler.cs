@@ -1,5 +1,5 @@
 ﻿using System;
-using NUnit.Framework.Compatibility;
+using System.Diagnostics;
 using NUnit.Framework;
 
 namespace BitmapCompressor.Tests.Helpers

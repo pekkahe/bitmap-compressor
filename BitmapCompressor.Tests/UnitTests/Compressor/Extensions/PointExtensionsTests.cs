@@ -15,8 +15,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Extensions
         {
             var result = new Point(x1, y1).Add(new Point(x2, y2));
 
-            Assert.AreEqual(expectedX, result.X);
-            Assert.AreEqual(expectedY, result.Y);
+            Assert.That(result.X, Is.EqualTo(expectedX));
+            Assert.That(result.Y, Is.EqualTo(expectedY));
         }
 
         [TestCase(2,3,    1, 5,     1,-2,   TestName = "SubtractTwoPoints")]
@@ -26,8 +26,8 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Extensions
         {
             var result = new Point(x1, y1).Subtract(new Point(x2, y2));
 
-            Assert.AreEqual(expectedX, result.X);
-            Assert.AreEqual(expectedY, result.Y);
+            Assert.That(result.X, Is.EqualTo(expectedX));
+            Assert.That(result.Y, Is.EqualTo(expectedY));
         }
     }
 }

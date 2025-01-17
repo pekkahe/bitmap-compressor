@@ -18,7 +18,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var data = new BC3Format().Compress(colors);
 
-            Assert.AreEqual(BlockFormat.BC3ByteSize, data.Length);
+            Assert.That(data.Length, Is.EqualTo(BlockFormat.BC3ByteSize));
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
 
             var colors = new BC3Format().Decompress(bytes);
 
-            Assert.AreEqual(BlockFormat.TexelCount, colors.Length);
+            Assert.That(colors.Length, Is.EqualTo(BlockFormat.TexelCount));
         }
 
         [Test]
@@ -49,9 +49,9 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             var color0 = Color565.FromValue((ushort) ((data[9] << 8) | data[8]));
             var color1 = Color565.FromValue((ushort) ((data[11] << 8) | data[10]));
 
-            Assert.Greater(color0.Value, color1.Value);
-            Assert.AreEqual(expectedColor0.Value, color0.Value);
-            Assert.AreEqual(expectedColor1.Value, color1.Value);
+            Assert.That(color1.Value, Is.GreaterThan(color0.Value));
+            Assert.That(color0.Value, Is.EqualTo(expectedColor0.Value));
+            Assert.That(color1.Value, Is.EqualTo(expectedColor1.Value));
         }
 
         [Test]
@@ -80,22 +80,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             // Assert against data hard-coded from a successful test
             // run where the data was built using unit tested components.
 
-            Assert.AreEqual(0xFF, data[0]);  // alpha0
-            Assert.AreEqual(0xFF, data[1]);  // alpha1
-            Assert.AreEqual(0x00, data[2]);  // a-idx2
-            Assert.AreEqual(0x00, data[3]);  // a-idx1
-            Assert.AreEqual(0x00, data[4]);  // a-idx0
-            Assert.AreEqual(0x00, data[5]);  // a-idx5
-            Assert.AreEqual(0x00, data[6]);  // a-idx4
-            Assert.AreEqual(0x00, data[7]);  // a-idx3
-            Assert.AreEqual(0x7B, data[8]);  // c0Low
-            Assert.AreEqual(0xB7, data[9]);  // c0Hi
-            Assert.AreEqual(0xCC, data[10]); // c1Low
-            Assert.AreEqual(0x01, data[11]); // c1Hi
-            Assert.AreEqual(0xAD, data[12]); // c-idx0
-            Assert.AreEqual(0xEB, data[13]); // c-idx1
-            Assert.AreEqual(0x22, data[14]); // c-idx2
-            Assert.AreEqual(0x83, data[15]); // c-idx3
+            Assert.That(data[0], Is.EqualTo(0xFF));  // alpha0
+            Assert.That(data[1], Is.EqualTo(0xFF));  // alpha1
+            Assert.That(data[2], Is.EqualTo(0x00));  // a-idx2
+            Assert.That(data[3], Is.EqualTo(0x00));  // a-idx1
+            Assert.That(data[4], Is.EqualTo(0x00));  // a-idx0
+            Assert.That(data[5], Is.EqualTo(0x00));  // a-idx5
+            Assert.That(data[6], Is.EqualTo(0x00));  // a-idx4
+            Assert.That(data[7], Is.EqualTo(0x00));  // a-idx3
+            Assert.That(data[8], Is.EqualTo(0x7B));  // c0Low
+            Assert.That(data[9], Is.EqualTo(0xB7));  // c0Hi
+            Assert.That(data[10], Is.EqualTo(0xCC)); // c1Low
+            Assert.That(data[11], Is.EqualTo(0x01)); // c1Hi
+            Assert.That(data[12], Is.EqualTo(0xAD)); // c-idx0
+            Assert.That(data[13], Is.EqualTo(0xEB)); // c-idx1
+            Assert.That(data[14], Is.EqualTo(0x22)); // c-idx2
+            Assert.That(data[15], Is.EqualTo(0x83)); // c-idx3
         }
 
         [Test]
@@ -124,22 +124,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             // Assert against data hard-coded from a successful test
             // run where the data was built using unit tested components.
 
-            Assert.AreEqual(0xDC,   data[0]);   // alpha0
-            Assert.AreEqual(0x0A,   data[1]);   // alpha1
-            Assert.AreEqual(0x04,   data[2]);   // a-idx2
-            Assert.AreEqual(0x00,   data[3]);   // a-idx1
-            Assert.AreEqual(0x49,   data[4]);   // a-idx0
-            Assert.AreEqual(0x20,   data[5]);   // a-idx5
-            Assert.AreEqual(0x80,   data[6]);   // a-idx4
-            Assert.AreEqual(0x08,   data[7]);   // a-idx3        
-            Assert.AreEqual(0x7B,   data[8]);   // c0Low
-            Assert.AreEqual(0xB7,   data[9]);   // c0Hi
-            Assert.AreEqual(0xCC,   data[10]);  // c1Low
-            Assert.AreEqual(0x01,   data[11]);  // c1Hi
-            Assert.AreEqual(0xAD,   data[12]);  // c-idx0
-            Assert.AreEqual(0xEB,   data[13]);  // c-idx1
-            Assert.AreEqual(0x22,   data[14]);  // c-idx2
-            Assert.AreEqual(0x83,   data[15]);  // c-idx3
+            Assert.That(data[0], Is.EqualTo(0xDC));   // alpha0
+            Assert.That(data[1], Is.EqualTo(0x0A));   // alpha1
+            Assert.That(data[2], Is.EqualTo(0x04));   // a-idx2
+            Assert.That(data[3], Is.EqualTo(0x00));   // a-idx1
+            Assert.That(data[4], Is.EqualTo(0x49));   // a-idx0
+            Assert.That(data[5], Is.EqualTo(0x20));   // a-idx5
+            Assert.That(data[6], Is.EqualTo(0x80));   // a-idx4
+            Assert.That(data[7], Is.EqualTo(0x08));   // a-idx3        
+            Assert.That(data[8], Is.EqualTo(0x7B));   // c0Low
+            Assert.That(data[9], Is.EqualTo(0xB7));   // c0Hi
+            Assert.That(data[10], Is.EqualTo(0xCC));  // c1Low
+            Assert.That(data[11], Is.EqualTo(0x01));  // c1Hi
+            Assert.That(data[12], Is.EqualTo(0xAD));  // c-idx0
+            Assert.That(data[13], Is.EqualTo(0xEB));  // c-idx1
+            Assert.That(data[14], Is.EqualTo(0x22));  // c-idx2
+            Assert.That(data[15], Is.EqualTo(0x83));  // c-idx3
         }
 
         [Test]
@@ -168,22 +168,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             // Assert against data hard-coded from a successful test
             // run where the data was built using unit tested components.
 
-            Assert.AreEqual(Color.FromArgb(255, 0, 56, 99),      colors[0]);
-            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[1]);
-            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[2]);
-            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[3]);
-            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[4]);
-            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[5]);
-            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[6]);
-            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[7]);
-            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[8]);
-            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[9]);
-            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[10]);
-            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[11]);
-            Assert.AreEqual(Color.FromArgb(255, 57, 117, 140),   colors[12]);
-            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[13]);
-            Assert.AreEqual(Color.FromArgb(255, 181, 239, 222),  colors[14]);
-            Assert.AreEqual(Color.FromArgb(255, 123, 178, 181),  colors[15]);
+            Assert.That(colors[0], Is.EqualTo(Color.FromArgb(255, 0, 56, 99)));
+            Assert.That(colors[1], Is.EqualTo(Color.FromArgb(255, 57, 117, 140)));
+            Assert.That(colors[2], Is.EqualTo(Color.FromArgb(255, 123, 178, 181)));
+            Assert.That(colors[3], Is.EqualTo(Color.FromArgb(255, 123, 178, 181)));
+            Assert.That(colors[4], Is.EqualTo(Color.FromArgb(255, 57, 117, 140)));
+            Assert.That(colors[5], Is.EqualTo(Color.FromArgb(255, 123, 178, 181)));
+            Assert.That(colors[6], Is.EqualTo(Color.FromArgb(255, 123, 178, 181)));
+            Assert.That(colors[7], Is.EqualTo(Color.FromArgb(255, 57, 117, 140)));
+            Assert.That(colors[8], Is.EqualTo(Color.FromArgb(255, 123, 178, 181)));
+            Assert.That(colors[9], Is.EqualTo(Color.FromArgb(255, 181, 239, 222)));
+            Assert.That(colors[10], Is.EqualTo(Color.FromArgb(255, 123, 178, 181)));
+            Assert.That(colors[11], Is.EqualTo(Color.FromArgb(255, 181, 239, 222)));
+            Assert.That(colors[12], Is.EqualTo(Color.FromArgb(255, 57, 117, 140)));
+            Assert.That(colors[13], Is.EqualTo(Color.FromArgb(255, 181, 239, 222)));
+            Assert.That(colors[14], Is.EqualTo(Color.FromArgb(255, 181, 239, 222)));
+            Assert.That(colors[15], Is.EqualTo(Color.FromArgb(255, 123, 178, 181)));
         }
 
         [Test]
@@ -212,22 +212,22 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Formats
             // Assert against data hard-coded from a successful test
             // run where the data was built using unit tested components.
 
-            Assert.AreEqual(Color.FromArgb(10, 0, 56, 99),      colors[0]);
-            Assert.AreEqual(Color.FromArgb(10, 57, 117, 140),   colors[1]);
-            Assert.AreEqual(Color.FromArgb(10, 123, 178, 181),  colors[2]);
-            Assert.AreEqual(Color.FromArgb(220, 123, 178, 181), colors[3]);
-            Assert.AreEqual(Color.FromArgb(220, 57, 117, 140),  colors[4]);
-            Assert.AreEqual(Color.FromArgb(220, 123, 178, 181), colors[5]);
-            Assert.AreEqual(Color.FromArgb(10, 123, 178, 181),  colors[6]);
-            Assert.AreEqual(Color.FromArgb(220, 57, 117, 140),  colors[7]);
-            Assert.AreEqual(Color.FromArgb(220, 123, 178, 181), colors[8]);
-            Assert.AreEqual(Color.FromArgb(10, 181, 239, 222),  colors[9]);
-            Assert.AreEqual(Color.FromArgb(220, 123, 178, 181), colors[10]);
-            Assert.AreEqual(Color.FromArgb(220, 181, 239, 222), colors[11]);
-            Assert.AreEqual(Color.FromArgb(220, 57, 117, 140),  colors[12]);
-            Assert.AreEqual(Color.FromArgb(10, 181, 239, 222),  colors[13]);
-            Assert.AreEqual(Color.FromArgb(220, 181, 239, 222), colors[14]);
-            Assert.AreEqual(Color.FromArgb(10, 123, 178, 181),  colors[15]);
+            Assert.That(colors[0], Is.EqualTo(Color.FromArgb(10, 0, 56, 99)));
+            Assert.That(colors[1], Is.EqualTo(Color.FromArgb(10, 57, 117, 140)));
+            Assert.That(colors[2], Is.EqualTo(Color.FromArgb(10, 123, 178, 181)));
+            Assert.That(colors[3], Is.EqualTo(Color.FromArgb(220, 123, 178, 181)));
+            Assert.That(colors[4], Is.EqualTo(Color.FromArgb(220, 57, 117, 140)));
+            Assert.That(colors[5], Is.EqualTo(Color.FromArgb(220, 123, 178, 181)));
+            Assert.That(colors[6], Is.EqualTo(Color.FromArgb(10, 123, 178, 181)));
+            Assert.That(colors[7], Is.EqualTo(Color.FromArgb(220, 57, 117, 140)));
+            Assert.That(colors[8], Is.EqualTo(Color.FromArgb(220, 123, 178, 181)));
+            Assert.That(colors[9], Is.EqualTo(Color.FromArgb(10, 181, 239, 222)));
+            Assert.That(colors[10], Is.EqualTo(Color.FromArgb(220, 123, 178, 181)));
+            Assert.That(colors[11], Is.EqualTo(Color.FromArgb(220, 181, 239, 222)));
+            Assert.That(colors[12], Is.EqualTo(Color.FromArgb(220, 57, 117, 140)));
+            Assert.That(colors[13], Is.EqualTo(Color.FromArgb(10, 181, 239, 222)));
+            Assert.That(colors[14], Is.EqualTo(Color.FromArgb(220, 181, 239, 222)));
+            Assert.That(colors[15], Is.EqualTo(Color.FromArgb(10, 123, 178, 181)));
         }
     }
 }

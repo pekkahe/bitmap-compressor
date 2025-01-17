@@ -17,7 +17,7 @@ namespace BitmapCompressor.Tests.UnitTests.Compressor.Extensions
         {
             var result = source.Parameters(args);
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
     }
 }
