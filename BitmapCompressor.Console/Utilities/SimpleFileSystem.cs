@@ -1,24 +1,21 @@
-﻿using System;
-using System.IO;
-using BitmapCompressor.DataTypes;
+﻿using BitmapCompressor.Lib.DataTypes;
 
-namespace BitmapCompressor.Console.Utilities
+namespace BitmapCompressor.Console.Utilities;
+
+public class SimpleFileSystem : IFileSystem
 {
-    public class SimpleFileSystem : IFileSystem
+    public bool Exists(string fileName)
     {
-        public bool Exists(string fileName)
-        {
-            return File.Exists(fileName);
-        }
+        return File.Exists(fileName);
+    }
 
-        public IUncompressedImage LoadBitmap(string filePath)
-        {
-            return DirectBitmap.CreateFromFile(filePath);
-        }
+    public IUncompressedImage LoadBitmap(string filePath)
+    {
+        return DirectBitmap.CreateFromFile(filePath);
+    }
 
-        public ICompressedImage LoadDDS(string filePath)
-        {
-            return DDSImage.CreateFromFile(filePath);
-        }
+    public ICompressedImage LoadDDS(string filePath)
+    {
+        return DDSImage.CreateFromFile(filePath);
     }
 }

@@ -1,32 +1,28 @@
 ﻿using System;
 using System.IO;
 
-namespace BitmapCompressor.Tests.Helpers
+namespace BitmapCompressor.Tests.Helpers;
+
+public static class TestResourceDirectory
 {
-    public static class TestResourceDirectory
+    public static readonly string ProjectDirectory;
+    public static readonly string ResourceDirectory;
+
+    static TestResourceDirectory()
     {
-        public static readonly string ProjectDirectory;
-        public static readonly string ResourceDirectory;
+        ResourceDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
+    }
 
-        static TestResourceDirectory()
-        {
-            var baseDirectoryInfo = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory);
+    public static string GetFilePath(string resourceFile)
+    {
+        if (!Directory.Exists(ResourceDirectory))
+            throw new DirectoryNotFoundException($"Test resource directory not found: {ResourceDirectory}");
 
-            ProjectDirectory = baseDirectoryInfo?.Parent?.Parent?.FullName;
-            ResourceDirectory = Path.Combine(ProjectDirectory, "Resources");
-        }
+        var path = Path.Combine(ResourceDirectory, resourceFile);
 
-        public static string GetFilePath(string resourceFile)
-        {
-            if (!Directory.Exists(ResourceDirectory))
-                throw new DirectoryNotFoundException($"Test resource directory not found: {ResourceDirectory}");
+        if (!File.Exists(path))
+            throw new FileNotFoundException($"Test resource file not found: {path}");
 
-            var path = Path.Combine(ResourceDirectory, resourceFile);
-
-            if (!File.Exists(path))
-                throw new FileNotFoundException($"Test resource file not found: {path}");
-
-            return path;
-        }
+        return path;
     }
 }

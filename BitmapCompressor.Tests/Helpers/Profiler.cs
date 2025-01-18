@@ -2,42 +2,41 @@
 using System.Diagnostics;
 using NUnit.Framework;
 
-namespace BitmapCompressor.Tests.Helpers
-{
-    public static class Profiler
-    { 
-        /// <summary>
-        /// Returns a disposable object which prints the elapsed milliseconds to the NLog output when disposed.
-        /// </summary>
-        public static IDisposable MeasureTime()
+namespace BitmapCompressor.Tests.Helpers;
+
+public static class Profiler
+{ 
+    /// <summary>
+    /// Returns a disposable object which prints the elapsed milliseconds to the NLog output when disposed.
+    /// </summary>
+    public static IDisposable MeasureTime()
+    {
+        var stopwatch = new Stopwatch();
+
+        TestContext.WriteLine($"Profiling started.");
+        stopwatch.Start();
+
+        return Disposable.Create(() =>
         {
-            var stopwatch = new Stopwatch();
+            stopwatch.Stop();
+            TestContext.WriteLine($"Profiling finished. Elapsed {stopwatch.ElapsedMilliseconds} ms.");
+        });
+    }
 
-            TestContext.WriteLine($"Profiling started.");
-            stopwatch.Start();
+    /// <summary>
+    /// Returns a disposable object which prints the elapsed ticks to the NLog output when disposed.
+    /// </summary>
+    public static IDisposable MeasureTicks()
+    {
+        var stopwatch = new Stopwatch();
 
-            return Disposable.Create(() =>
-            {
-                stopwatch.Stop();
-                TestContext.WriteLine($"Profiling finished. Elapsed {stopwatch.ElapsedMilliseconds} ms.");
-            });
-        }
+        TestContext.WriteLine($"Profiling started.");
+        stopwatch.Start();
 
-        /// <summary>
-        /// Returns a disposable object which prints the elapsed ticks to the NLog output when disposed.
-        /// </summary>
-        public static IDisposable MeasureTicks()
+        return Disposable.Create(() =>
         {
-            var stopwatch = new Stopwatch();
-
-            TestContext.WriteLine($"Profiling started.");
-            stopwatch.Start();
-
-            return Disposable.Create(() =>
-            {
-                stopwatch.Stop();
-                TestContext.WriteLine($"Profiling finished. Elapsed {stopwatch.ElapsedTicks} ticks.");
-            });
-        }
+            stopwatch.Stop();
+            TestContext.WriteLine($"Profiling finished. Elapsed {stopwatch.ElapsedTicks} ticks.");
+        });
     }
 }
