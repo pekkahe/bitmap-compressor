@@ -6,14 +6,9 @@ using BitmapCompressor.Lib.Serialization.FileFormat;
 
 namespace BitmapCompressor.Lib.Serialization;
 
-public class DDSFileReader : IDisposable
+public class DDSFileReader(Stream stream) : IDisposable
 {
-    private readonly BinaryReader _binaryReader;
-
-    public DDSFileReader(Stream stream)
-    {
-        _binaryReader = new BinaryReader(stream);
-    }
+    private readonly BinaryReader _binaryReader = new(stream);
 
     public DDSFileReader(string fileName) : this(new FileStream(fileName, FileMode.Open))
     { }
@@ -48,12 +43,12 @@ public class DDSFileReader : IDisposable
 
     private DDSFileHeader ReadHeader()
     {
-        int size = Marshal.SizeOf(typeof(DDSFileHeader));
+        int size = Marshal.SizeOf<DDSFileHeader>();
         var buffer = _binaryReader.ReadBytes(size);
 
         // Read the header data directly into a DDS file header structure
         GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-        var header = (DDSFileHeader) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(DDSFileHeader));
+        var header = Marshal.PtrToStructure<DDSFileHeader>(handle.AddrOfPinnedObject());
         handle.Free();
 
         return header;

@@ -8,7 +8,7 @@ namespace BitmapCompressor.Tests.Helpers;
 
 public class ColorHelper
 {
-    private static readonly Random Random = new Random();
+    private static readonly Random Random = new();
 
     public static Color[] CreateRandomColors()
     {

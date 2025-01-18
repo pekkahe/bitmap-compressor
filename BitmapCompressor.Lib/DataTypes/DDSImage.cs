@@ -52,10 +52,8 @@ public sealed class DDSImage : ICompressedImage
 
     public void Save(string fileName)
     {
-        using (var writer = new DDSFileWriter(fileName))
-        {
-            writer.Write(this);
-        }
+        using var writer = new DDSFileWriter(fileName);
+        writer.Write(this);
     }
 
     /// <summary>
@@ -95,9 +93,7 @@ public sealed class DDSImage : ICompressedImage
     /// <param name="filePath">The file path of the DDS file to read.</param>
     public static DDSImage CreateFromFile(string filePath)
     {
-        using (var reader = new DDSFileReader(filePath))
-        {
-            return reader.Read();
-        }
+        using var reader = new DDSFileReader(filePath);
+        return reader.Read();
     }
 }

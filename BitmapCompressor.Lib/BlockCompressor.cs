@@ -22,8 +22,7 @@ public class BlockCompressor : IBlockCompressor
     /// <summary>
     /// Option to run parallelized loops in a single thread for easier debugging.
     /// </summary>
-    private static readonly ParallelOptions RunInSingleThread = 
-        new ParallelOptions { MaxDegreeOfParallelism = 1 };
+    private static readonly ParallelOptions RunInSingleThread = new() { MaxDegreeOfParallelism = 1 };
 
     public ICompressedImage Compress(IUncompressedImage image, IBlockCompressionFormat format)
     {

@@ -5,14 +5,9 @@ using BitmapCompressor.Lib.Serialization.FileFormat;
 
 namespace BitmapCompressor.Lib.Serialization;
 
-public class DDSFileWriter : IDisposable
+public class DDSFileWriter(Stream stream) : IDisposable
 {
-    private readonly BinaryWriter _binaryWriter;
-
-    public DDSFileWriter(Stream stream)
-    {
-        _binaryWriter = new BinaryWriter(stream);
-    }
+    private readonly BinaryWriter _binaryWriter = new(stream);
 
     public DDSFileWriter(string fileName) : this(new FileStream(fileName, FileMode.Create))
     { }
@@ -62,17 +57,6 @@ public class DDSFileWriter : IDisposable
         header.Caps = DDSCapsFlags.DDSCAPS_TEXTURE;
 
         return header;
-    }
-
-    /// <summary>
-    /// Generates a FourCC code from four character integer values.
-    /// </summary>
-    private static uint MakeFourCC(int char0, int char1, int char2, int char3)
-    {
-        return (uint) ((byte) (char0) |
-                       (byte) (char1) << 8 |
-                       (byte) (char2) << 16 |
-                       (byte) (char3) << 24);
     }
 
     private static uint MinimumRequiredFlags()

@@ -10,8 +10,8 @@ public static class ColorUtility
     public static Color Blend(Color a, Color b)
     {
         var c = BlendComponents(
-            new[] { a.R, a.G, a.B },
-            new[] { b.R, b.G, b.B });
+            [a.R, a.G, a.B],
+            [b.R, b.G, b.B]);
 
         return Color.FromArgb(c[0], c[1], c[2]);
     }
@@ -22,8 +22,8 @@ public static class ColorUtility
     public static Color565 Blend(Color565 a, Color565 b)
     {
         var c = BlendComponents(
-            new[] { a.R, a.G, a.B },
-            new[] { b.R, b.G, b.B });
+            [a.R, a.G, a.B],
+            [b.R, b.G, b.B]);
 
         return Color565.FromRgb(c[0], c[1], c[2]);
     }
@@ -44,8 +44,8 @@ public static class ColorUtility
     public static Color LerpTwoThirds(Color a, Color b)
     {
         var c = LerpComponents(
-            new[] { a.R, a.G, a.B },
-            new[] { b.R, b.G, b.B });
+            [a.R, a.G, a.B],
+            [b.R, b.G, b.B]);
 
         return Color.FromArgb(c[0], c[1], c[2]);
     }
@@ -57,8 +57,8 @@ public static class ColorUtility
     public static Color565 LerpTwoThirds(Color565 a, Color565 b)
     {
         var c = LerpComponents(
-            new[] { a.R, a.G, a.B },
-            new[] { b.R, b.G, b.B });
+            [a.R, a.G, a.B],
+            [b.R, b.G, b.B]);
 
         return Color565.FromRgb(c[0], c[1], c[2]);
     }
@@ -118,8 +118,8 @@ public static class ColorUtility
     public static double Distance(Color a, Color b)
     {
         return DistanceByComponents(
-            new[] { a.R, a.G, a.B },
-            new[] { b.R, b.G, b.B });
+            [a.R, a.G, a.B],
+            [b.R, b.G, b.B]);
     }
 
     /// <summary>
@@ -131,8 +131,8 @@ public static class ColorUtility
     public static double Distance(Color565 a, Color565 b)
     {
         return DistanceByComponents(
-            new[] { a.R, a.G, a.B },
-            new[] { b.R, b.G, b.B });
+            [a.R, a.G, a.B],
+            [b.R, b.G, b.B]);
     }
 
     private static double DistanceByComponents(byte[] a, byte[] b)

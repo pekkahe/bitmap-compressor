@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a 16-bit RGB color in the format R5:G6:B5.
 /// </summary>
-public struct Color565
+public readonly struct Color565
 {
     private readonly ushort _value;
 
@@ -15,7 +15,7 @@ public struct Color565
     /// <summary>
     /// Returns the color with the value #0000.
     /// </summary>
-    public static Color565 Black => new Color565(0);
+    public static Color565 Black => new(0);
 
     /// <summary>
     /// The 5-bit red component value for this color.

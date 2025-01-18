@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using BitmapCompressor.Lib.Extensions;
 using BitmapCompressor.Lib.Formats;
 
 namespace BitmapCompressor.Console.CommandLine;
@@ -94,42 +93,30 @@ public partial class CommandLineArguments
         return ArgumentException("Unrecognized or incomplete command line.");
     }
 
-    private static ArgumentException ArgumentException(string message)
-    {
-        return new ArgumentException("Error: {0}\n\n{1}".Parameters(message, BuildHelpMessage()));
-    }
+    private static ArgumentException ArgumentException(string message) => new($"Error: {message}\n\n{BuildHelpMessage()}");
 
     private static string BuildHelpMessage()
     {
-        var applicationName = Path.GetFileNameWithoutExtension(AppDomain.CurrentDomain.FriendlyName.ToLower());
+        var appName = Path.GetFileNameWithoutExtension(AppDomain.CurrentDomain.FriendlyName.ToLower());
 
         var builder = new StringBuilder();
-
         builder.AppendLine("This program lets you compress BMP files into BCn compressed DDS files and vice versa.");
         builder.AppendLine();
         builder.AppendLine("USAGE:");
-        builder.AppendLine("    {0} ({1}N | {2}) [{3}] bmp_filename dds_filename".Parameters(
-            applicationName, Keys.Compress, Keys.Decompress, Keys.Overwrite));
+        builder.AppendLine($"    {appName} ({Keys.Compress}N | {Keys.Decompress}) [{Keys.Overwrite}] bmp_filename dds_filename");
         builder.AppendLine();
         builder.AppendLine("    Options:");
-        builder.AppendLine("        {0}{1}    Compress the BMP file into a BC1 compressed DDS file.".Parameters(
-            Keys.Compress, Keys.BC1Format));
-        builder.AppendLine("        {0}{1}    Compress the BMP file into a BC2 compressed DDS file.".Parameters(
-            Keys.Compress, Keys.BC2Format));
-        builder.AppendLine("        {0}{1}    Compress the BMP file into a BC3 compressed DDS file.".Parameters(
-            Keys.Compress, Keys.BC3Format));
-        builder.AppendLine("        {0}     Decompress the DDS file into an uncompressed BMP file.".Parameters(
-            Keys.Decompress));
-        builder.AppendLine("        {0}     Overwrites the target BMP or DDS file if it exists.".Parameters(
-            Keys.Overwrite));
+        builder.AppendLine($"        {Keys.Compress}{Keys.BC1Format}    Compress the BMP file into a BC1 compressed DDS file.");
+        builder.AppendLine($"        {Keys.Compress}{Keys.BC2Format}    Compress the BMP file into a BC2 compressed DDS file.");
+        builder.AppendLine($"        {Keys.Compress}{Keys.BC3Format}    Compress the BMP file into a BC3 compressed DDS file.");
+        builder.AppendLine($"        {Keys.Decompress}     Decompress the DDS file into an uncompressed BMP file.");
+        builder.AppendLine($"        {Keys.Overwrite}     Overwrites the target BMP or DDS file if it exists.");
         builder.AppendLine();
         builder.AppendLine("Examples:");
-        builder.AppendLine("    > {0} {1}{2} file1.bmp file2.dds".Parameters(
-            applicationName, Keys.Compress, Keys.BC1Format));
+        builder.AppendLine($"    > {appName} {Keys.Compress}{Keys.BC1Format} file1.bmp file2.dds");
         builder.AppendLine("      Compresses the BMP 'file1.bmp' into a DDS file named 'file2.dds' using BC1.");
         builder.AppendLine();
-        builder.AppendLine("    > {0} {1} {2} file1.bmp file2.dds".Parameters(
-            applicationName, Keys.Decompress, Keys.Overwrite));
+        builder.AppendLine($"    > {appName} {Keys.Decompress} {Keys.Overwrite} file1.bmp file2.dds");
         builder.AppendLine("      Decompresses the DDS 'file2.dds' into a BMP file named 'file1.bmp' overwriting the file if it exists.");
 
         return builder.ToString();

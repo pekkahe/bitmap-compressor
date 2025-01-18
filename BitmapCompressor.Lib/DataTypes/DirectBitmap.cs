@@ -1,6 +1,5 @@
 ﻿using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using BitmapCompressor.Lib.Formats;
 using BitmapCompressor.Lib.Utilities;
 
@@ -143,10 +142,8 @@ public sealed class DirectBitmap : IUncompressedImage, IDisposable
 
     public static DirectBitmap CreateFromFile(string fileName)
     {
-        using (var bitmap = (Bitmap) Image.FromFile(fileName))
-        {
-            return CreateFromBitmap(bitmap);
-        }
+        using var bitmap = (Bitmap)Image.FromFile(fileName);
+        return CreateFromBitmap(bitmap);
     }
 
     public static DirectBitmap CreateFromBitmap(Bitmap sourceBitmap)

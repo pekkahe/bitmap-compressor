@@ -9,27 +9,27 @@ public class FourCC
     /// <summary>
     /// FourCC value for BC1 compression with 1-bit alpha.
     /// </summary>
-    public static readonly FourCC BC1Unorm = new FourCC(MakeFourCC('D', 'X', 'T', '1'));
+    public static readonly FourCC BC1Unorm = new(MakeFourCC('D', 'X', 'T', '1'));
 
     /// <summary>
     /// FourCC value for BC2 compression with 4-bit nonpremultiplied alpha.
     /// </summary>
-    public static readonly FourCC BC2Unorm = new FourCC(MakeFourCC('D', 'X', 'T', '3'));
+    public static readonly FourCC BC2Unorm = new(MakeFourCC('D', 'X', 'T', '3'));
 
     /// <summary>
     /// FourCC value for BC3 compression with interpolated nonpremultiplied alpha.
     /// </summary>
-    public static readonly FourCC BC3Unorm = new FourCC(MakeFourCC('D', 'X', 'T', '5'));
+    public static readonly FourCC BC3Unorm = new(MakeFourCC('D', 'X', 'T', '5'));
 
     /// <summary>
     /// FourCC value for BC4 compression.
     /// </summary>
-    public static readonly FourCC BC4Unorm = new FourCC(MakeFourCC('B', 'C', '4', 'U'));
+    public static readonly FourCC BC4Unorm = new(MakeFourCC('B', 'C', '4', 'U'));
 
     /// <summary>
     /// FourCC value for BC5 compression.
     /// </summary>
-    public static readonly FourCC BC5Unorm = new FourCC(MakeFourCC('B', 'C', '5', 'U'));
+    public static readonly FourCC BC5Unorm = new(MakeFourCC('B', 'C', '5', 'U'));
 
     private FourCC(uint value)
     {
